@@ -130,7 +130,10 @@
 			"ja_kuromoji_tokenizer": {
 				"mode": "search",
 				"type": "kuromoji_tokenizer",
-				"discard_compound_token": true
+				"discard_compound_token": true,
+				"user_dictionary_rules": [
+					"東京スカイツリー,東京 スカイツリー,トウキョウ スカイツリー,カスタム名詞"
+				]
 			},
 			"ja_ngram_tokenizer": {
 				"type": "ngram",
@@ -152,6 +155,11 @@
 				"type": "pattern_replace",
 				"pattern": "(\\d+)\\s(?=\\p{L}\\b)",
 				"replacement": "$1"
+			},
+			"normalize": {
+				"type": "icu_normalizer",
+				"name": "nfkc",
+				"mode": "compose"
 			}
 		},
 		"filter": {
