@@ -23,8 +23,32 @@
             <groupId>org.elasticsearch.plugin</groupId>
             <artifactId>transport-netty4-client</artifactId>
             <version>${elasticsearch.version}</version>
-
         </dependency>
+        
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>analysis-icu</artifactId>
+            <version>${elasticsearch.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/es/modules/analysis-icu-5.6.16/elasticsearch/analysis-icu-5.6.16.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>lucene-analyzers-icu</artifactId>
+            <version>6.6.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/es/modules/analysis-icu-5.6.16/elasticsearch/lucene-analyzers-icu-6.6.1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>analysis-kuromoji</artifactId>
+            <version>${elasticsearch.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/es/modules/analysis-kuromoji-5.6.16/elasticsearch/analysis-kuromoji-5.6.16.jar</systemPath>
+        </dependency>
+
         <dependency><!-- required by elasticsearch -->
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -235,6 +259,51 @@
                             <overWrite>false</overWrite>
                             <outputDirectory>${project.build.directory}/es/modules/lang-painless</outputDirectory>
                             <destFileName>lang-painless.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>analysis-icu</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-icu</outputDirectory>
+                            <destFileName>analysis-icu.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>icu4j-54.1</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-icu</outputDirectory>
+                            <destFileName>icu4j-54.1.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>lucene-analyzers-icu</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-icu</outputDirectory>
+                            <destFileName>lucene-analyzers-icu-5.6.16.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>analysis-kuromoji</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-kuromoji</outputDirectory>
+                            <destFileName>analysis-kuromoji.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>lucene-analyzers-kuromoji</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-kuromoji</outputDirectory>
+                            <destFileName>lucene-analyzers-kuromoji-5.6.16.jar</destFileName>
                         </artifactItem>
                         <artifactItem>
                             <groupId>org.ow2.asm</groupId>

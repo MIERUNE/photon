@@ -170,6 +170,10 @@
 			"preserving_word_delimiter": {
 				"type": "word_delimiter",
 				"preserve_original": "true"
+			},
+			"nfc_normalizer": {
+				"type": "icu_normalizer",
+				"name": "nfkc"
 			}
 		}
 	}
