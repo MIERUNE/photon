@@ -1,0 +1,11 @@
+version: '2'
+services:
+  photon:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    entrypoint: "/photon/entrypoint.sh"
+    volumes:
+      - ./photondata:/photon/photon_data
+    ports:
+      - 2323:2322
