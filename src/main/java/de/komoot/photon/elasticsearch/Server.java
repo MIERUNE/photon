@@ -157,17 +157,7 @@ public class Server {
         final File kuromojiDirectory = new File("/home/oasis/Workspace/photon/target/es_photon_test/photon_data/elasticsearch/modules/analysis-kuromoji-5.6.16");
 
         for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
-                painlessDirectory}) {
-            directory.mkdirs();
-        }
-
-        for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
-                icuDirectory}) {
-            directory.mkdirs();
-        }
-
-        for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
-                kuromojiDirectory}) {
+                painlessDirectory, icuDirectory, kuromojiDirectory}) {
             directory.mkdirs();
         }
 

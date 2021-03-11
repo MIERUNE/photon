@@ -146,8 +146,8 @@
 						"fields": {
 							"ngrams": {
 								"type": "text",
-								"analyzer": "ja_kuromoji_index_analyzer",
-								"search_analyzer": "ja_kuromoji_search_analyzer"
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
 							},
 							"raw": {
 								"type": "text",
@@ -312,7 +312,8 @@
 							"name.en",
 							"name.de",
 							"name.fr",
-							"name.it"
+							"name.it",
+							"name.ja"
 						]
 					},
 					"en": {
@@ -388,8 +389,8 @@
 						"fields": {
 							"ngrams": {
 								"type": "text",
-								"analyzer": "ja_kuromoji_index_analyzer",
-								"search_analyzer": "ja_kuromoji_search_analyzer"
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
 							},
 							"raw": {
 								"type": "text",
