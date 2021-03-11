@@ -153,8 +153,8 @@ public class Server {
         final File pluginDirectory = new File(esDirectory, "plugins");
         final File scriptsDirectory = new File(esDirectory, "config/scripts");
         final File painlessDirectory = new File(esDirectory, "modules/lang-painless");
-        final File icuDirectory = new File("/home/oasis/Workspace/photon/target/es_photon_test/photon_data/elasticsearch/modules/analysis-icu-5.6.16");
-        final File kuromojiDirectory = new File("/home/oasis/Workspace/photon/target/es_photon_test/photon_data/elasticsearch/modules/analysis-kuromoji-5.6.16");
+        final File icuDirectory = new File(esDirectory,"modules/analysis-icu-5.6.16");
+        final File kuromojiDirectory = new File(esDirectory, "modules/analysis-kuromoji-5.6.16");
 
         for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
                 painlessDirectory, icuDirectory, kuromojiDirectory}) {
