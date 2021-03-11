@@ -153,9 +153,21 @@ public class Server {
         final File pluginDirectory = new File(esDirectory, "plugins");
         final File scriptsDirectory = new File(esDirectory, "config/scripts");
         final File painlessDirectory = new File(esDirectory, "modules/lang-painless");
+        final File icuDirectory = new File("/home/oasis/Workspace/photon/target/es_photon_test/photon_data/elasticsearch/modules/analysis-icu-5.6.16");
+        final File kuromojiDirectory = new File("/home/oasis/Workspace/photon/target/es_photon_test/photon_data/elasticsearch/modules/analysis-kuromoji-5.6.16");
 
         for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
                 painlessDirectory}) {
+            directory.mkdirs();
+        }
+
+        for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
+                icuDirectory}) {
+            directory.mkdirs();
+        }
+
+        for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
+                kuromojiDirectory}) {
             directory.mkdirs();
         }
 
@@ -174,6 +186,30 @@ public class Server {
                 StandardCopyOption.REPLACE_EXISTING);
         Files.copy(loader.getResourceAsStream("modules/lang-painless/plugin-security.policy"),
                 new File(painlessDirectory, "plugin-security.policy").toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+
+
+        Files.copy(loader.getResourceAsStream("modules/analysis-icu-5.6.16/analysis-icu-5.6.16.jar"),
+                new File(icuDirectory, "analysis-icu-5.6.16.jar").toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-icu-5.6.16/icu4j-54.1.jar"),
+                new File(icuDirectory, "icu4j-54.1.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-icu-5.6.16/lucene-analyzers-icu-6.6.1.jar"),
+                new File(icuDirectory, "lucene-analyzers-icu-6.6.1.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-icu-5.6.16/plugin-descriptor.properties"),
+                new File(icuDirectory, "plugin-descriptor.properties").toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
+
+
+
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji-5.6.16/analysis-kuromoji-5.6.16.jar"),
+                new File(kuromojiDirectory, "analysis-kuromoji-5.6.16.jar").toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji-5.6.16/lucene-analyzers-kuromoji-6.6.1.jar"),
+                new File(kuromojiDirectory, "lucene-analyzers-kuromoji-6.6.1.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji-5.6.16/plugin-descriptor.properties"),
+                new File(kuromojiDirectory, "plugin-descriptor.properties").toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
 
     }
 
