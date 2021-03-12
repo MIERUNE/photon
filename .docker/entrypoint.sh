@@ -10,14 +10,21 @@ LANGUAGES=$NOMINATIM_LANGUAGES
 # Create elasticsearch index
 if [ ! -d "/photon/photon_data/elasticsearch" ]; then
 	echo "Creating search index"
-	java -Xmx7168m　-jar photon.jar -nominatim-import -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS -languages $LANGUAGES
+	if [ -n "$LANGUAGES" ]; then
+      java -Xmx7168m　-jar photon.jar -nominatim-import -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS -languages $LANGUAGES
+    else
+      java -Xmx7168m　-jar photon.jar -nominatim-import -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS
+    fi
 fi
 
 # Start photon if elastic index exists
 if [ -d "/photon/photon_data/elasticsearch" ]; then
 	echo "Starting photon"
-	java -jar photon.jar -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS -languages $LANGUAGES
-
+	if [ -n "$LANGUAGES" ]; then
+	  java -jar photon.jar -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS -languages $LANGUAGES
+	else
+	  java -jar photon.jar -host $DB_HOST -port $DB_PORT -database $DB_NAME -user $DB_USER -password $DB_PASS
+	fi
 	### Start continuous update ###
 
 	# while true; do
