@@ -53,6 +53,13 @@
 						"copy_to": [
 							"collector.ja"
 						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -157,6 +164,24 @@
 						"copy_to": [
 							"collector.ja"
 						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"fields": {
+							"ngrams": {
+								"type": "text",
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
+							},
+							"raw": {
+								"type": "text",
+								"analyzer": "ja_kuromoji_index_analyzer"
+							}
+						},
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -202,6 +227,13 @@
 						"index": false,
 						"copy_to": [
 							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -251,6 +283,13 @@
 						"index": false,
 						"copy_to": [
 							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -313,7 +352,8 @@
 							"name.de",
 							"name.fr",
 							"name.it",
-							"name.ja"
+							"name.ja",
+							"name.ja_kana"
 						]
 					},
 					"en": {
@@ -399,6 +439,24 @@
 						},
 						"copy_to": [
 							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"fields": {
+							"ngrams": {
+								"type": "text",
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
+							},
+							"raw": {
+								"type": "text",
+								"analyzer": "ja_kuromoji_index_analyzer"
+							}
+						},
+						"copy_to": [
+							"collector.ja_kana"
 						]
 					},
 					"loc": {
@@ -524,6 +582,13 @@
 						"copy_to": [
 							"collector.ja"
 						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -569,6 +634,13 @@
 						"index": false,
 						"copy_to": [
 							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -616,6 +688,13 @@
 						"copy_to": [
 							"collector.ja"
 						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -662,6 +741,13 @@
 						"copy_to": [
 							"collector.ja"
 						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -707,6 +793,13 @@
 						"index": false,
 						"copy_to": [
 							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"copy_to": [
+							"collector.ja_kana"
 						]
 					}
 				}

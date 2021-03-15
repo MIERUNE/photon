@@ -1,0 +1,14 @@
+version: '2'
+services:
+  photon:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    entrypoint: "/photon/entrypoint.sh"
+    env_file: .env
+    volumes:
+      - ./photon_data:/photon/photon_data
+      - ./.docker/entrypoint.sh:/photon/entrypoint.sh
+    ports:
+      - 2322:2322
+    mem_limit: 7g

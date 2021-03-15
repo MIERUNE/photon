@@ -1,0 +1,7 @@
+target/
+photon_data/
+.project/
+.github/
+.settings/
+.classpath/
+.env*
