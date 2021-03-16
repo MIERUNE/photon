@@ -4,6 +4,7 @@ package de.komoot.photon.query;
 import com.google.common.collect.ImmutableSet;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
+import java.util.*;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery.ScoreMode;
 import org.elasticsearch.common.unit.Fuzziness;
@@ -15,7 +16,6 @@ import org.elasticsearch.index.query.functionscore.ScriptScoreFunctionBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 
-import java.util.*;
 
 import static com.google.common.collect.Maps.newHashMap;
 
@@ -57,6 +57,16 @@ public class PhotonQueryBuilder {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
         if (lenient) {
+            Fuzziness fizziness = Fuzziness.ONE;
+            String analyzer = "search_ngram";
+            ArrayList<String> target_lang = new ArrayList<String>();
+            target_lang.add("ja");
+            target_lang.add("ja_kana");
+            
+            if (target_lang.contains(language)){
+                fizziness = Fuzziness.TWO;
+                analyzer = "ja_ngram_search_analyzer";
+            }
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
                                 .fuzziness(Fuzziness.ONE)
@@ -64,9 +74,9 @@ public class PhotonQueryBuilder {
                                 .analyzer("search_ngram")
                                 .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(Fuzziness.ONE)
+                                .fuzziness(fizziness)
                                 .prefixLength(2)
-                                .analyzer("search_ngram")
+                                .analyzer(analyzer)
                                 .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
 
