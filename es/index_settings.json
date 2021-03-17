@@ -8,6 +8,7 @@
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
+					"ja_katakana_readingform",
 					"kuromoji_baseform",
 					"kuromoji_part_of_speech",
 					"ja_index_synonym",
@@ -24,6 +25,7 @@
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
+					"ja_katakana_readingform",
 					"kuromoji_baseform",
 					"kuromoji_part_of_speech",
 					"ja_search_synonym",
@@ -40,6 +42,7 @@
 				],
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
+					"ja_katakana_readingform",
 					"lowercase"
 				]
 			},
@@ -51,6 +54,7 @@
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"ja_search_synonym",
+					"ja_katakana_readingform",
 					"lowercase"
 				]
 			},
@@ -186,6 +190,10 @@
 					"米国, アメリカ",
 					"東京大学, 東大"
 				]
+			},
+			"ja_katakana_readingform" : {
+				"type" : "kuromoji_readingform",
+				"use_romaji" : false
 			}
 		}
 	}
