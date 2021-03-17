@@ -61,7 +61,7 @@ public class PhotonQueryBuilder {
             String analyzer = "search_ngram";
             ArrayList<String> ja_languages = new ArrayList<String>(Arrays.asList("ja", "ja_kana"));            
             if (ja_languages.contains(language)){
-                fuzziness = Fuzziness.TWO;
+                fuzziness = Fuzziness.AUTO;
                 analyzer = "ja_ngram_search_analyzer";
             }
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
