@@ -8,14 +8,15 @@
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
-					"ja_katakana_readingform",
 					"kuromoji_baseform",
 					"kuromoji_part_of_speech",
 					"ja_index_synonym",
 					"cjk_width",
 					"ja_stop",
 					"kuromoji_stemmer",
-					"lowercase"
+					"lowercase",
+					"ja_katakana_readingform",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_kuromoji_search_analyzer": {
@@ -25,14 +26,15 @@
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
-					"ja_katakana_readingform",
 					"kuromoji_baseform",
 					"kuromoji_part_of_speech",
 					"ja_search_synonym",
 					"cjk_width",
 					"ja_stop",
 					"kuromoji_stemmer",
-					"lowercase"
+					"lowercase",
+					"ja_katakana_readingform",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_ngram_index_analyzer": {
@@ -42,8 +44,9 @@
 				],
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
+					"lowercase",
 					"ja_katakana_readingform",
-					"lowercase"
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_ngram_search_analyzer": {
@@ -54,8 +57,9 @@
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"ja_search_synonym",
+					"lowercase",
 					"ja_katakana_readingform",
-					"lowercase"
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"index_ngram": {
@@ -162,7 +166,7 @@
 			},
 			"normalize": {
 				"type": "icu_normalizer",
-				"name": "nfkc",
+				"name": "nfkc_cf",
 				"mode": "compose"
 			}
 		},
@@ -194,6 +198,10 @@
 			"ja_katakana_readingform" : {
 				"type" : "kuromoji_readingform",
 				"use_romaji" : false
+			},
+			"ja_hiragana_2_katakana": {  
+				"type": "icu_transform",
+				"id": "Hiragana-Katakana"
 			}
 		}
 	}
