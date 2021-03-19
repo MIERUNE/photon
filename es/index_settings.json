@@ -17,7 +17,6 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"lowercase",
-					"ja_katakana_readingform",
 					"ja_hiragana_2_katakana"
 				]
 			},
@@ -37,7 +36,6 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"lowercase",
-					"ja_katakana_readingform",
 					"ja_hiragana_2_katakana"
 				]
 			},
@@ -50,7 +48,6 @@
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"lowercase",
-					"ja_katakana_readingform",
 					"ja_hiragana_2_katakana"
 				]
 			},
@@ -64,7 +61,6 @@
 				"filter": [
 					"ja_search_synonym",
 					"lowercase",
-					"ja_katakana_readingform",
 					"ja_hiragana_2_katakana"
 				]
 			},
