@@ -85,11 +85,15 @@
 					},
 					"default": {
 						"type": "text",
-						"analyzer": "index_ngram",
 						"fields": {
+							"ngrams": {
+								"type": "text",
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
+							},
 							"raw": {
 								"type": "text",
-								"analyzer": "index_raw"
+								"analyzer": "ja_kuromoji_index_analyzer"
 							}
 						},
 						"copy_to": [
