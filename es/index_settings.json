@@ -4,7 +4,8 @@
 			"ja_kuromoji_index_analyzer": {
 				"type": "custom",
 				"char_filter": [
-					"normalize"
+					"normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
@@ -13,14 +14,17 @@
 					"ja_index_synonym",
 					"cjk_width",
 					"ja_stop",
+					"kuromoji_number",
 					"kuromoji_stemmer",
-					"lowercase"
+					"lowercase",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_kuromoji_search_analyzer": {
 				"type": "custom",
 				"char_filter": [
-					"normalize"
+					"normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
@@ -29,29 +33,35 @@
 					"ja_search_synonym",
 					"cjk_width",
 					"ja_stop",
+					"kuromoji_number",
 					"kuromoji_stemmer",
-					"lowercase"
+					"lowercase",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_ngram_index_analyzer": {
 				"type": "custom",
 				"char_filter": [
-					"normalize"
+					"normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
-					"lowercase"
+					"lowercase",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_ngram_search_analyzer": {
 				"type": "custom",
 				"char_filter": [
-					"normalize"
+					"normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"ja_search_synonym",
-					"lowercase"
+					"lowercase",
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"index_ngram": {
@@ -158,7 +168,7 @@
 			},
 			"normalize": {
 				"type": "icu_normalizer",
-				"name": "nfkc",
+				"name": "nfkc_cf",
 				"mode": "compose"
 			}
 		},
@@ -186,6 +196,14 @@
 					"米国, アメリカ",
 					"東京大学, 東大"
 				]
+			},
+			"ja_katakana_readingform" : {
+				"type" : "kuromoji_readingform",
+				"use_romaji" : false
+			},
+			"ja_hiragana_2_katakana": {  
+				"type": "icu_transform",
+				"id": "Hiragana-Katakana"
 			}
 		}
 	}
