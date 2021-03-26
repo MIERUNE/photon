@@ -7,10 +7,10 @@ $ cp .env.example .env
 $ vi .env # edit environmental variable for nominatim
 NOMINATIM_HOST=your host
 NOMINATIM_PORT=your port
-NOMINATIM_NAME=your database
+NOMINATIM_DB_NAME=your database
 NOMINATIM_USER=your user
 NOMINATIM_PASSWORD=your password
-NOMINATIM_LANGUAGES=es,fr,en,ja,ja_kana,ja_rm
+PHOTON_LANGUAGES=es,fr,en,ja,ja_kana
 
 $ docker-compose build
 $ docker-compose up -d
