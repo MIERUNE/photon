@@ -10,13 +10,17 @@ if [ ! -d "/photon/photon_data/elasticsearch" ]; then
   fi
 fi
 
+if [ ! -n "$MAX_LOCAL_STORAGE_NODES" ]; then
+  MAX_LOCAL_STORAGE_NODES = 1
+fi
+
 # Start photon if elastic index exists
 if [ -d "/photon/photon_data/elasticsearch" ]; then
 	echo "Starting photon"
 	if [ -n "$PHOTON_LANGUAGES" ]; then
-	  java -Xms7G -Xmx7G -jar photon.jar -languages $PHOTON_LANGUAGES
+	  java -Xms7G -Xmx7G -jar photon.jar -max-local-storage-nodes $MAX_LOCAL_STORAGE_NODES -languages $PHOTON_LANGUAGES
 	else
-	  java -Xms7G -Xmx7G -jar photon.jar
+	  java -Xms7G -Xmx7G -jar photon.jar -max-local-storage-nodes $MAX_LOCAL_STORAGE_NODES
 	fi
 	### Start continuous update ###
 
