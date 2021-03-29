@@ -68,6 +68,9 @@ public class CommandLineArgs {
     @Parameter(names = "-cors-origin", description = "enable cross-site resource sharing for the specified origin (default CORS not supported)")
     private String corsOrigin = null;
 
+    @Parameter(names = "-max-local-storage-nodes", description = "enable node.max-local-storage-nodes option to share the same data folder (default 1)")
+    private int maxLocalStorageNodes = 1;
+
     @Parameter(names = "-h", description = "show help / usage")
     private boolean usage = false;
 }

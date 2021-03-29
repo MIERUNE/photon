@@ -54,6 +54,8 @@ public class Server {
 
     private Integer shards = null;
 
+    private Integer maxLocalStorageNodes;
+
     protected static class MyNode extends Node {
         public MyNode(Settings preparedSettings, Collection<Class<? extends Plugin>> classpathPlugins) {
             super(InternalSettingsPreparer.prepareEnvironment(preparedSettings, null), classpathPlugins);
@@ -61,10 +63,10 @@ public class Server {
     }
 
     public Server(CommandLineArgs args) {
-        this(args.getCluster(), args.getDataDirectory(), args.getLanguages(), args.getTransportAddresses());
+        this(args.getCluster(), args.getDataDirectory(), args.getLanguages(), args.getTransportAddresses(), args.getMaxLocalStorageNodes());
     }
 
-    public Server(String clusterName, String mainDirectory, String languages, String transportAddresses) {
+    public Server(String clusterName, String mainDirectory, String languages, String transportAddresses, Integer maxLocalStorageNodes) {
         try {
             if (SystemUtils.IS_OS_WINDOWS) {
                 setupDirectories(new URL("file:///" + mainDirectory));
@@ -77,6 +79,7 @@ public class Server {
         this.clusterName = clusterName;
         this.languages = languages.split(",");
         this.transportAddresses = transportAddresses;
+        this.maxLocalStorageNodes = maxLocalStorageNodes;
     }
 
     public Server start() {
@@ -84,6 +87,7 @@ public class Server {
         sBuilder.put("path.home", this.esDirectory.toString());
         sBuilder.put("network.host", "127.0.0.1"); // http://stackoverflow.com/a/15509589/1245622
         sBuilder.put("cluster.name", clusterName);
+        sBuilder.put("node.max_local_storage_nodes", maxLocalStorageNodes); // https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#max-local-storage-nodes
 
         if (transportAddresses != null && !transportAddresses.isEmpty()) {
             TransportClient trClient = new PreBuiltTransportClient(sBuilder.build());
