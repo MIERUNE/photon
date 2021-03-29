@@ -1,7 +1,7 @@
 #!/bin/sh
 
-if [ ! -n "$MAX_LOCAL_STORAGE_NODES" ]; then
-  MAX_LOCAL_STORAGE_NODES = 1
+if [ -z "$MAX_LOCAL_STORAGE_NODES" ]; then
+  MAX_LOCAL_STORAGE_NODES=1
 fi
 
 # Create elasticsearch index
