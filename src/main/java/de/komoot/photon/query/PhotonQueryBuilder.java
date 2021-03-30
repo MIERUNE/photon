@@ -57,23 +57,16 @@ public class PhotonQueryBuilder {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
         if (lenient) {
-            Fuzziness fuzziness = Fuzziness.ONE;
-            String analyzer = "search_ngram";
-            ArrayList<String> ja_languages = new ArrayList<String>(Arrays.asList("ja", "ja_kana"));            
-            if (ja_languages.contains(language)){
-                fuzziness = Fuzziness.ONE;
-                analyzer = "ja_ngram_search_analyzer";
-            }
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
-                                .fuzziness(fuzziness)
+                                .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
-                                .analyzer(analyzer)
+                                .analyzer("search_ngram")
                                 .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(fuzziness)
+                                .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
-                                .analyzer(analyzer)
+                                .analyzer("search_ngram")
                                 .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
 
