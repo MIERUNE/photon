@@ -58,7 +58,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -95,10 +95,7 @@
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
 							}
-						},
-						"copy_to": [
-							"collector.ja"
-						]
+						}
 					},
 					"en": {
 						"type": "text",
@@ -156,7 +153,7 @@
 					},
 					"ja": {
 						"type": "text",
-						"index": true,
+						"index": false,
 						"fields": {
 							"ngrams": {
 								"type": "text",
@@ -167,7 +164,28 @@
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
 							}
-						}
+						},
+						"copy_to": [
+							"collector.ja"
+						]
+					},
+					"ja_kana": {
+						"type": "text",
+						"index": false,
+						"fields": {
+							"ngrams": {
+								"type": "text",
+								"analyzer": "ja_ngram_index_analyzer",
+								"search_analyzer": "ja_ngram_search_analyzer"
+							},
+							"raw": {
+								"type": "text",
+								"analyzer": "ja_kuromoji_index_analyzer"
+							}
+						},
+						"copy_to": [
+							"collector.ja_kana"
+						]
 					}
 				}
 			},
@@ -219,7 +237,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -275,7 +293,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -442,7 +460,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					},
 					"loc": {
@@ -573,7 +591,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -626,7 +644,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -679,7 +697,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -732,7 +750,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
@@ -785,7 +803,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.ja"
+							"collector.ja_kana"
 						]
 					}
 				}
