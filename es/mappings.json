@@ -77,6 +77,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -94,6 +97,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						}
 					},
@@ -109,6 +115,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -127,6 +136,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -145,6 +157,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -163,6 +178,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -181,6 +199,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -323,6 +344,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -341,6 +365,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -372,6 +399,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -390,6 +420,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -403,6 +436,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -421,6 +457,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -439,6 +478,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -457,6 +499,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -470,6 +515,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -483,6 +531,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -496,6 +547,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -509,6 +563,9 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_kw": {
+								"type": "keyword"
 							}
 						},
 						"copy_to": [

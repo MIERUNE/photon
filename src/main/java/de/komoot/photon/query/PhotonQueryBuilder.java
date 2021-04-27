@@ -86,6 +86,10 @@ public class PhotonQueryBuilder {
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
                         .analyzer("search_raw"))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                        .analyzer("search_raw"))
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw_kw", language), query).boost(150)
+                        .analyzer("search_raw"))
+                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_kw", language), query).boost(150)
                         .analyzer("search_raw"));
 
         // this is former general-score, now inline
