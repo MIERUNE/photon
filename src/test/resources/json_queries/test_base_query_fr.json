@@ -93,7 +93,7 @@
 											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
-											"boost": 250.0
+											"boost": 400.0
 										}
 									}
 								},
@@ -108,7 +108,7 @@
 											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
-											"boost": 150.0
+											"boost": 300.0
 										}
 									}
 								}
