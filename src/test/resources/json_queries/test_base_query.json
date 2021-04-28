@@ -54,7 +54,7 @@
 							"should": [
 								{
 									"match": {
-										"name.en.raw": {
+										"name.en.raw_text": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -69,7 +69,7 @@
 								},
 								{
 									"match": {
-										"collector.en.raw": {
+										"collector.en.raw_text": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -84,7 +84,7 @@
 								},
 								{
 									"match": {
-										"name.en.raw_kw": {
+										"name.en.raw_keyword": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -93,13 +93,13 @@
 											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
-											"boost": 150.0
+											"boost": 250.0
 										}
 									}
 								},
 								{
 									"match": {
-										"collector.en.raw_kw": {
+										"collector.en.raw_keyword": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -176,7 +176,7 @@
 						},
 						{
 							"exists": {
-								"field": "name.en.raw",
+								"field": "name.en.raw_text",
 								"boost": 1.0
 							}
 						}

@@ -83,13 +83,13 @@ public class PhotonQueryBuilder {
         }
 
         query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw_text", language), query).boost(200)
                         .analyzer("search_raw"))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_text", language), query).boost(100)
                         .analyzer("search_raw"))
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw_kw", language), query).boost(150)
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw_keyword", language), query).boost(250)
                         .analyzer("search_raw"))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_kw", language), query).boost(150)
+                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_keyword", language), query).boost(150)
                         .analyzer("search_raw"));
 
         // this is former general-score, now inline
@@ -106,7 +106,7 @@ public class PhotonQueryBuilder {
         queryBuilderForTopLevelFilter = QueryBuilders.boolQuery()
                 .should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("housenumber")))
                 .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
-                .should(QueryBuilders.existsQuery(String.format("name.%s.raw", language)));
+                .should(QueryBuilders.existsQuery(String.format("name.%s.raw_text", language)));
         // @formatter:on
 
         state = State.PLAIN;
