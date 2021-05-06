@@ -59,16 +59,16 @@ public class PhotonQueryBuilder {
         if (lenient) {
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
-                                .fuzziness(Fuzziness.ONE)
+                                .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
-                                .minimumShouldMatch("-1"))
+                                .minimumShouldMatch("80%"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(Fuzziness.ONE)
+                                .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
-                                .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
+                                .minimumShouldMatch("80%"))
+                    .minimumShouldMatch("80%");
 
             query4QueryBuilder.must(builder);
         } else {
