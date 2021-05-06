@@ -87,7 +87,7 @@
 										"name.en.raw_keyword": {
 											"query": "berlin",
 											"operator": "OR",
-											"analyzer": "search_raw",
+											"analyzer": "ja_kuromoji_search_analyzer",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,
@@ -102,7 +102,7 @@
 										"collector.en.raw_keyword": {
 											"query": "berlin",
 											"operator": "OR",
-											"analyzer": "search_raw",
+											"analyzer": "ja_kuromoji_search_analyzer",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,

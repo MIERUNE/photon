@@ -88,9 +88,9 @@ public class PhotonQueryBuilder {
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_text", language), query).boost(100)
                         .analyzer("search_raw"))
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw_keyword", language), query).boost(400)
-                        .analyzer("search_raw"))
+                        .analyzer("ja_kuromoji_search_analyzer"))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_keyword", language), query).boost(300)
-                        .analyzer("search_raw"));
+                        .analyzer("ja_kuromoji_search_analyzer"));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
