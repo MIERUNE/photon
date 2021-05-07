@@ -62,11 +62,13 @@ public class PhotonQueryBuilder {
                                 .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
+                                .fuzzyTranspositions(false).maxExpansions(1)
                                 .minimumShouldMatch("80%"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                 .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
+                                .fuzzyTranspositions(false).maxExpansions(1)
                                 .minimumShouldMatch("80%"))
                     .minimumShouldMatch("80%");
 
@@ -84,13 +86,13 @@ public class PhotonQueryBuilder {
 
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw_text", language), query).boost(200)
-                        .analyzer("search_raw"))
+                        .analyzer("search_raw").fuzzyTranspositions(false).maxExpansions(1))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_text", language), query).boost(100)
-                        .analyzer("search_raw"))
+                        .analyzer("search_raw").fuzzyTranspositions(false).maxExpansions(1))
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw_keyword", language), query).boost(400)
-                        .analyzer("ja_kuromoji_search_analyzer"))
+                        .analyzer("ja_kuromoji_search_analyzer").fuzzyTranspositions(false).maxExpansions(1))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_keyword", language), query).boost(300)
-                        .analyzer("ja_kuromoji_search_analyzer"));
+                        .analyzer("ja_kuromoji_search_analyzer").fuzzyTranspositions(false).maxExpansions(1));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
