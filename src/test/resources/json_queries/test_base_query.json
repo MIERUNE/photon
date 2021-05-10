@@ -81,6 +81,22 @@
 											"boost": 100.0
 										}
 									}
+								},
+								{
+									"term": {
+										"name.en.keyword": {
+											"value": "berlin",
+											"boost": 400.0
+										}
+									}
+								},
+								{
+									"term": {
+										"collector.en.keyword": {
+											"value": "berlin",
+											"boost": 300.0
+										}
+									}
 								}
 							],
 							"disable_coord": false,
