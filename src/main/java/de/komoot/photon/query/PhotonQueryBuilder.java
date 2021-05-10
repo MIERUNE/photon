@@ -61,13 +61,13 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery("collector.default", query)
                                 .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
-                                .analyzer("ja_kuromoji_search_analyzer")
+                                .analyzer("search_ngram")
                                 .fuzzyTranspositions(false)
                                 .minimumShouldMatch("80%"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                 .fuzziness(Fuzziness.ZERO)
                                 .prefixLength(2)
-                                .analyzer("ja_kuromoji_search_analyzer")
+                                .analyzer("search_ngram")
                                 .fuzzyTranspositions(false)
                                 .minimumShouldMatch("80%"))
                     .minimumShouldMatch("80%");
@@ -89,10 +89,8 @@ public class PhotonQueryBuilder {
                         .analyzer("search_raw").fuzzyTranspositions(false))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_text", language), query).boost(100)
                         .analyzer("search_raw").fuzzyTranspositions(false))
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw_keyword", language), query).boost(400)
-                        .analyzer("ja_kuromoji_search_analyzer").fuzzyTranspositions(false))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw_keyword", language), query).boost(300)
-                        .analyzer("ja_kuromoji_search_analyzer").fuzzyTranspositions(false));
+                .should(QueryBuilders.termQuery(String.format("name.%s.raw_keyword", language), query).boost(400))
+                .should(QueryBuilders.termQuery(String.format("collector.%s.raw_keyword", language), query).boost(300));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";

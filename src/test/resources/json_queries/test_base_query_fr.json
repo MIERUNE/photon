@@ -14,7 +14,7 @@
 													"collector.default": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "ja_kuromoji_search_analyzer",
+														"analyzer": "search_ngram",
 														"fuzziness": "0",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -31,7 +31,7 @@
 													"collector.fr.ngrams": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "ja_kuromoji_search_analyzer",
+														"analyzer": "search_ngram",
 														"fuzziness": "0",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -83,31 +83,17 @@
 									}
 								},
 								{
-									"match": {
+									"term": {
 										"name.fr.raw_keyword": {
-											"query": "berlin",
-											"operator": "OR",
-											"analyzer": "ja_kuromoji_search_analyzer",
-											"prefix_length": 0,
-											"max_expansions": 50,
-											"fuzzy_transpositions": false,
-											"lenient": false,
-											"zero_terms_query": "NONE",
+											"value": "berlin",
 											"boost": 400.0
 										}
 									}
 								},
 								{
-									"match": {
+									"term": {
 										"collector.fr.raw_keyword": {
-											"query": "berlin",
-											"operator": "OR",
-											"analyzer": "ja_kuromoji_search_analyzer",
-											"prefix_length": 0,
-											"max_expansions": 50,
-											"fuzzy_transpositions": false,
-											"lenient": false,
-											"zero_terms_query": "NONE",
+											"value": "berlin",
 											"boost": 300.0
 										}
 									}
