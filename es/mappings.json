@@ -70,9 +70,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -90,9 +87,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						}
 					},
@@ -108,9 +102,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -129,9 +120,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -150,9 +138,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -171,9 +156,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -302,9 +284,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -323,9 +302,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -356,9 +332,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -377,9 +350,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -393,9 +363,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -414,9 +381,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -435,9 +399,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -451,9 +412,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -467,9 +425,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -483,9 +438,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -499,9 +451,6 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
