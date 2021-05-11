@@ -31,7 +31,7 @@
 													"collector.ja.ngrams": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "search_ngram",
+														"analyzer": "ja_search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
