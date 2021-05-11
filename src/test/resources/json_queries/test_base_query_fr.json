@@ -83,17 +83,17 @@
 									}
 								},
 								{
-									"term": {
+									"wildcard": {
 										"name.fr.keyword": {
-											"value": "berlin",
+											"wildcard": "*berlin*",
 											"boost": 400.0
 										}
 									}
 								},
 								{
-									"term": {
+									"wildcard": {
 										"collector.fr.keyword": {
-											"value": "berlin",
+											"wildcard": "*berlin*",
 											"boost": 300.0
 										}
 									}
