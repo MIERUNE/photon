@@ -28,10 +28,10 @@
 											},
 											{
 												"match": {
-													"collector.en.ngrams": {
+													"collector.ja.ngrams": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "search_ngram",
+														"analyzer": "ja_search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -54,10 +54,10 @@
 							"should": [
 								{
 									"match": {
-										"name.en.raw": {
+										"name.ja.raw": {
 											"query": "berlin",
 											"operator": "OR",
-											"analyzer": "search_raw",
+											"analyzer": "ja_search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,
@@ -69,10 +69,10 @@
 								},
 								{
 									"match": {
-										"collector.en.raw": {
+										"collector.ja.raw": {
 											"query": "berlin",
 											"operator": "OR",
-											"analyzer": "search_raw",
+											"analyzer": "ja_search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,
@@ -84,7 +84,7 @@
 								},
 								{
 									"wildcard": {
-										"name.en.keyword": {
+										"name.ja.keyword": {
 											"wildcard": "*berlin*",
 											"boost": 400.0
 										}
@@ -92,7 +92,7 @@
 								},
 								{
 									"wildcard": {
-										"collector.en.keyword": {
+										"collector.ja.keyword": {
 											"wildcard": "*berlin*",
 											"boost": 300.0
 										}
@@ -162,7 +162,7 @@
 						},
 						{
 							"exists": {
-								"field": "name.en.raw",
+								"field": "name.ja.raw",
 								"boost": 1.0
 							}
 						}
