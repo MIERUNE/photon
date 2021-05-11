@@ -54,7 +54,7 @@
 							"should": [
 								{
 									"match": {
-										"name.fr.raw_text": {
+										"name.fr.raw": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -69,7 +69,7 @@
 								},
 								{
 									"match": {
-										"collector.fr.raw_text": {
+										"collector.fr.raw": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "search_raw",
@@ -84,7 +84,7 @@
 								},
 								{
 									"term": {
-										"name.fr.raw_keyword": {
+										"name.fr.keyword": {
 											"value": "berlin",
 											"boost": 400.0
 										}
@@ -92,9 +92,29 @@
 								},
 								{
 									"term": {
-										"collector.fr.raw_keyword": {
+										"collector.fr.keyword": {
 											"value": "berlin",
 											"boost": 300.0
+										}
+									}
+								},
+								{
+									"regexp": {
+										"collector.fr.keyword": {
+											"value": "berlin.*",
+											"flags_value": 65535,
+											"max_determinized_states": 10000,
+											"boost": 150.0
+										}
+									}
+								},
+								{
+									"regexp": {
+										"name.fr.keyword": {
+											"value": "berlin.*",
+											"flags_value": 65535,
+											"max_determinized_states": 10000,
+											"boost": 150.0
 										}
 									}
 								}
@@ -162,7 +182,7 @@
 						},
 						{
 							"exists": {
-								"field": "name.fr.raw_text",
+								"field": "name.fr.raw",
 								"boost": 1.0
 							}
 						}

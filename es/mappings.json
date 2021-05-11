@@ -74,12 +74,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -94,12 +91,9 @@
 								"analyzer": "ja_ngram_index_analyzer",
 								"search_analyzer": "ja_ngram_search_analyzer"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						}
 					},
@@ -112,12 +106,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -133,12 +124,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -154,12 +142,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -175,12 +160,9 @@
 								"analyzer": "ja_ngram_index_analyzer",
 								"search_analyzer": "ja_ngram_search_analyzer"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -196,12 +178,9 @@
 								"analyzer": "ja_ngram_index_analyzer",
 								"search_analyzer": "ja_ngram_search_analyzer"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -341,12 +320,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -362,12 +338,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -396,12 +369,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -417,12 +387,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -433,12 +400,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -454,12 +418,9 @@
 								"analyzer": "index_ngram",
 								"search_analyzer": "search_ngram"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -475,12 +436,9 @@
 								"analyzer": "ja_ngram_index_analyzer",
 								"search_analyzer": "ja_ngram_search_analyzer"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -496,12 +454,9 @@
 								"analyzer": "ja_ngram_index_analyzer",
 								"search_analyzer": "ja_ngram_search_analyzer"
 							},
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "ja_kuromoji_index_analyzer"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -512,12 +467,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -528,12 +480,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -544,12 +493,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
@@ -560,12 +506,9 @@
 						"type": "text",
 						"index": false,
 						"fields": {
-							"raw_text": {
+							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							},
-							"raw_keyword": {
-								"type": "keyword"
 							}
 						},
 						"copy_to": [
