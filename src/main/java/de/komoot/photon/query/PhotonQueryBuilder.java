@@ -82,11 +82,16 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
+        String analyzer = "search_raw";
+        String[] targets_ja = {"ja"};
+        if (Arrays.asList(targets_ja).contains(language)){
+            analyzer = "ja_search_raw";
+        }
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer("search_raw"))
+                        .analyzer(analyzer))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer("search_raw"))
+                        .analyzer(analyzer))
                 .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(400))
                 .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(300));
 

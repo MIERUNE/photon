@@ -19,6 +19,24 @@
 					"ja_hiragana_2_katakana"
 				]
 			},
+			"ja_search_raw": {
+				"type": "custom",
+				"char_filter": [
+					"ja_normalize",
+					"kuromoji_iteration_mark"
+				],
+				"tokenizer": "ja_kuromoji_tokenizer",
+				"filter": [
+					"kuromoji_baseform",
+					"kuromoji_part_of_speech",
+					"cjk_width",
+					"ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer",
+					"lowercase",
+					"ja_hiragana_2_katakana"
+				]
+			},
 			"ja_index_ngram": {
 				"type": "custom",
 				"char_filter": [
