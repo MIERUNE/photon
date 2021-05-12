@@ -88,12 +88,12 @@
 						"fields": {
 							"ngrams": {
 								"type": "text",
-								"analyzer": "ja_ngram_index_analyzer",
-								"search_analyzer": "ja_ngram_search_analyzer"
+								"analyzer": "index_ngram",
+								"search_analyzer": "search_ngram"
 							},
 							"raw": {
 								"type": "text",
-								"analyzer": "ja_kuromoji_index_analyzer"
+								"analyzer": "index_raw"
 							}
 						}
 					},
