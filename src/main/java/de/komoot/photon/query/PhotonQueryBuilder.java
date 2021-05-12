@@ -56,11 +56,17 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String[] targets_ja = {"ja"};
-        String ngram_analyzer = "search_ngram";
-        if (Arrays.asList(targets_ja).contains(language)){
-            ngram_analyzer = "ja_search_ngram";
+        String ngramAnalyzer = "search_ngram";
+        String rawAnalyzer = "search_raw";
+        switch (language){
+            case "ja":
+                ngramAnalyzer = "ja_search_ngram";
+                rawAnalyzer = "ja_search_raw";
+                break;
+            default:
+                break;
         }
+
         if (lenient) {
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
@@ -71,7 +77,7 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
-                                .analyzer(ngram_analyzer)
+                                .analyzer(ngramAnalyzer)
                                 .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
 
@@ -87,15 +93,11 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
-        String raw_analyzer = "search_raw";
-        if (Arrays.asList(targets_ja).contains(language)){
-            raw_analyzer = "ja_search_raw";
-        }
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer(raw_analyzer))
+                        .analyzer(rawAnalyzer))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer(raw_analyzer))
+                        .analyzer(rawAnalyzer))
                 .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(400))
                 .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(300));
 
