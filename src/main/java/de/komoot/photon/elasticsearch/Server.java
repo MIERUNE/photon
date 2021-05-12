@@ -49,6 +49,7 @@ public class Server {
     private File esDirectory;
 
     private final String[] languages;
+    private String[] extraTags = new String[0];
 
     private String transportAddresses;
 
@@ -64,6 +65,7 @@ public class Server {
 
     public Server(CommandLineArgs args) {
         this(args.getCluster(), args.getDataDirectory(), args.getLanguages(), args.getTransportAddresses(), args.getMaxLocalStorageNodes());
+ 
     }
 
     public Server(String clusterName, String mainDirectory, String languages, String transportAddresses, Integer maxLocalStorageNodes) {
