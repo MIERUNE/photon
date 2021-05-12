@@ -104,7 +104,7 @@
 											"value": "berlin.*",
 											"flags_value": 65535,
 											"max_determinized_states": 10000,
-											"boost": 150.0
+											"boost": 250.0
 										}
 									}
 								},
@@ -114,7 +114,7 @@
 											"value": "berlin.*",
 											"flags_value": 65535,
 											"max_determinized_states": 10000,
-											"boost": 150.0
+											"boost": 250.0
 										}
 									}
 								}
