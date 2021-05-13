@@ -81,22 +81,6 @@
 											"boost": 100.0
 										}
 									}
-								},
-								{
-									"wildcard": {
-										"name.en.keyword": {
-											"wildcard": "*berlin*",
-											"boost": 400.0
-										}
-									}
-								},
-								{
-									"wildcard": {
-										"collector.en.keyword": {
-											"wildcard": "*berlin*",
-											"boost": 300.0
-										}
-									}
 								}
 							],
 							"disable_coord": false,
