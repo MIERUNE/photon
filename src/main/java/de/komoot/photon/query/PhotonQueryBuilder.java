@@ -62,13 +62,11 @@ public class PhotonQueryBuilder {
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
-                                .fuzzyTranspositions(false)
                                 .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .analyzer("search_ngram")
-                                .fuzzyTranspositions(false)
                                 .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
 
@@ -84,15 +82,15 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
         String analyzer = "search_raw";
-        if (language == "ja"){
+        if (language == "ja" || language == "ja_kana"){
             analyzer = "ja_kuromoji_index_analyzer";
         }
 
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer(analyzer).fuzzyTranspositions(false))
+                        .analyzer(analyzer))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer(analyzer).fuzzyTranspositions(false))
+                        .analyzer(analyzer))
                 .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(400))
                 .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(300))
                 .should(QueryBuilders.regexpQuery(String.format("collector.%s.keyword", language), query+".*").boost(250))

@@ -23,7 +23,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -202,7 +203,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -258,7 +260,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -308,7 +311,8 @@
 				"analyzer": "index_housenumber",
 				"search_analyzer": "standard",
 				"copy_to": [
-					"collector.default"
+					"collector.default",
+					"collector.ja"
 				]
 			},
 			"importance": {
@@ -473,7 +477,8 @@
 							}
 						},
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"old": {
@@ -486,7 +491,8 @@
 							}
 						},
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"reg": {
@@ -499,7 +505,8 @@
 							}
 						},
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"housename": {
@@ -512,7 +519,8 @@
 							}
 						},
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					}
 				}
@@ -540,7 +548,8 @@
 				"type": "text",
 				"index": false,
 				"copy_to": [
-					"collector.default"
+					"collector.default",
+					"collector.ja"
 				]
 			},
 			"state": {
@@ -556,7 +565,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -609,7 +619,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -662,7 +673,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -715,7 +727,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {
@@ -768,7 +781,8 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default"
+							"collector.default",
+							"collector.ja"
 						]
 					},
 					"en": {

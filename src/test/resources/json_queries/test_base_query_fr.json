@@ -19,7 +19,7 @@
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
+														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0
@@ -36,7 +36,7 @@
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
+														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0
@@ -60,7 +60,7 @@
 											"analyzer": "search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
-											"fuzzy_transpositions": false,
+											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
 											"boost": 200.0
@@ -75,7 +75,7 @@
 											"analyzer": "search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
-											"fuzzy_transpositions": false,
+											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
 											"boost": 100.0
