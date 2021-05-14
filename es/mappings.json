@@ -86,6 +86,7 @@
 					},
 					"default": {
 						"type": "text",
+						"analyzer": "index_ngram",
 						"fields": {
 							"ngrams": {
 								"type": "text",
