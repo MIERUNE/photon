@@ -81,42 +81,6 @@
 											"boost": 100.0
 										}
 									}
-								},
-								{
-									"term": {
-										"name.en.keyword": {
-											"value": "berlin",
-											"boost": 400.0
-										}
-									}
-								},
-								{
-									"term": {
-										"collector.en.keyword": {
-											"value": "berlin",
-											"boost": 300.0
-										}
-									}
-								},
-								{
-									"regexp": {
-										"collector.en.keyword": {
-											"value": "berlin.*",
-											"flags_value": 65535,
-											"max_determinized_states": 10000,
-											"boost": 250.0
-										}
-									}
-								},
-								{
-									"regexp": {
-										"name.en.keyword": {
-											"value": "berlin.*",
-											"flags_value": 65535,
-											"max_determinized_states": 10000,
-											"boost": 250.0
-										}
-									}
 								}
 							],
 							"disable_coord": false,

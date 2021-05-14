@@ -84,9 +84,7 @@ public class PhotonQueryBuilder {
         String analyzer = "search_raw";
         if (language == "ja" || language == "ja_kana"){
             analyzer = "ja_kuromoji_index_analyzer";
-        }
-
-        query4QueryBuilder
+            query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
                         .analyzer(analyzer))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
@@ -95,6 +93,16 @@ public class PhotonQueryBuilder {
                 .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(300))
                 .should(QueryBuilders.regexpQuery(String.format("collector.%s.keyword", language), query+".*").boost(250))
                 .should(QueryBuilders.regexpQuery(String.format("name.%s.keyword", language), query+".*").boost(250));
+
+        }
+        else{
+            query4QueryBuilder
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+                        .analyzer(analyzer))
+                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                        .analyzer(analyzer));
+
+        }
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
