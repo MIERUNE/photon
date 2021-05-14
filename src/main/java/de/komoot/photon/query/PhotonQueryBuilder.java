@@ -87,7 +87,13 @@ public class PhotonQueryBuilder {
                     QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("default_search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                switch (language) {
+                    case "ja":
+                        continue;
+                    default:
+                        builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                        break;
+                }
             }
 
             query4QueryBuilder.must(builder);
