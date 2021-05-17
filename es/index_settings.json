@@ -7,7 +7,7 @@
 					"punctuationgreedy",
 					"ja_normalize"
 				],
-				"tokenizer": "default_kuromoji_tokenizer",
+				"tokenizer": "ja_kuromoji_tokenizer",
 				"filter": [
 					"word_delimiter",
 					"lowercase",
@@ -182,13 +182,6 @@
 				"token_chars": [
 					"letter",
 					"digit"
-				]
-			},
-			"default_kuromoji_tokenizer": {
-				"mode": "normal",
-				"type": "kuromoji_tokenizer",
-				"discard_compound_token": true,
-				"user_dictionary_rules": [
 				]
 			},
 			"ja_kuromoji_tokenizer": {
