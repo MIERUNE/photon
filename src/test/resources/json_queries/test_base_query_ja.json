@@ -86,7 +86,7 @@
 									"wildcard": {
 										"name.ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 400.0
+											"boost": 75.0
 										}
 									}
 								},
@@ -94,7 +94,7 @@
 									"wildcard": {
 										"collector.ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 300.0
+											"boost": 50.0
 										}
 									}
 								}
