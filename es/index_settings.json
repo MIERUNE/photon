@@ -1,56 +1,6 @@
 {
 	"analysis": {
 		"analyzer": {
-			"default_index_raw": {
-				"type": "custom",
-				"char_filter": [
-					"punctuationgreedy",
-					"ja_normalize"
-				],
-				"tokenizer": "default_kuromoji_tokenizer",
-				"filter": [
-					"word_delimiter",
-					"lowercase",
-					"german_normalization",
-					"asciifolding",
-					"unique",
-					"kuromoji_baseform",
-					"kuromoji_part_of_speech",
-					"cjk_width",
-					"ja_stop",
-					"kuromoji_number",
-					"kuromoji_stemmer"
-				]
-			},
-			"default_index_ngram": {
-				"type": "custom",
-				"char_filter": [
-					"punctuationgreedy",
-					"remove_ws_hnr_suffix",
-					"ja_normalize"
-				],
-				"tokenizer": "edge_ngram",
-				"filter": [
-					"preserving_word_delimiter",
-					"lowercase",
-					"german_normalization",
-					"asciifolding",
-					"unique"
-				]
-			},
-			"default_search_ngram": {
-				"type": "custom",
-				"char_filter": [
-					"punctuationgreedy",
-					"ja_normalize"
-				],
-				"tokenizer": "edge_ngram",
-				"filter": [
-					"lowercase",
-					"german_normalization",
-					"asciifolding"
-				]
-			},
 			"ja_index_raw": {
 				"type": "custom",
 				"char_filter": [
@@ -182,13 +132,6 @@
 				"token_chars": [
 					"letter",
 					"digit"
-				]
-			},
-			"default_kuromoji_tokenizer": {
-				"mode": "normal",
-				"type": "kuromoji_tokenizer",
-				"discard_compound_token": true,
-				"user_dictionary_rules": [
 				]
 			},
 			"ja_kuromoji_tokenizer": {
