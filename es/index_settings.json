@@ -1,7 +1,7 @@
 {
 	"analysis": {
 		"analyzer": {
-			"default_index_raw": {
+			"ja_default_index_raw": {
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",
@@ -22,14 +22,14 @@
 					"kuromoji_stemmer"
 				]
 			},
-			"default_index_ngram": {
+			"ja_default_index_ngram": {
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",
 					"remove_ws_hnr_suffix",
 					"ja_normalize"
 				],
-				"tokenizer": "edge_ngram",
+				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"preserving_word_delimiter",
 					"lowercase",
@@ -38,7 +38,7 @@
 					"unique"
 				]
 			},
-			"default_search_ngram": {
+			"ja_default_search_ngram": {
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",

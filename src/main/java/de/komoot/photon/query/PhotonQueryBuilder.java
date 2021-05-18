@@ -56,10 +56,14 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
+        String defaultCollector = "collector.default";
+        String defaultNgramAnalyzer = "search_ngram";
         String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
         switch (language){
             case "ja":
+                defaultCollector = "collector.default.ja";
+                defaultNgramAnalyzer = "ja_default_search_ngram";
                 ngramAnalyzer = "ja_search_ngram";
                 rawAnalyzer = "ja_search_raw";
                 break;
@@ -69,10 +73,10 @@ public class PhotonQueryBuilder {
 
         if (lenient) {
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default", query)
+                    .should(QueryBuilders.matchQuery(defaultCollector, query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
-                                .analyzer("default_search_ngram")
+                                .analyzer(defaultNgramAnalyzer)
                                 .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                 .fuzziness(Fuzziness.ONE)
@@ -84,7 +88,7 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("default_search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
