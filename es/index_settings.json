@@ -44,7 +44,7 @@
 					"punctuationgreedy",
 					"ja_normalize"
 				],
-				"tokenizer": "edge_ngram",
+				"tokenizer": "ja_ngram_tokenizer",
 				"filter": [
 					"lowercase",
 					"german_normalization",
