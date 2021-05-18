@@ -61,7 +61,7 @@ public class PhotonQueryBuilder {
             switch (language) {
                 case "ja":
                     builder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("collector.default.ja", query)
+                            .should(QueryBuilders.matchQuery("collector.default_ja", query)
                                     .fuzziness(Fuzziness.ONE)
                                     .prefixLength(2)
                                     .analyzer("ja_default_search_ngram")

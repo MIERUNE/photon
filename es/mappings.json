@@ -24,7 +24,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -87,7 +87,7 @@
 							}
 						}
 					},
-					"default.ja": {
+					"default_ja": {
 						"type": "text",
 						"index": false,
 						"fields": {
@@ -190,7 +190,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -240,7 +240,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -284,7 +284,7 @@
 				"search_analyzer": "standard",
 				"copy_to": [
 					"collector.default",
-					"collector.default.ja"
+					"collector.default_ja"
 				]
 			},
 			"importance": {
@@ -303,7 +303,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"de": {
@@ -329,7 +329,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja",
+							"collector.default_ja",
 							"name.en",
 							"name.de",
 							"name.fr",
@@ -384,7 +384,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"it": {
@@ -434,7 +434,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"old": {
@@ -448,7 +448,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"reg": {
@@ -462,7 +462,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"housename": {
@@ -476,7 +476,7 @@
 						},
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					}
 				}
@@ -505,7 +505,7 @@
 				"index": false,
 				"copy_to": [
 					"collector.default",
-					"collector.default.ja"
+					"collector.default_ja"
 				]
 			},
 			"state": {
@@ -522,7 +522,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -569,7 +569,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -616,7 +616,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -663,7 +663,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
@@ -710,7 +710,7 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default.ja"
+							"collector.default_ja"
 						]
 					},
 					"en": {
