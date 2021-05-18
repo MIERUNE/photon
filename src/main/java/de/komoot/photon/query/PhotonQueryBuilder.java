@@ -56,15 +56,10 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String defaultCollector = "collector.default";
-        String defaultNgramAnalyzer = "search_ngram";
         String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
         switch (language){
-            // please add language code if you want to use different index from default
             case "ja":
-                defaultCollector = String.format("collector.default_%s.ngrams", language);
-                defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
                 ngramAnalyzer = String.format("%s_search_ngram", language);
                 rawAnalyzer = String.format("%s_search_raw", language);
                 break;
@@ -73,11 +68,12 @@ public class PhotonQueryBuilder {
         }
 
         if (lenient) {
+
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery(defaultCollector, query)
+                    .should(QueryBuilders.matchQuery("collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer(defaultNgramAnalyzer)
+                            .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
@@ -85,6 +81,20 @@ public class PhotonQueryBuilder {
                             .analyzer(ngramAnalyzer)
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
+
+            switch (language){
+                // please add language code if you want to use different index from default
+                case "ja":
+                    builder = builder.should(QueryBuilders.matchQuery(String.format("collector.default_%s.ngrams", language), query)
+                        .fuzziness(Fuzziness.ONE)
+                        .prefixLength(2)
+                        .analyzer(String.format("%s_default_search_ngram", language))
+                        .minimumShouldMatch("-1"));
+                    break;
+                default:
+                    break;
+            }
+            builder = builder.minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
