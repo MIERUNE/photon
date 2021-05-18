@@ -56,58 +56,46 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
+        String defaultCollector = "collector.default";
+        String defaultNgramAnalyzer = "search_ngram";
+        String ngramAnalyzer = "search_ngram";
+        String rawAnalyzer = "search_raw";
+        switch (language){
+            // please add language code if you want to use different index from default
+            case "ja":
+                defaultCollector = String.format("collector.default_%s", language);
+                defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
+                ngramAnalyzer = String.format("%s_search_ngram", language);
+                rawAnalyzer = String.format("%s_search_raw", language);
+                break;
+            default:
+                break;
+        }
+
         if (lenient) {
-            BoolQueryBuilder builder;
-            switch (language) {
-                case "ja":
-                    builder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("collector.default_ja", query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .analyzer("ja_default_search_ngram")
-                                    .minimumShouldMatch("-1"))
-                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .analyzer("ja_search_ngram")
-                                    .minimumShouldMatch("-1"))
-                            .minimumShouldMatch("1");
-                    break;
-                default:
-                    builder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("collector.default", query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .analyzer("search_ngram")
-                                    .minimumShouldMatch("-1"))
-                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .analyzer("search_ngram")
-                                    .minimumShouldMatch("-1"))
-                            .minimumShouldMatch("1");
-                    break;
-            }
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery(defaultCollector, query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .analyzer(defaultNgramAnalyzer)
+                            .minimumShouldMatch("-1"))
+                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .analyzer(ngramAnalyzer)
+                            .minimumShouldMatch("-1"))
+                    .minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(ngramAnalyzer).minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             query4QueryBuilder.must(builder);
-        }
-
-        String rawAnalyzer = "search_raw";
-        switch (language){
-            case "ja":
-                rawAnalyzer = "ja_search_raw";
-                break;
-            default:
-                break;
         }
 
         query4QueryBuilder
