@@ -63,7 +63,7 @@ public class PhotonQueryBuilder {
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
-                defaultCollector = String.format("collector.default_%s", language);
+                defaultCollector = String.format("collector.default_%s.ngrams", language);
                 defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
                 ngramAnalyzer = String.format("%s_search_ngram", language);
                 rawAnalyzer = String.format("%s_search_raw", language);
