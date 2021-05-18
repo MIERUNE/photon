@@ -117,6 +117,8 @@ public class PhotonQueryBuilder {
         switch (language){
             case "ja":
                 query4QueryBuilder
+                        .should(QueryBuilders.wildcardQuery("name.default.keyword", String.format("*%s*", query)).boost(400))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.default_%s.keyword", language), String.format("*%s*", query)).boost(300))
                         .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(400))
                         .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(300));
                 break;

@@ -101,6 +101,22 @@
 								},
 								{
 									"wildcard": {
+										"name.default.keyword": {
+											"wildcard": "*berlin*",
+											"boost": 400.0
+										}
+									}
+								},
+								{
+									"wildcard": {
+										"collector.default_ja.keyword": {
+											"wildcard": "*berlin*",
+											"boost": 300.0
+										}
+									}
+								},
+								{
+									"wildcard": {
 										"name.ja.keyword": {
 											"wildcard": "*berlin*",
 											"boost": 400.0
