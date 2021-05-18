@@ -73,12 +73,7 @@ public class PhotonQueryBuilder {
             switch (language) {
                 case "ja":
                     builder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("collector.default.ngrams", query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .analyzer("search_ngram")
-                                    .minimumShouldMatch("-1"))
-                            .should(QueryBuilders.matchQuery(String.format("collector.default.ja_ngrams", language), query)
+                            .should(QueryBuilders.matchQuery("collector.default.ja_ngrams", query)
                                     .fuzziness(Fuzziness.ONE)
                                     .prefixLength(2)
                                     .analyzer(ngramAnalyzer)

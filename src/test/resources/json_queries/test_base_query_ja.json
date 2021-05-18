@@ -11,23 +11,6 @@
 										"should": [
 											{
 												"match": {
-													"collector.default.ngrams": {
-														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
 													"collector.default.ja_ngrams": {
 														"query": "berlin",
 														"operator": "OR",
