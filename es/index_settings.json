@@ -29,7 +29,7 @@
 					"remove_ws_hnr_suffix",
 					"ja_normalize"
 				],
-				"tokenizer": "ja_ngram_tokenizer",
+				"tokenizer": "edge_ngram",
 				"filter": [
 					"preserving_word_delimiter",
 					"lowercase",
@@ -44,7 +44,7 @@
 					"punctuationgreedy",
 					"ja_normalize"
 				],
-				"tokenizer": "ja_ngram_tokenizer",
+				"tokenizer": "edge_ngram",
 				"filter": [
 					"lowercase",
 					"german_normalization",
