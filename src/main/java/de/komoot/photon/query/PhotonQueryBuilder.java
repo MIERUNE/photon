@@ -68,34 +68,45 @@ public class PhotonQueryBuilder {
         }
 
         if (lenient) {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default.ngrams", query)
-                            .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
-                            .analyzer("search_ngram")
-                            .minimumShouldMatch("-1"));
+            BoolQueryBuilder builder;
 
-            switch (language){
+            switch (language) {
                 case "ja":
-                    builder = builder
+                    builder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("collector.default.ngrams", query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("search_ngram")
+                                    .minimumShouldMatch("-1"))
                             .should(QueryBuilders.matchQuery(String.format("collector.default.ja_ngrams", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer(ngramAnalyzer)
+                                    .fuzzyTranspositions(false)
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer(ngramAnalyzer)
+                                    .fuzzyTranspositions(false)
+                                    .minimumShouldMatch("-1"))
+                            .minimumShouldMatch("1");
+                    break;
+                default:
+                    builder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("collector.default.ngrams", query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("search_ngram")
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                                     .fuzziness(Fuzziness.ONE)
                                     .prefixLength(2)
                                     .analyzer(ngramAnalyzer)
                                     .minimumShouldMatch("-1"))
                             .minimumShouldMatch("1");
                     break;
-                default:
-                    break;
             }
-
-            builder = builder
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer(ngramAnalyzer)
-                                .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
