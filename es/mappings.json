@@ -89,8 +89,13 @@
 					},
 					"default.ja": {
 						"type": "text",
-						"analyzer": "ja_default_index_ngram",
+						"index": false,
 						"fields": {
+							"ngrams": {
+								"type": "text",
+								"analyzer": "ja_default_index_ngram",
+								"search_analyzer": "ja_default_search_ngram"
+							},
 							"raw": {
 								"type": "text",
 								"analyzer": "ja_default_index_raw"

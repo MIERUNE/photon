@@ -56,34 +56,38 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String defaultCollector = "collector.default";
-        String defaultNgramAnalyzer = "search_ngram";
-        String ngramAnalyzer = "search_ngram";
-        String rawAnalyzer = "search_raw";
-        switch (language){
-            case "ja":
-                defaultCollector = "collector.default.ja";
-                defaultNgramAnalyzer = "ja_default_search_ngram";
-                ngramAnalyzer = "ja_search_ngram";
-                rawAnalyzer = "ja_search_raw";
-                break;
-            default:
-                break;
-        }
-
         if (lenient) {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery(defaultCollector, query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer(defaultNgramAnalyzer)
-                                .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer(ngramAnalyzer)
-                                .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
+            BoolQueryBuilder builder;
+            switch (language) {
+                case "ja":
+                    builder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("collector.default.ja", query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("ja_default_search_ngram")
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("ja_search_ngram")
+                                    .minimumShouldMatch("-1"))
+                            .minimumShouldMatch("1");
+                    break;
+                default:
+                    builder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("collector.default", query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("search_ngram")
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .analyzer("search_ngram")
+                                    .minimumShouldMatch("-1"))
+                            .minimumShouldMatch("1");
+                    break;
+            }
 
             query4QueryBuilder.must(builder);
         } else {
@@ -95,6 +99,15 @@ public class PhotonQueryBuilder {
             }
 
             query4QueryBuilder.must(builder);
+        }
+
+        String rawAnalyzer = "search_raw";
+        switch (language){
+            case "ja":
+                rawAnalyzer = "ja_search_raw";
+                break;
+            default:
+                break;
         }
 
         query4QueryBuilder
