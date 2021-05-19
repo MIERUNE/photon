@@ -74,19 +74,18 @@ public class PhotonQueryBuilder {
             switch (language){
                 // please add language code if you want to use different index from default
                 case "ja":
-                    builder = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(String.format("collector.default_%s.ngrams", language), query)
+                    builder = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(String.format("collector.default_%s", language), query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
                         .analyzer(String.format("%s_default_search_ngram", language))
                         .minimumShouldMatch("-1"));
                     break;
                 default:
-                    builder = QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery("collector.default", query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer("search_ngram")
-                                .minimumShouldMatch("-1"));
+                    builder = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("collector.default", query)
+                        .fuzziness(Fuzziness.ONE)
+                        .prefixLength(2)
+                        .analyzer("search_ngram")
+                        .minimumShouldMatch("-1"));
                     break;
             }
             builder = builder
