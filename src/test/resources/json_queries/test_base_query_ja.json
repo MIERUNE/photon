@@ -84,9 +84,17 @@
 								},
 								{
 									"term": {
+										"collector.default_ja.keyword": {
+											"value": "berlin",
+											"boost": 300.0
+										}
+									}
+								},
+								{
+									"term": {
 										"name.ja.keyword": {
 											"value": "berlin",
-											"boost": 400.0
+											"boost": 300.0
 										}
 									}
 								},
@@ -95,6 +103,14 @@
 										"collector.ja.keyword": {
 											"value": "berlin",
 											"boost": 300.0
+										}
+									}
+								},
+								{
+									"wildcard": {
+										"collector.default_ja.keyword": {
+											"wildcard": "*berlin*",
+											"boost": 250.0
 										}
 									}
 								},
