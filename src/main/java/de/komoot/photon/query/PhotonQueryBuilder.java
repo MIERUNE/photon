@@ -92,12 +92,7 @@ public class PhotonQueryBuilder {
             MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
 
-            String[] excludesLang = { "ja" };
             for (String lang : languages) {
-                if(!Arrays.asList(excludesLang).contains(lang)){
-                    // exclude other language for particular multibyte languages
-                    continue;
-                }
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
