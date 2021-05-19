@@ -11,10 +11,10 @@
 										"should": [
 											{
 												"match": {
-													"collector.default": {
+													"collector.default_ja": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "default_search_ngram",
+														"analyzer": "ja_default_search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -83,10 +83,42 @@
 									}
 								},
 								{
+									"term": {
+										"collector.default_ja.keyword": {
+											"value": "berlin",
+											"boost": 150.0
+										}
+									}
+								},
+								{
+									"term": {
+										"name.ja.keyword": {
+											"value": "berlin",
+											"boost": 250.0
+										}
+									}
+								},
+								{
+									"term": {
+										"collector.ja.keyword": {
+											"value": "berlin",
+											"boost": 150.0
+										}
+									}
+								},
+								{
+									"wildcard": {
+										"collector.default_ja.keyword": {
+											"wildcard": "*berlin*",
+											"boost": 125.0
+										}
+									}
+								},
+								{
 									"wildcard": {
 										"name.ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 400.0
+											"boost": 225.0
 										}
 									}
 								},
@@ -94,7 +126,7 @@
 									"wildcard": {
 										"collector.ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 300.0
+											"boost": 125.0
 										}
 									}
 								}
