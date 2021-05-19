@@ -58,10 +58,15 @@ public class PhotonQueryBuilder {
 
         String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
+        String defaultCollector = "collector.default";
+        String defaultNgramAnalyzer = "search_ngram";
         switch (language){
+            // please add language code if you want to use different index from default
             case "ja":
                 ngramAnalyzer = String.format("%s_search_ngram", language);
                 rawAnalyzer = String.format("%s_search_raw", language);
+                defaultCollector = String.format("collector.default_%s", language);
+                defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
                 break;
             default:
                 break;
@@ -69,26 +74,12 @@ public class PhotonQueryBuilder {
 
         if (lenient) {
 
-            BoolQueryBuilder builder;
-
-            switch (language){
-                // please add language code if you want to use different index from default
-                case "ja":
-                    builder = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(String.format("collector.default_%s", language), query)
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery(defaultCollector, query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
-                        .analyzer(String.format("%s_default_search_ngram", language))
-                        .minimumShouldMatch("-1"));
-                    break;
-                default:
-                    builder = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("collector.default", query)
-                        .fuzziness(Fuzziness.ONE)
-                        .prefixLength(2)
-                        .analyzer("search_ngram")
-                        .minimumShouldMatch("-1"));
-                    break;
-            }
-            builder = builder
+                        .analyzer(defaultNgramAnalyzer)
+                        .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
@@ -99,7 +90,7 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -117,9 +108,10 @@ public class PhotonQueryBuilder {
         switch (language){
             case "ja":
                 query4QueryBuilder
-                        .should(QueryBuilders.wildcardQuery(String.format("collector.default_%s.keyword", language), String.format("*%s*", query)).boost(300))
-                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(400))
-                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(300));
+                        .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(400))
+                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(300))
+                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(250))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(250));
                 break;
             default:
                 break;
