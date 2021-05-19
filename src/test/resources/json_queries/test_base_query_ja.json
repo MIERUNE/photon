@@ -86,7 +86,7 @@
 									"term": {
 										"collector.default_ja.keyword": {
 											"value": "berlin",
-											"boost": 300.0
+											"boost": 150.0
 										}
 									}
 								},
@@ -94,7 +94,7 @@
 									"term": {
 										"name.ja.keyword": {
 											"value": "berlin",
-											"boost": 300.0
+											"boost": 250.0
 										}
 									}
 								},
@@ -102,7 +102,7 @@
 									"term": {
 										"collector.ja.keyword": {
 											"value": "berlin",
-											"boost": 300.0
+											"boost": 150.0
 										}
 									}
 								},
@@ -110,7 +110,7 @@
 									"wildcard": {
 										"collector.default_ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 250.0
+											"boost": 150.0
 										}
 									}
 								},
@@ -126,7 +126,7 @@
 									"wildcard": {
 										"collector.ja.keyword": {
 											"wildcard": "*berlin*",
-											"boost": 250.0
+											"boost": 150.0
 										}
 									}
 								}
