@@ -60,6 +60,8 @@ public class PhotonQueryBuilder {
         String rawAnalyzer = "search_raw";
         String defaultCollector = "collector.default";
         String defaultNgramAnalyzer = "search_ngram";
+        String multiMatchAnalyzer = "search_ngram";
+        String multiMatchCollector = "ngrams";
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
@@ -67,6 +69,8 @@ public class PhotonQueryBuilder {
                 rawAnalyzer = String.format("%s_search_raw", language);
                 defaultCollector = String.format("collector.default_%s", language);
                 defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
+                multiMatchAnalyzer = String.format("%s_search_raw", language);
+                multiMatchCollector = "raw";
                 break;
             default:
                 break;
@@ -90,10 +94,10 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(multiMatchAnalyzer).minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builder.field(String.format("collector.%s.%s", lang, multiMatchCollector), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             query4QueryBuilder.must(builder);
