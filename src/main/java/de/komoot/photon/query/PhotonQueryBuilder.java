@@ -58,33 +58,39 @@ public class PhotonQueryBuilder {
 
         String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
+        String defaultCollector = "collector.default";
+        String defaultNgramAnalyzer = "search_ngram";
         switch (language){
+            // please add language code if you want to use different index from default
             case "ja":
-                ngramAnalyzer = "ja_search_ngram";
-                rawAnalyzer = "ja_search_raw";
+                ngramAnalyzer = String.format("%s_search_ngram", language);
+                rawAnalyzer = String.format("%s_search_raw", language);
+                defaultCollector = String.format("collector.default_%s", language);
+                defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
                 break;
             default:
                 break;
         }
 
         if (lenient) {
+
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default", query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer("default_search_ngram")
-                                .minimumShouldMatch("-1"))
+                    .should(QueryBuilders.matchQuery(defaultCollector, query)
+                        .fuzziness(Fuzziness.ONE)
+                        .prefixLength(2)
+                        .analyzer(defaultNgramAnalyzer)
+                        .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .analyzer(ngramAnalyzer)
-                                .minimumShouldMatch("-1"))
+                        .fuzziness(Fuzziness.ONE)
+                        .prefixLength(2)
+                        .analyzer(ngramAnalyzer)
+                        .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("default_search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -98,6 +104,20 @@ public class PhotonQueryBuilder {
                         .analyzer(rawAnalyzer))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
                         .analyzer(rawAnalyzer));
+
+        switch (language){
+            case "ja":
+                query4QueryBuilder
+                        .should(QueryBuilders.termQuery(String.format("%s.keyword", defaultCollector), query).boost(150))
+                        .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(250))
+                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(150))
+                        .should(QueryBuilders.wildcardQuery(String.format("%s.keyword", defaultCollector), String.format("*%s*", query)).boost(125))
+                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(225))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(125));
+                break;
+            default:
+                break;
+        }
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
