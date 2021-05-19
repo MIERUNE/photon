@@ -94,7 +94,7 @@ public class PhotonQueryBuilder {
 
             String[] excludesLang = { "ja" };
             for (String lang : languages) {
-                if(!Arrays.asList(excludesLang).contains(language)){
+                if(!Arrays.asList(excludesLang).contains(lang)){
                     // exclude other language for particular multibyte languages
                     continue;
                 }
