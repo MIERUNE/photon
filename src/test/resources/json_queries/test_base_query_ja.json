@@ -14,7 +14,7 @@
 													"collector.default_ja": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "ja_default_search_ngram",
+														"analyzer": "ja_search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,

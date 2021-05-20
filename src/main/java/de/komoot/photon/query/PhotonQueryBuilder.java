@@ -59,14 +59,12 @@ public class PhotonQueryBuilder {
         String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
         String defaultCollector = "collector.default";
-        String defaultNgramAnalyzer = "search_ngram";
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
                 ngramAnalyzer = String.format("%s_search_ngram", language);
                 rawAnalyzer = String.format("%s_search_raw", language);
                 defaultCollector = String.format("collector.default_%s", language);
-                defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
                 break;
             default:
                 break;
@@ -78,7 +76,7 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery(defaultCollector, query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
-                        .analyzer(defaultNgramAnalyzer)
+                        .analyzer(ngramAnalyzer)
                         .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                         .fuzziness(Fuzziness.ONE)
@@ -90,7 +88,7 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(ngramAnalyzer).minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
