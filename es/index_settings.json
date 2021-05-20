@@ -54,7 +54,7 @@
 					"ja_normalize",
 					"kuromoji_iteration_mark"
 				],
-				"tokenizer": "ja_ngram_tokenizer",
+				"tokenizer": "edge_ngram",
 				"filter": [
 					"preserving_word_delimiter",
 					"lowercase",
@@ -71,7 +71,7 @@
 					"ja_normalize",
 					"kuromoji_iteration_mark"
 				],
-				"tokenizer": "ja_ngram_tokenizer",
+				"tokenizer": "edge_ngram",
 				"filter": [
 					"lowercase",
 					"german_normalization",
