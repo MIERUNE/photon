@@ -151,25 +151,33 @@
 							}
 						},
 						{
-							"wildcard": {
-								"collector.default_ja.keyword": {
-									"wildcard": "*berlin*",
+							"term": {
+								"name.default.keyword": {
+									"value": "berlin",
 									"boost": 1.0
 								}
 							}
 						},
 						{
-							"wildcard": {
+							"term": {
+								"collector.default.keyword": {
+									"value": "berlin",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"term": {
 								"name.ja.keyword": {
-									"wildcard": "*berlin*",
+									"value": "berlin",
 									"boost": 1.0
 								}
 							}
 						},
 						{
-							"wildcard": {
+							"term": {
 								"collector.ja.keyword": {
-									"wildcard": "*berlin*",
+									"value": "berlin",
 									"boost": 1.0
 								}
 							}

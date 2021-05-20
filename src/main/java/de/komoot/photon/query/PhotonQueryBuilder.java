@@ -124,9 +124,10 @@ public class PhotonQueryBuilder {
         switch (language){
             case "ja":
                 queryBuilderForTopLevelFilter
-                        .should(QueryBuilders.wildcardQuery(String.format("%s.keyword", defaultCollector), String.format("*%s*", query)))
-                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)))
-                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)));
+                        .should(QueryBuilders.termQuery(String.format("name.default.keyword", language), query))
+                        .should(QueryBuilders.termQuery(String.format("collector.default.keyword", language), query))
+                        .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query))
+                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query));
                 break;
             default:
                 break;
