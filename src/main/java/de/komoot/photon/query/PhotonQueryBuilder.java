@@ -105,20 +105,6 @@ public class PhotonQueryBuilder {
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
                         .analyzer(rawAnalyzer));
 
-        switch (language){
-            case "ja":
-                query4QueryBuilder
-                        .should(QueryBuilders.termQuery(String.format("%s.keyword", defaultCollector), query).boost(150))
-                        .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(250))
-                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query).boost(150))
-                        .should(QueryBuilders.wildcardQuery(String.format("%s.keyword", defaultCollector), String.format("*%s*", query)).boost(125))
-                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(225))
-                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)).boost(125));
-                break;
-            default:
-                break;
-        }
-
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
         ScriptScoreFunctionBuilder functionBuilder4QueryBuilder =
