@@ -120,6 +120,18 @@ public class PhotonQueryBuilder {
                 .should(QueryBuilders.boolQuery().mustNot(QueryBuilders.existsQuery("housenumber")))
                 .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
                 .should(QueryBuilders.existsQuery(String.format("name.%s.raw", language)));
+
+        switch (language){
+            case "ja":
+                queryBuilderForTopLevelFilter
+                        .should(QueryBuilders.wildcardQuery(String.format("%s.keyword", defaultCollector), String.format("*%s*", query)))
+                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)));
+                break;
+            default:
+                break;
+        }
+
         // @formatter:on
 
         state = State.PLAIN;

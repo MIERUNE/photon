@@ -149,6 +149,30 @@
 								"field": "name.ja.raw",
 								"boost": 1.0
 							}
+						},
+						{
+							"wildcard": {
+								"collector.default_ja.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"wildcard": {
+								"name.ja.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"wildcard": {
+								"collector.ja.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
 						}
 					],
 					"disable_coord": false,
