@@ -95,23 +95,28 @@ public class PhotonQueryBuilder {
             MultiMatchQueryBuilder builderCrossField =
                     QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
-            MultiMatchQueryBuilder builderJapaneseField = null;
+            MultiMatchQueryBuilder builderJapaneseNgramField = null;
+            MultiMatchQueryBuilder builderJapaneseRawField = null;
 
             String[] japaneseLanguages = { "ja" };
             for (String lang : languages) {
                 if (Arrays.asList(japaneseLanguages).contains((lang))){
-                    if (builderJapaneseField == null){
-                        builderJapaneseField = QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_ngram").minimumShouldMatch("100%");
+                    if (builderJapaneseNgramField == null){
+                        builderJapaneseNgramField = QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_ngram").minimumShouldMatch("100%");
+                        builderJapaneseRawField = QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_raw").minimumShouldMatch("100%");
                     }
-                    builderJapaneseField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                    builderJapaneseNgramField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                    builderJapaneseRawField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
                 }else{
                     builderCrossField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
                 }
             }
             builder = builder.should(builderCrossField);
 
-            if (builderJapaneseField != null){
-                builder = builder.should(builderJapaneseField);
+            if (Arrays.asList(languages).contains("ja")){
+                builder = builder
+                        .should(builderJapaneseNgramField)
+                        .should(builderJapaneseRawField);
             }
 
             query4QueryBuilder.must(builder);
