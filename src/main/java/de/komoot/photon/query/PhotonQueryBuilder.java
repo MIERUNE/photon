@@ -127,7 +127,11 @@ public class PhotonQueryBuilder {
                         .should(QueryBuilders.termQuery(String.format("name.default.keyword", language), query))
                         .should(QueryBuilders.termQuery(String.format("collector.default.keyword", language), query))
                         .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query))
-                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query));
+                        .should(QueryBuilders.termQuery(String.format("collector.%s.keyword", language), query))
+                        .should(QueryBuilders.wildcardQuery(String.format("name.default.keyword", language), String.format("*%s*", query)))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.default.keyword", language), String.format("*%s*", query)))
+                        .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)))
+                        .should(QueryBuilders.wildcardQuery(String.format("collector.%s.keyword", language), String.format("*%s*", query)));
                 break;
             default:
                 break;

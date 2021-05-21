@@ -181,6 +181,38 @@
 									"boost": 1.0
 								}
 							}
+						},
+						{
+							"wildcard": {
+								"name.default.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"wildcard": {
+								"collector.default.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"wildcard": {
+								"name.ja.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
+						},
+						{
+							"wildcard": {
+								"collector.ja.keyword": {
+									"wildcard": "*berlin*",
+									"boost": 1.0
+								}
+							}
 						}
 					],
 					"disable_coord": false,
