@@ -81,54 +81,6 @@
 											"boost": 100.0
 										}
 									}
-								},
-								{
-									"term": {
-										"collector.default_ja.keyword": {
-											"value": "berlin",
-											"boost": 150.0
-										}
-									}
-								},
-								{
-									"term": {
-										"name.ja.keyword": {
-											"value": "berlin",
-											"boost": 250.0
-										}
-									}
-								},
-								{
-									"term": {
-										"collector.ja.keyword": {
-											"value": "berlin",
-											"boost": 150.0
-										}
-									}
-								},
-								{
-									"wildcard": {
-										"collector.default_ja.keyword": {
-											"wildcard": "*berlin*",
-											"boost": 125.0
-										}
-									}
-								},
-								{
-									"wildcard": {
-										"name.ja.keyword": {
-											"wildcard": "*berlin*",
-											"boost": 225.0
-										}
-									}
-								},
-								{
-									"wildcard": {
-										"collector.ja.keyword": {
-											"wildcard": "*berlin*",
-											"boost": 125.0
-										}
-									}
 								}
 							],
 							"disable_coord": false,
