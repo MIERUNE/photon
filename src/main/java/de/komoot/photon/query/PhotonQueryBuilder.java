@@ -89,11 +89,29 @@ public class PhotonQueryBuilder {
 
             query4QueryBuilder.must(builder);
         } else {
-            MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%");
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(defaultNgramAnalyzer).minimumShouldMatch("100%"));
 
+            MultiMatchQueryBuilder builderCrossField =
+                    QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+
+            MultiMatchQueryBuilder builderJapaneseField = null;
+
+            String[] japaneseLanguages = { "ja" };
             for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                if (Arrays.asList(japaneseLanguages).contains((lang))){
+                    if (builderJapaneseField == null){
+                        builderJapaneseField = QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_ngram").minimumShouldMatch("100%");
+                    }
+                    builderJapaneseField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                }else{
+                    builderCrossField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                }
+            }
+            builder = builder.should(builderCrossField);
+
+            if (builderJapaneseField != null){
+                builder = builder.should(builderJapaneseField);
             }
 
             query4QueryBuilder.must(builder);
