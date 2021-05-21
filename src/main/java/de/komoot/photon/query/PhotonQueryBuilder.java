@@ -113,10 +113,11 @@ public class PhotonQueryBuilder {
             }
             builder = builder.should(builderCrossField);
 
-            if (Arrays.asList(languages).contains("ja")){
-                builder = builder
-                        .should(builderJapaneseNgramField)
-                        .should(builderJapaneseRawField);
+            if (builderJapaneseNgramField != null){
+                builder = builder.should(builderJapaneseNgramField);
+            }
+            if (builderJapaneseRawField != null){
+                builder = builder.should(builderJapaneseRawField);
             }
 
             query4QueryBuilder.must(builder);
