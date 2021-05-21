@@ -60,6 +60,7 @@ public class PhotonQueryBuilder {
         String rawAnalyzer = "search_raw";
         String defaultCollector = "collector.default";
         String defaultNgramAnalyzer = "search_ngram";
+        String defaultRawAnalyzer = "search_raw";
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
@@ -67,6 +68,7 @@ public class PhotonQueryBuilder {
                 rawAnalyzer = String.format("%s_search_raw", language);
                 defaultCollector = String.format("collector.default_%s", language);
                 defaultNgramAnalyzer = String.format("%s_default_search_ngram", language);
+                defaultRawAnalyzer = String.format("%s_default_search_raw", language);
                 break;
             default:
                 break;
@@ -86,6 +88,28 @@ public class PhotonQueryBuilder {
                         .analyzer(ngramAnalyzer)
                         .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
+
+            switch (language){
+                case "ja":
+                    builder = builder
+                            .should(QueryBuilders.matchQuery(String.format("%s.raw",defaultCollector), query)
+                                    .fuzziness(Fuzziness.ZERO)
+                                    .prefixLength(2)
+                                    .analyzer(defaultRawAnalyzer)
+                                    .fuzzyTranspositions(false)
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                    .fuzziness(Fuzziness.ZERO)
+                                    .prefixLength(2)
+                                    .analyzer(rawAnalyzer)
+                                    .fuzzyTranspositions(false)
+                                    .minimumShouldMatch("-1"));
+                    break;
+                default:
+                    break;
+            }
+
+            builder = builder.minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {

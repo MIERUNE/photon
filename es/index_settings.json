@@ -51,6 +51,28 @@
 					"asciifolding"
 				]
 			},
+			"ja_default_search_raw": {
+				"type": "custom",
+				"char_filter": [
+					"punctuationgreedy",
+					"ja_normalize"
+				],
+				"tokenizer": "ja_kuromoji_tokenizer",
+				"filter": [
+					"word_delimiter",
+					"lowercase",
+					"german_normalization",
+					"asciifolding",
+					"unique",
+					"kuromoji_baseform",
+					"kuromoji_part_of_speech",
+					"cjk_width",
+					"ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer",
+					"ja_hiragana_2_katakana"
+				]
+			},
 			"ja_index_raw": {
 				"type": "custom",
 				"char_filter": [
