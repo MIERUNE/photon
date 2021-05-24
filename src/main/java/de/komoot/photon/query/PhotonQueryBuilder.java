@@ -117,11 +117,27 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
-        query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer(rawAnalyzer))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer(rawAnalyzer));
+        switch (language){
+            // please add language code if you want to use different index from default
+            case "ja":
+                query4QueryBuilder
+                        .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+                                .fuzzyTranspositions(false)
+                                .fuzziness(Fuzziness.ZERO)
+                                .analyzer(rawAnalyzer))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                                .fuzzyTranspositions(false)
+                                .fuzziness(Fuzziness.ZERO)
+                                .analyzer(rawAnalyzer));
+                break;
+            default:
+                query4QueryBuilder
+                        .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+                                .analyzer("search_raw"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                                .analyzer("search_raw"));
+                break;
+        }
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";

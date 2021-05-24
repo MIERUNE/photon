@@ -60,7 +60,8 @@
 											"analyzer": "ja_search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
-											"fuzzy_transpositions": true,
+											"fuzzy_transpositions": false,
+											"fuzziness": "0",
 											"lenient": false,
 											"zero_terms_query": "NONE",
 											"boost": 200.0
@@ -75,7 +76,8 @@
 											"analyzer": "ja_search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
-											"fuzzy_transpositions": true,
+											"fuzzy_transpositions": false,
+											"fuzziness": "0",
 											"lenient": false,
 											"zero_terms_query": "NONE",
 											"boost": 100.0
