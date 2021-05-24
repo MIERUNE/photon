@@ -125,6 +125,13 @@ public class PhotonQueryBuilder {
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
+        switch (language){
+            case "ja":
+                strCode = "double score = 1 + doc['importance'].value * 200; score";
+                break;
+            default:
+                break;
+        }
         ScriptScoreFunctionBuilder functionBuilder4QueryBuilder =
                 ScoreFunctionBuilders.scriptFunction(new Script(ScriptType.INLINE, "painless", strCode, new HashMap<String, Object>()));
 
