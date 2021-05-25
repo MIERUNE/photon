@@ -82,8 +82,30 @@ public class PhotonQueryBuilder {
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
                         .analyzer(ngramAnalyzer)
-                        .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
+                        .minimumShouldMatch("-1"));
+
+            switch (language){
+                // please add language code if you want to use different index from default
+                case "ja":
+                    builder = builder
+                            .should(QueryBuilders.matchQuery(String.format("%s.raw",defaultCollector), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .analyzer(rawAnalyzer)
+                                .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .fuzzyTranspositions(false)
+                                    .analyzer(rawAnalyzer)
+                                    .minimumShouldMatch("-1"));
+                    break;
+                default:
+                    break;
+            }
+
+            builder = builder.minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {

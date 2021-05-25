@@ -42,6 +42,40 @@
 														"boost": 1.0
 													}
 												}
+											},
+											{
+												"match": {
+													"collector.default_ja.raw": {
+														"query": "berlin",
+														"operator": "OR",
+														"analyzer": "ja_search_raw",
+														"fuzziness": "1",
+														"prefix_length": 2,
+														"max_expansions": 50,
+														"minimum_should_match": "-1",
+														"fuzzy_transpositions": false,
+														"lenient": false,
+														"zero_terms_query": "NONE",
+														"boost": 1.0
+													}
+												}
+											},
+											{
+												"match": {
+													"collector.ja.raw": {
+														"query": "berlin",
+														"operator": "OR",
+														"analyzer": "ja_search_raw",
+														"fuzziness": "1",
+														"prefix_length": 2,
+														"max_expansions": 50,
+														"minimum_should_match": "-1",
+														"fuzzy_transpositions": false,
+														"lenient": false,
+														"zero_terms_query": "NONE",
+														"boost": 1.0
+													}
+												}
 											}
 										],
 										"disable_coord": false,
