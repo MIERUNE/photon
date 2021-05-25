@@ -56,15 +56,11 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String ngramAnalyzer = "search_ngram";
         String rawAnalyzer = "search_raw";
-        String defaultCollector = "collector.default";
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
-                ngramAnalyzer = String.format("%s_search_ngram", language);
                 rawAnalyzer = String.format("%s_search_raw", language);
-                defaultCollector = String.format("collector.default_%s", language);
                 break;
             default:
                 break;
@@ -73,33 +69,33 @@ public class PhotonQueryBuilder {
         if (lenient) {
 
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery(defaultCollector, query)
+                    .should(QueryBuilders.matchQuery("collector.default", query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
-                        .analyzer(ngramAnalyzer)
+                        .analyzer("search_ngram")
                         .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
-                        .analyzer(ngramAnalyzer)
+                        .analyzer("search_ngram")
                         .minimumShouldMatch("-1"));
 
             switch (language){
                 // please add language code if you want to use different index from default
                 case "ja":
                     builder = builder
-                            .should(QueryBuilders.matchQuery(String.format("%s.raw",defaultCollector), query)
+                            .should(QueryBuilders.matchQuery("collector.default.raw_ja", query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .fuzzyTranspositions(false)
                                 .analyzer(rawAnalyzer)
                                 .minimumShouldMatch("-1"))
                             .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .fuzzyTranspositions(false)
-                                    .analyzer(rawAnalyzer)
-                                    .minimumShouldMatch("-1"));
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .analyzer(rawAnalyzer)
+                                .minimumShouldMatch("-1"));
                     break;
                 default:
                     break;
@@ -111,45 +107,27 @@ public class PhotonQueryBuilder {
         } else {
 
             MultiMatchQueryBuilder builderDefault =
-                    QueryBuilders.multiMatchQuery(query)
-                            .field(defaultCollector, 1.0f)
-                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .prefixLength(2).analyzer(ngramAnalyzer)
-                            .minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
-            MultiMatchQueryBuilder builderCrossField =
-                    QueryBuilders.multiMatchQuery(query)
-                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .prefixLength(2)
-                            .analyzer("search_ngram")
-                            .minimumShouldMatch("100%");
-
-            MultiMatchQueryBuilder builderJapaneseField = null;
-
-            String[] japaneseLanguages = { "ja" };
             for (String lang : languages) {
-                if (Arrays.asList(japaneseLanguages).contains((lang))){
-                    if (builderJapaneseField == null){
-                        builderJapaneseField =
-                                QueryBuilders.multiMatchQuery(query)
-                                    .field(defaultCollector, 1.0f)
-                                    .type(MultiMatchQueryBuilder.Type.PHRASE)
-                                    .prefixLength(2)
-                                    .analyzer("ja_search_raw")
-                                    .minimumShouldMatch("100%");
-                    }
-                    builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
-                    builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
-                }else{
-                    builderCrossField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
-                }
+                builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(builderDefault)
-                    .should(builderCrossField);
+                    .should(builderDefault);
 
-            if (builderJapaneseField != null){
+            if (Arrays.asList(languages).contains(("ja"))){
+                String lang = "ja";
+                MultiMatchQueryBuilder builderJapaneseField =
+                        QueryBuilders.multiMatchQuery(query)
+                                .field("collector.default.raw_ja", lang.equals(language) ? 1.0f : 0.6f)
+                                .type(MultiMatchQueryBuilder.Type.PHRASE)
+                                .prefixLength(2)
+                                .analyzer("ja_search_raw")
+                                .minimumShouldMatch("100%");
+
+                builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+
                 builder = builder.should(builderJapaneseField);
             }
 

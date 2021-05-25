@@ -23,8 +23,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -84,14 +83,8 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
-							}
-						}
-					},
-					"default_ja": {
-						"type": "text",
-						"analyzer": "ja_index_ngram",
-						"fields": {
-							"raw": {
+							},
+							"raw_ja": {
 								"type": "text",
 								"analyzer": "ja_index_raw"
 							}
@@ -157,8 +150,8 @@
 						"fields": {
 							"ngrams": {
 								"type": "text",
-								"analyzer": "ja_index_ngram",
-								"search_analyzer": "ja_search_ngram"
+								"analyzer": "index_ngram",
+								"search_analyzer": "search_ngram"
 							},
 							"raw": {
 								"type": "text",
@@ -184,8 +177,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -234,8 +226,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -278,8 +269,7 @@
 				"analyzer": "index_housenumber",
 				"search_analyzer": "standard",
 				"copy_to": [
-					"collector.default",
-					"collector.default_ja"
+					"collector.default"
 				]
 			},
 			"importance": {
@@ -297,8 +287,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"de": {
@@ -324,7 +313,6 @@
 						"index": false,
 						"copy_to": [
 							"collector.default",
-							"collector.default_ja",
 							"name.en",
 							"name.de",
 							"name.fr",
@@ -378,8 +366,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"it": {
@@ -406,8 +393,8 @@
 						"fields": {
 							"ngrams": {
 								"type": "text",
-								"analyzer": "ja_index_ngram",
-								"search_analyzer": "ja_search_ngram"
+								"analyzer": "index_ngram",
+								"search_analyzer": "search_ngram"
 							},
 							"raw": {
 								"type": "text",
@@ -428,8 +415,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"old": {
@@ -442,8 +428,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"reg": {
@@ -456,8 +441,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"housename": {
@@ -470,8 +454,7 @@
 							}
 						},
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					}
 				}
@@ -499,8 +482,7 @@
 				"type": "text",
 				"index": false,
 				"copy_to": [
-					"collector.default",
-					"collector.default_ja"
+					"collector.default"
 				]
 			},
 			"state": {
@@ -516,8 +498,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -563,8 +544,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -610,8 +590,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -657,8 +636,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
@@ -704,8 +682,7 @@
 						"type": "text",
 						"index": false,
 						"copy_to": [
-							"collector.default",
-							"collector.default_ja"
+							"collector.default"
 						]
 					},
 					"en": {
