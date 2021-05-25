@@ -109,33 +109,47 @@ public class PhotonQueryBuilder {
 
             query4QueryBuilder.must(builder);
         } else {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(ngramAnalyzer).minimumShouldMatch("100%"));
+
+            MultiMatchQueryBuilder builderDefault =
+                    QueryBuilders.multiMatchQuery(query)
+                            .field(defaultCollector, 1.0f)
+                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .prefixLength(2).analyzer(ngramAnalyzer)
+                            .minimumShouldMatch("100%");
 
             MultiMatchQueryBuilder builderCrossField =
-                    QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
-
-            MultiMatchQueryBuilder builderJapaneseNgramField = null;
+                    QueryBuilders.multiMatchQuery(query)
+                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .prefixLength(2)
+                            .analyzer("search_ngram")
+                            .minimumShouldMatch("100%");
 
             MultiMatchQueryBuilder builderJapaneseField = null;
 
             String[] japaneseLanguages = { "ja" };
             for (String lang : languages) {
                 if (Arrays.asList(japaneseLanguages).contains((lang))){
-                    if (builderJapaneseNgramField == null){
-                        builderJapaneseNgramField = QueryBuilders.multiMatchQuery(query).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_ngram").minimumShouldMatch("100%");
-                        builderJapaneseField = QueryBuilders.multiMatchQuery(query).field(defaultCollector, 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("ja_search_raw").minimumShouldMatch("100%");
+                    if (builderJapaneseField == null){
+                        builderJapaneseField =
+                                QueryBuilders.multiMatchQuery(query)
+                                    .field(defaultCollector, 1.0f)
+                                    .type(MultiMatchQueryBuilder.Type.PHRASE)
+                                    .prefixLength(2)
+                                    .analyzer("ja_search_raw")
+                                    .minimumShouldMatch("100%");
                     }
-                    builderJapaneseNgramField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                    builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
                     builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
                 }else{
                     builderCrossField.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
                 }
             }
-            builder = builder.should(builderCrossField);
 
-            if (builderJapaneseNgramField != null){
-                builder = builder.should(builderJapaneseNgramField);
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+                    .should(builderDefault)
+                    .should(builderCrossField);
+
+            if (builderJapaneseField != null){
                 builder = builder.should(builderJapaneseField);
             }
 
