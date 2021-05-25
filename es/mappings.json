@@ -132,6 +132,10 @@
 						"copy_to": [
 							"collector.it"
 						]
+					},
+					"osm_key_value": {
+						"type": "text",
+						"analyzer": "synonym_analyzer"
 					}
 				}
 			},
@@ -402,7 +406,10 @@
 			},
 			"osm_key": {
 				"type": "keyword",
-				"index": true
+				"index": true,
+				"copy_to": [
+					"collector.osm_key_value"
+				]
 			},
 			"osm_type": {
 				"type": "text",
@@ -410,7 +417,10 @@
 			},
 			"osm_value": {
 				"type": "keyword",
-				"index": true
+				"index": true,
+				"copy_to": [
+					"collector.osm_key_value"
+				]
 			},
 			"object_type": {
 				"type": "text",
@@ -540,7 +550,7 @@
 					}
 				}
 			},
-	  		"locality": {
+			"locality": {
 				"properties": {
 					"de": {
 						"type": "text",

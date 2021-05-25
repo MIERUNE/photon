@@ -61,6 +61,13 @@
 					"lowercase",
 					"preserving_word_delimiter"],
 				"tokenizer": "standard" 
+			},
+			"synonym_analyzer": {
+				"tokenizer": "standard",
+				"filter": [
+					"lowercase",
+					"synonym_filter"
+				]
 			}
 		},
 		"tokenizer": {
@@ -94,6 +101,15 @@
 			"preserving_word_delimiter": { 
 				"type": "word_delimiter",
 				"preserve_original": "true"
+			},
+			"synonym_filter": {
+				"type": "synonym",
+				"synonyms": [
+					"international airport, airport, aeroway, aerodrome",
+					"zipline, zip Line, aerialway, zip_line",
+					"car station, station, stop"
+				],
+				"tokenizer": "whitespace"
 			}
 		}
 	}
