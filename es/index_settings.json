@@ -46,8 +46,7 @@
 					"ja_hiragana_2_katakana"
 				]
 			},
-			"ja_index_ngram": {
-				"type": "custom",
+			"index_ngram": {
 				"char_filter": [
 					"punctuationgreedy",
 					"remove_ws_hnr_suffix",
@@ -63,37 +62,11 @@
 					"unique"
 				]
 			},
-			"ja_search_ngram": {
-				"type": "custom",
+			"search_ngram": {
 				"char_filter": [
 					"punctuationgreedy",
 					"ja_normalize",
 					"kuromoji_iteration_mark"
-				],
-				"tokenizer": "edge_ngram",
-				"filter": [
-					"lowercase",
-					"german_normalization",
-					"asciifolding"
-				]
-			},
-			"index_ngram": {
-				"char_filter": [
-					"punctuationgreedy",
-					"remove_ws_hnr_suffix"
-				],
-				"tokenizer": "edge_ngram",
-				"filter": [
-					"preserving_word_delimiter",
-					"lowercase",
-					"german_normalization",
-					"asciifolding",
-					"unique"
-				]
-			},
-			"search_ngram": {
-				"char_filter": [
-					"punctuationgreedy"
 				],
 				"tokenizer": "standard",
 				"filter": [
@@ -155,15 +128,6 @@
 				"type": "kuromoji_tokenizer",
 				"discard_compound_token": true,
 				"user_dictionary_rules": [
-				]
-			},
-			"ja_ngram_tokenizer": {
-				"type": "ngram",
-				"min_gram": 2,
-				"max_gram": 3,
-				"token_chars": [
-					"letter",
-					"digit"
 				]
 			}
 		},
