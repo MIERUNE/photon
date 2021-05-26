@@ -160,12 +160,6 @@ public class PhotonQueryBuilder {
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).analyzer(rawAnalyzer));
 
-//        query4QueryBuilder
-//                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-//                        .analyzer(rawAnalyzer))
-//                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-//                        .analyzer(rawAnalyzer));
-
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
         ScriptScoreFunctionBuilder functionBuilder4QueryBuilder =
