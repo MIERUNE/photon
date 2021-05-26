@@ -72,50 +72,79 @@ public class PhotonQueryBuilder {
 
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
-                        .fuzziness(Fuzziness.ONE)
-                        .prefixLength(2)
-                        .analyzer("search_ngram")
-                        .minimumShouldMatch("-1"))
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .analyzer("search_ngram")
+                            .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
-                        .fuzziness(Fuzziness.ONE)
-                        .prefixLength(2)
-                        .analyzer("search_ngram")
-                        .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .analyzer("search_ngram")
+                            .minimumShouldMatch("-1"));
+
+            switch (language){
+                // please add language code if you want to use different index from default
+                case "ja":
+                    builder = builder
+                            .should(QueryBuilders.matchQuery("collector.default.raw_ja", query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .fuzzyTranspositions(false)
+                                    .analyzer(rawAnalyzer)
+                                    .minimumShouldMatch("-1"))
+                            .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                    .fuzziness(Fuzziness.ONE)
+                                    .prefixLength(2)
+                                    .fuzzyTranspositions(false)
+                                    .analyzer(rawAnalyzer)
+                                    .minimumShouldMatch("-1"));
+                    break;
+                default:
+                    break;
+            }
+
+            builder = builder.minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
 
-            MultiMatchQueryBuilder builder =
+            MultiMatchQueryBuilder builderDefault =
                     QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+            }
+
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+                    .should(builderDefault);
+
+            switch (language){
+                case "ja":
+                    String lang = "ja";
+                    MultiMatchQueryBuilder builderJapaneseField =
+                            QueryBuilders.multiMatchQuery(query)
+                                    .field("collector.default.raw_ja", lang.equals(language) ? 1.0f : 0.6f)
+                                    .type(MultiMatchQueryBuilder.Type.PHRASE)
+                                    .prefixLength(2)
+                                    .analyzer("ja_search_raw")
+                                    .minimumShouldMatch("100%");
+
+                    builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+
+                    builder = builder.should(builderJapaneseField);
+                    break;
+                default:
+                    break;
             }
 
             query4QueryBuilder.must(builder);
         }
 
-        switch (language){
-            case "ja":
-                query4QueryBuilder
-                        .should(QueryBuilders.matchPhraseQuery(defaultRawCollector, query).boost(100)
-                                .analyzer(rawAnalyzer))
-                        .should(QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query).boost(200)
-                                .analyzer(rawAnalyzer))
-                        .should(QueryBuilders.matchPhraseQuery(String.format("collector.%s.raw", language), query).boost(100)
-                                .analyzer(rawAnalyzer));
-                break;
-            default:
-                query4QueryBuilder
-                        .should(QueryBuilders.matchQuery(defaultRawCollector, query).boost(100)
-                                .analyzer(rawAnalyzer))
-                        .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                                .analyzer(rawAnalyzer))
-                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                                .analyzer(rawAnalyzer));
-                break;
-        }
+        query4QueryBuilder
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+                        .analyzer(rawAnalyzer))
+                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+                        .analyzer(rawAnalyzer));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
