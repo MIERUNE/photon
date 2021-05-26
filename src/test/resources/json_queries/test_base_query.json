@@ -84,7 +84,7 @@
 								},
 								{
 									"match": {
-										"collector.osm_key_value": {
+										"osm_key_value": {
 											"query": "berlin",
 											"operator": "OR",
 											"analyzer": "synonym_analyzer",

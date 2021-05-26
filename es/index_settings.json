@@ -67,7 +67,8 @@
 				"filter": [
 					"lowercase",
 					"synonym_filter"
-				]
+				],
+				"expand": false
 			}
 		},
 		"tokenizer": {
@@ -106,11 +107,21 @@
 				"type": "synonym",
 				"synonyms": [
 					"international airport, airport, aeroway, aerodrome",
-					"zipline, zip Line, aerialway, zip_line",
-					"car station, station, stop"
-				],
-				"tokenizer": "whitespace"
-			}
+					"school, high school, institute, university, polytechnic, campus, primary school, education board, college, academy, kindergarten, integrated polytechnic regional college",
+					"sector office, cell office, province office, office, district office",
+					"museum, memorial, art museum, art, arts_center",
+					"centre de sante, hospital, hopital, clinique, clinic, polyclinique, health center",
+					"stadium, arena, sports_centre, swimming_pool",
+					"market, shop, bar, supermarket, mini market, store, marketplace",
+					"papeterie, library, public library, books, copyshop",
+					"assembly, church, mosque, seminaire, eglise, catholique, catholic, synagogue",
+					"commission, embassy, high commission",
+					"river, lake, water well, water_well, wetland, sea",
+					"park, forest, volcano, natural, rock",
+					"bus_stop, bus_station, bus stop, bus station, taxi, taxi park, bus, station, stop, subway, bus_guideway, motorcycle_parking, parking",
+					"road, primary, secondary, highway, footway, railway, taxiway"
+				]
+						}
 		}
 	}
 }

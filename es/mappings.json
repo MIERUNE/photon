@@ -132,10 +132,6 @@
 						"copy_to": [
 							"collector.it"
 						]
-					},
-					"osm_key_value": {
-						"type": "text",
-						"analyzer": "synonym_analyzer"
 					}
 				}
 			},
@@ -177,6 +173,10 @@
 						]
 					}
 				}
+			},
+			"osm_key_value": {
+				"type": "text",
+				"analyzer": "synonym_analyzer"
 			},
 			"coordinate": {
 				"type": "geo_point"

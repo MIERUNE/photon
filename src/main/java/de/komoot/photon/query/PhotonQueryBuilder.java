@@ -87,7 +87,7 @@ public class PhotonQueryBuilder {
                         .analyzer("search_raw"))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
                         .analyzer("search_raw"))
-                .should(QueryBuilders.matchQuery("collector.osm_key_value", query).boost(300)
+                .should(QueryBuilders.matchQuery("osm_key_value", query).boost(300)
                         .analyzer("synonym_analyzer"));
 
         // this is former general-score, now inline
