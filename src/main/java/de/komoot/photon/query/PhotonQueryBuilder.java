@@ -12,6 +12,7 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.FilterFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.ScriptScoreFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.WeightBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 
@@ -57,10 +58,12 @@ public class PhotonQueryBuilder {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
         String rawAnalyzer = "search_raw";
+        String defaultRawCollector = "collector.default.raw";
         switch (language){
             // please add language code if you want to use different index from default
             case "ja":
                 rawAnalyzer = String.format("%s_search_raw", language);
+                defaultRawCollector = String.format("collector.default.raw_%s", language);
                 break;
             default:
                 break;
@@ -78,67 +81,40 @@ public class PhotonQueryBuilder {
                         .fuzziness(Fuzziness.ONE)
                         .prefixLength(2)
                         .analyzer("search_ngram")
-                        .minimumShouldMatch("-1"));
-
-            switch (language){
-                // please add language code if you want to use different index from default
-                case "ja":
-                    builder = builder
-                            .should(QueryBuilders.matchQuery("collector.default.raw_ja", query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .fuzzyTranspositions(false)
-                                .analyzer(rawAnalyzer)
-                                .minimumShouldMatch("-1"))
-                            .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .fuzzyTranspositions(false)
-                                .analyzer(rawAnalyzer)
-                                .minimumShouldMatch("-1"));
-                    break;
-                default:
-                    break;
-            }
-
-            builder = builder.minimumShouldMatch("1");
+                        .minimumShouldMatch("-1"))
+                    .minimumShouldMatch("1");
 
             query4QueryBuilder.must(builder);
         } else {
 
-            MultiMatchQueryBuilder builderDefault =
+            MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
-            }
-
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(builderDefault);
-
-            if (Arrays.asList(languages).contains(("ja"))){
-                String lang = "ja";
-                MultiMatchQueryBuilder builderJapaneseField =
-                        QueryBuilders.multiMatchQuery(query)
-                                .field("collector.default.raw_ja", lang.equals(language) ? 1.0f : 0.6f)
-                                .type(MultiMatchQueryBuilder.Type.PHRASE)
-                                .prefixLength(2)
-                                .analyzer("ja_search_raw")
-                                .minimumShouldMatch("100%");
-
-                builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
-
-                builder = builder.should(builderJapaneseField);
+                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             query4QueryBuilder.must(builder);
         }
 
+        // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
+        //    filter creterion because they have no name. Therefore boost the score in this case.
+        MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
+                .field(defaultRawCollector, 1.0f)
+                .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                .analyzer(rawAnalyzer);
+
+        for (String lang : languages) {
+            hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+        }
+
+        query4QueryBuilder.should(QueryBuilders.functionScoreQuery(hnrQuery.boost(0.3f), new FilterFunctionBuilder[]{
+                new FilterFunctionBuilder(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"), new WeightBuilder().setWeight(10f))
+        }));
+
+        // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer(rawAnalyzer))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer(rawAnalyzer));
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).analyzer(rawAnalyzer));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
