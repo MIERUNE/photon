@@ -12,6 +12,7 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder.FilterFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.index.query.functionscore.ScriptScoreFunctionBuilder;
+import org.elasticsearch.index.query.functionscore.WeightBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.script.ScriptType;
 
@@ -140,11 +141,30 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
+        // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
+        //    filter creterion because they have no name. Therefore boost the score in this case.
+        MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
+                .field(defaultRawCollector, 1.0f)
+                .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                .analyzer(rawAnalyzer);
+
+        for (String lang : languages) {
+            hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+        }
+
+        query4QueryBuilder.should(QueryBuilders.functionScoreQuery(hnrQuery.boost(0.3f), new FilterFunctionBuilder[]{
+                new FilterFunctionBuilder(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"), new WeightBuilder().setWeight(10f))
+        }));
+
+        // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
-                        .analyzer(rawAnalyzer))
-                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer(rawAnalyzer));
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).analyzer(rawAnalyzer));
+
+//        query4QueryBuilder
+//                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
+//                        .analyzer(rawAnalyzer))
+//                .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
+//                        .analyzer(rawAnalyzer));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
