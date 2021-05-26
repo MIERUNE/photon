@@ -53,31 +53,31 @@
 							],
 							"should": [
 								{
-									"match": {
+									"match_phrase": {
+										"collector.default.raw_ja": {
+											"query": "berlin",
+											"analyzer": "ja_search_raw",
+											"slop": 0,
+											"boost": 100.0
+										}
+									}
+								},
+								{
+									"match_phrase": {
 										"name.ja.raw": {
 											"query": "berlin",
-											"operator": "OR",
 											"analyzer": "ja_search_raw",
-											"prefix_length": 0,
-											"max_expansions": 50,
-											"fuzzy_transpositions": true,
-											"lenient": false,
-											"zero_terms_query": "NONE",
+											"slop": 0,
 											"boost": 200.0
 										}
 									}
 								},
 								{
-									"match": {
+									"match_phrase": {
 										"collector.ja.raw": {
 											"query": "berlin",
-											"operator": "OR",
 											"analyzer": "ja_search_raw",
-											"prefix_length": 0,
-											"max_expansions": 50,
-											"fuzzy_transpositions": true,
-											"lenient": false,
-											"zero_terms_query": "NONE",
+											"slop": 0,
 											"boost": 100.0
 										}
 									}
