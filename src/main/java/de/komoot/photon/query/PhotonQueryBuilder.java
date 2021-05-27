@@ -57,20 +57,10 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String rawAnalyzer = "search_raw";
-        String defaultRawCollector = "collector.default.raw";
-        switch (language){
-            // please add language code if you want to use different index from default
-            case "ja":
-                rawAnalyzer = String.format("%s_search_raw", language);
-                defaultRawCollector = String.format("collector.default.raw_%s", language);
-                break;
-            default:
-                break;
-        }
+        String[] multibyteLanguages = { "ja" };
 
+        QueryBuilder collectorQuery;
         if (lenient) {
-
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
                             .fuzziness(Fuzziness.ONE)
@@ -83,30 +73,23 @@ public class PhotonQueryBuilder {
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"));
 
-            switch (language){
-                // please add language code if you want to use different index from default
-                case "ja":
-                    builder = builder
-                            .should(QueryBuilders.matchQuery("collector.default.raw_ja", query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .fuzzyTranspositions(false)
-                                    .analyzer(rawAnalyzer)
-                                    .minimumShouldMatch("-1"))
-                            .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                    .fuzziness(Fuzziness.ONE)
-                                    .prefixLength(2)
-                                    .fuzzyTranspositions(false)
-                                    .analyzer(rawAnalyzer)
-                                    .minimumShouldMatch("-1"));
-                    break;
-                default:
-                    break;
+            if (Arrays.asList(multibyteLanguages).contains(language)) {
+                builder = builder
+                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"));
             }
 
             builder = builder.minimumShouldMatch("1");
 
-            query4QueryBuilder.must(builder);
+            collectorQuery = builder;
         } else {
 
             MultiMatchQueryBuilder builderDefault =
@@ -119,34 +102,31 @@ public class PhotonQueryBuilder {
             BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(builderDefault);
 
-            switch (language){
-                case "ja":
-                    String lang = "ja";
-                    MultiMatchQueryBuilder builderJapaneseField =
-                            QueryBuilders.multiMatchQuery(query)
-                                    .field("collector.default.raw_ja", lang.equals(language) ? 1.0f : 0.6f)
-                                    .type(MultiMatchQueryBuilder.Type.PHRASE)
-                                    .prefixLength(2)
-                                    .analyzer("ja_search_raw")
-                                    .minimumShouldMatch("100%");
+            if (Arrays.asList(multibyteLanguages).contains(language)) {
+                MultiMatchQueryBuilder builderJapaneseField =
+                        QueryBuilders.multiMatchQuery(query)
+                                .field(String.format("collector.default.raw_%s",language), 1.0f)
+                                .type(MultiMatchQueryBuilder.Type.PHRASE)
+                                .prefixLength(2)
+                                .analyzer(String.format("%s_search_raw", language))
+                                .minimumShouldMatch("100%");
 
-                    builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builderJapaneseField.field(String.format("collector.%s.raw", language), 1.0f);
 
-                    builder = builder.should(builderJapaneseField);
-                    break;
-                default:
-                    break;
+                builder = builder.should(builderJapaneseField);
             }
 
-            query4QueryBuilder.must(builder);
+            collectorQuery = builder;
         }
+
+        query4QueryBuilder.must(collectorQuery);
 
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
-                .field(defaultRawCollector, 1.0f)
+                .field(Arrays.asList(multibyteLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                .analyzer(rawAnalyzer);
+                .analyzer(Arrays.asList(multibyteLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
         for (String lang : languages) {
             hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -158,7 +138,7 @@ public class PhotonQueryBuilder {
 
         // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).analyzer(rawAnalyzer));
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
