@@ -102,7 +102,6 @@
 										"name.en.raw": {
 											"query": "berlin",
 											"operator": "OR",
-											"analyzer": "search_raw",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,
