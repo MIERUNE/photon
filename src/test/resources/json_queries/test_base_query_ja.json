@@ -81,21 +81,6 @@
 										"minimum_should_match": "1",
 										"boost": 1.0
 									}
-								},
-								{
-									"match": {
-										"name.ja.ngrams": {
-											"query": "berlin",
-											"operator": "OR",
-											"analyzer": "search_ngram",
-											"prefix_length": 0,
-											"max_expansions": 50,
-											"fuzzy_transpositions": true,
-											"lenient": false,
-											"zero_terms_query": "NONE",
-											"boost": 2.0
-										}
-									}
 								}
 							],
 							"should": [

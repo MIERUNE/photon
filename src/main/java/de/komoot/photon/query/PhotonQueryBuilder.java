@@ -136,33 +136,33 @@ public class PhotonQueryBuilder {
                 new FilterFunctionBuilder(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"), new WeightBuilder().setWeight(10f))
         }));
 
-        // 3. Either the name or housenumber must be in the query terms.
-        //    Be more lenient on second pass. And do not expect housenumbers in single term queries.
-
-        // XXX There is no ngram index on the the default index. Use primary language for now.
-        String primaryLang = "default".equals(language) ? languages.get(0) : language;
-        if (query.indexOf(',') < 0 && query.indexOf(' ') < 0) {
-            query4QueryBuilder.must(QueryBuilders.matchQuery(String.format("name.%s.ngrams", primaryLang), query)
-                    .analyzer("search_ngram")
-                    .boost(2f)
-            );
-        } else {
-            BoolQueryBuilder nameQueryBuilder = QueryBuilders.boolQuery();
-
-            nameQueryBuilder.should(QueryBuilders.matchQuery(String.format("name.%s.ngrams", primaryLang), query)
-                    .analyzer("search_ngram")
-            );
-
-            // 2b) If there is no name, then there must be a housenumber.
-            nameQueryBuilder.should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"));
-            nameQueryBuilder.minimumShouldMatch("1");
-
-            if (lenient) {
-                query4QueryBuilder.should(nameQueryBuilder);
-            } else {
-                query4QueryBuilder.must(nameQueryBuilder);
-            }
-        }
+//        // 3. Either the name or housenumber must be in the query terms.
+//        //    Be more lenient on second pass. And do not expect housenumbers in single term queries.
+//
+//        // XXX There is no ngram index on the the default index. Use primary language for now.
+//        String primaryLang = "default".equals(language) ? languages.get(0) : language;
+//        if (query.indexOf(',') < 0 && query.indexOf(' ') < 0) {
+//            query4QueryBuilder.must(QueryBuilders.matchQuery(String.format("name.%s.ngrams", primaryLang), query)
+//                    .analyzer("search_ngram")
+//                    .boost(2f)
+//            );
+//        } else {
+//            BoolQueryBuilder nameQueryBuilder = QueryBuilders.boolQuery();
+//
+//            nameQueryBuilder.should(QueryBuilders.matchQuery(String.format("name.%s.ngrams", primaryLang), query)
+//                    .analyzer("search_ngram")
+//            );
+//
+//            // 2b) If there is no name, then there must be a housenumber.
+//            nameQueryBuilder.should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"));
+//            nameQueryBuilder.minimumShouldMatch("1");
+//
+//            if (lenient) {
+//                query4QueryBuilder.should(nameQueryBuilder);
+//            } else {
+//                query4QueryBuilder.must(nameQueryBuilder);
+//            }
+//        }
 
         // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
