@@ -81,6 +81,21 @@
 										"minimum_should_match": "1",
 										"boost": 1.0
 									}
+								},
+								{
+									"match": {
+										"name.ja.ngrams": {
+											"query": "berlin",
+											"operator": "OR",
+											"analyzer": "search_ngram",
+											"prefix_length": 0,
+											"max_expansions": 50,
+											"fuzzy_transpositions": true,
+											"lenient": false,
+											"zero_terms_query": "NONE",
+											"boost": 2.0
+										}
+									}
 								}
 							],
 							"should": [
@@ -157,16 +172,17 @@
 									"boost": 1.0
 								}
 							},
-							"script_score": {
-								"script": {
-									"source": "double score = 1 + doc['importance'].value * 100; score",
-									"lang": "painless"
-								}
+							"linear": {
+								"importance": {
+									"origin": "1.0",
+									"scale": "0.6",
+									"decay": 0.5
+								},
+								"multi_value_mode": "MIN"
 							}
 						}
 					],
 					"score_mode": "multiply",
-					"boost_mode": "multiply",
 					"max_boost": 3.4028235E38,
 					"boost": 1.0
 				}
