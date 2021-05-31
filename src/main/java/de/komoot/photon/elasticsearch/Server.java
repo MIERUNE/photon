@@ -178,6 +178,9 @@ public class Server {
                 StandardCopyOption.REPLACE_EXISTING);
         Files.copy(loader.getResourceAsStream("modules/lang-painless/plugin-security.policy"),
                 new File(painlessDirectory, "plugin-security.policy").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("synonyms.txt"),
+                new File(esDirectory, "config/synonyms.txt").toPath(),
+                StandardCopyOption.REPLACE_EXISTING);
 
     }
 
