@@ -57,8 +57,6 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
-        String[] multibyteLanguages = { "ja" };
-
         QueryBuilder collectorQuery;
         if (lenient) {
             collectorQuery = QueryBuilders.boolQuery()
@@ -83,7 +81,8 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         }
 
-        if (Arrays.asList(multibyteLanguages).contains(language)) {
+        String[] cjkLanguages = { "ja" };
+        if (Arrays.asList(cjkLanguages).contains(language)) {
             MultiMatchQueryBuilder builderCJK =
                     QueryBuilders.multiMatchQuery(query)
                             .field(String.format("collector.default.raw_%s",language), 1.0f)
@@ -95,7 +94,19 @@ public class PhotonQueryBuilder {
             for (String lang : languages) {
                 builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
-            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
+            collectorQuery = QueryBuilders.boolQuery()
+                    .should(collectorQuery)
+                    .should(builderCJK)
+                    .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .fuzzyTranspositions(false)
+                            .minimumShouldMatch("-1"))
+                    .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .fuzzyTranspositions(false)
+                            .minimumShouldMatch("-1"));
         }
 
         query4QueryBuilder.must(collectorQuery);
@@ -103,9 +114,9 @@ public class PhotonQueryBuilder {
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
-                .field(Arrays.asList(multibyteLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
+                .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                .analyzer(Arrays.asList(multibyteLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
+                .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
         for (String lang : languages) {
             hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
