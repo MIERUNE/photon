@@ -57,9 +57,11 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         query4QueryBuilder = QueryBuilders.boolQuery();
 
+        String[] cjkLanguages = { "ja" };
+
         QueryBuilder collectorQuery;
         if (lenient) {
-            collectorQuery = QueryBuilders.boolQuery()
+            BoolQueryBuilder builder = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
@@ -69,8 +71,25 @@ public class PhotonQueryBuilder {
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
-                            .minimumShouldMatch("-1"))
-                    .minimumShouldMatch("1");
+                            .minimumShouldMatch("-1"));
+
+            if (Arrays.asList(cjkLanguages).contains(language)) {
+                builder = builder
+                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"));
+            }
+
+            builder = builder.minimumShouldMatch("1");
+
+            collectorQuery = builder;
         } else {
             MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
@@ -81,7 +100,6 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         }
 
-        String[] cjkLanguages = { "ja" };
         if (Arrays.asList(cjkLanguages).contains(language)) {
             MultiMatchQueryBuilder builderCJK =
                     QueryBuilders.multiMatchQuery(query)
@@ -96,17 +114,7 @@ public class PhotonQueryBuilder {
             }
             collectorQuery = QueryBuilders.boolQuery()
                     .should(collectorQuery)
-                    .should(builderCJK)
-                    .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                            .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
-                            .fuzzyTranspositions(false)
-                            .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                            .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
-                            .fuzzyTranspositions(false)
-                            .minimumShouldMatch("-1"));
+                    .should(builderCJK);
         }
 
         query4QueryBuilder.must(collectorQuery);
