@@ -31,10 +31,10 @@ jobs:
 
       - name: Download dictionary for analysis-sudachi (Japanese)
         uses: engineerd/configurator@v0.0.6
-          with:
-            name: "dictionary-core"
-            url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
-            pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
+        with:
+          name: "dictionary-core"
+          url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
+          pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
 
       - name: Compile project, run tests
         run: |
@@ -63,10 +63,10 @@ jobs:
 
       - name: Download dictionary for analysis-sudachi (Japanese)
           uses: engineerd/configurator@v0.0.6
-            with:
-              name: "dictionary-core"
-              url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
-              pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
+          with:
+            name: "dictionary-core"
+            url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
+            pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
 
       - name: Compile project
         run: |
