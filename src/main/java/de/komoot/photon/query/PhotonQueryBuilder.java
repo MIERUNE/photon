@@ -82,16 +82,16 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
-        BoolQueryBuilder first = QueryBuilders.boolQuery()
-    .must(QueryBuilders.matchQuery("osm_key_text", query).boost(300).analyzer("synonym_analyzer"))
-    .must(QueryBuilders.matchQuery("osm_value_text", query).boost(300).analyzer("synonym_analyzer"));
+        BoolQueryBuilder synonymsQuery = QueryBuilders.boolQuery()
+    .should(QueryBuilders.matchQuery("osm_key_text", query).boost(300).analyzer("synonym_analyzer"))
+    .should(QueryBuilders.matchQuery("osm_value_text", query).boost(300).analyzer("synonym_analyzer"));
 
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
                         .analyzer("search_raw"))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
                         .analyzer("search_raw"))
-                .should(first);
+                .should(synonymsQuery);
 
         // this is former general-score, now inline
         String strCode = "double score = 1 * 100; score";
