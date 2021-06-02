@@ -174,7 +174,11 @@
 					}
 				}
 			},
-			"osm_key_value": {
+			"osm_key_text": {
+				"type": "text",
+				"analyzer": "synonym_analyzer"
+			},
+			"osm_value_text": {
 				"type": "text",
 				"analyzer": "synonym_analyzer"
 			},
@@ -408,7 +412,7 @@
 				"type": "keyword",
 				"index": true,
 				"copy_to": [
-					"collector.osm_key_value"
+					"collector.osm_key_text"
 				]
 			},
 			"osm_type": {
@@ -419,7 +423,7 @@
 				"type": "keyword",
 				"index": true,
 				"copy_to": [
-					"collector.osm_key_value"
+					"collector.osm_value_text"
 				]
 			},
 			"object_type": {
