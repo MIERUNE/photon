@@ -29,11 +29,17 @@ jobs:
           path: ~/.m2
           key: maven-deps
 
+      - name: Download dictionary for analysis-sudachi (Japanese)
+        uses: engineerd/configurator@v0.0.6
+          with:
+            name: "dictionary-core"
+            url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
+            pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
+
       - name: Compile project, run tests
         run: |
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
-          wget -O - 'https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip' | tar zxvf - -C $(pwd)/es/modules/analysis-sudachi
           mvn --no-transfer-progress test
 
 
@@ -55,11 +61,17 @@ jobs:
           path: ~/.m2
           key: maven-deps
 
+      - name: Download dictionary for analysis-sudachi (Japanese)
+          uses: engineerd/configurator@v0.0.6
+            with:
+              name: "dictionary-core"
+              url: "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip"
+              pathInArchive: "$(pwd)/es/modules/analysis-sudachi"
+
       - name: Compile project
         run: |
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
-          wget -O - 'https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip' | tar zxvf - -C $(pwd)/es/modules/analysis-sudachi
           mvn --no-transfer-progress package -Dmaven.test.skip=true
 
       - uses: actions/checkout@v2
@@ -71,28 +83,28 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-            echo "::set-output name=date::$(/bin/date -u "+%Y%W")"
+          echo "::set-output name=date::$(/bin/date -u "+%Y%W")"
         shell: bash
 
       - uses: actions/cache@v2
         with:
-            path: |
-               Nominatim/data/country_grid.sql.gz
-               monaco-latest.osm.pbf
-            key: nominatim-test-data-${{ steps.get-date.outputs.date }}
+          path: |
+            Nominatim/data/country_grid.sql.gz
+            monaco-latest.osm.pbf
+          key: nominatim-test-data-${{ steps.get-date.outputs.date }}
 
       - name: Setup database
         run: |
-            echo 'fsync = off' | sudo tee /etc/postgresql/13/main/conf.d/local.conf
-            echo 'synchronous_commit = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-            echo 'full_page_writes = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-            echo 'shared_buffers = 512MB' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-            sudo systemctl start postgresql
-            sudo -u postgres createuser -S www-data
-            sudo -u postgres createuser -s runner
-            psql -d postgres -c "ALTER USER runner PASSWORD 'foobar'"
-            psql --version
-            psql -d postgres -c "SELECT version()"
+          echo 'fsync = off' | sudo tee /etc/postgresql/13/main/conf.d/local.conf
+          echo 'synchronous_commit = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+          echo 'full_page_writes = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+          echo 'shared_buffers = 512MB' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+          sudo systemctl start postgresql
+          sudo -u postgres createuser -S www-data
+          sudo -u postgres createuser -s runner
+          psql -d postgres -c "ALTER USER runner PASSWORD 'foobar'"
+          psql --version
+          psql -d postgres -c "SELECT version()"
         shell: bash
 
       - name: Install prerequisits
@@ -104,9 +116,9 @@ jobs:
 
       - name: Download dependencies
         run: |
-            if [ ! -f Nominatim/data/country_osm_grid.sql.gz ]; then
-                wget --no-verbose -O Nominatim/data/country_osm_grid.sql.gz https://www.nominatim.org/data/country_grid.sql.gz
-            fi
+          if [ ! -f Nominatim/data/country_osm_grid.sql.gz ]; then
+              wget --no-verbose -O Nominatim/data/country_osm_grid.sql.gz https://www.nominatim.org/data/country_grid.sql.gz
+          fi
         shell: bash
 
       - name: Build Nominatim
@@ -115,11 +127,11 @@ jobs:
 
       - name: Prepare import environment
         run: |
-            if [ ! -f monaco.osm.pbf ]; then
-                wget --no-verbose https://download.geofabrik.de/europe/monaco-latest.osm.pbf
-            fi
-            mkdir data-env
-            cd data-env
+          if [ ! -f monaco.osm.pbf ]; then
+              wget --no-verbose https://download.geofabrik.de/europe/monaco-latest.osm.pbf
+          fi
+          mkdir data-env
+          cd data-env
         shell: bash
 
       - name: Import Nominatim
@@ -131,7 +143,7 @@ jobs:
 
       - name: Import Photon
         run: |
-            java -jar target/photon-*.jar -nominatim-import -database nominatim -user runner -password foobar
+          java -jar target/photon-*.jar -nominatim-import -database nominatim -user runner -password foobar
 
       - name: Update Nominatim
         run: |
