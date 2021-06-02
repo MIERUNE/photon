@@ -29,18 +29,10 @@ jobs:
           path: ~/.m2
           key: maven-deps
 
-      - name: Download dictionary for analysis-sudachi (Japanese)
-        uses: engineerd/configurator@v0.0.6
-        with:
-          args: -O /home/runner/dictionary-core.zip https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip
-
-      - name: Extract dictionary file
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r /home/runner/dictionary-core.zip $(pwd)/es/modules/analysis-sudachi
-
       - name: Compile project, run tests
         run: |
+          curl "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip" -o "dictionary-core.zip"
+          unzip dictionary-core.zip -d $(pwd)/es/modules/analysis-sudachi
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
           mvn --no-transfer-progress test
@@ -64,18 +56,10 @@ jobs:
           path: ~/.m2
           key: maven-deps
 
-      - name: Download dictionary for analysis-sudachi (Japanese)
-        uses: engineerd/configurator@v0.0.6
-        with:
-          args: -O /home/runner/dictionary-core.zip https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip
-
-      - name: Extract dictionary file
-        uses: montudor/action-zip@v1
-        with:
-          args: zip -qq -r /home/runner/dictionary-core.zip $(pwd)/es/modules/analysis-sudachi
-
       - name: Compile project
         run: |
+          curl "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip" -o "dictionary-core.zip"
+          unzip dictionary-core.zip -d $(pwd)/es/modules/analysis-sudachi
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
           mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
           mvn --no-transfer-progress package -Dmaven.test.skip=true
