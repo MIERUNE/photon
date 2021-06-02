@@ -67,7 +67,8 @@ photon uses [maven](https://maven.apache.org/) for building. To build the packag
 
 ```
 mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
-mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-kuromoji/analysis-kuromoji-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-kuromoji -Dversion=5.6.16 -Dpackaging=jar
+mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
+wget -O - 'https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip' | tar zxvf - -C $(pwd)/es/modules/analysis-sudachi
 mvn package
 ```
 

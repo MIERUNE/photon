@@ -5,44 +5,38 @@
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",
-					"ja_normalize",
-					"kuromoji_iteration_mark"
+					"ja_normalize"
 				],
-				"tokenizer": "ja_kuromoji_tokenizer",
+				"tokenizer": "ja_sudachi_tokenizer",
 				"filter": [
 					"word_delimiter",
 					"lowercase",
 					"german_normalization",
 					"asciifolding",
 					"unique",
-					"kuromoji_baseform",
-					"kuromoji_part_of_speech",
+					"sudachi_baseform",
+					"sudachi_part_of_speech",
 					"cjk_width",
-					"ja_stop",
-					"kuromoji_number",
-					"kuromoji_stemmer"
+					"sudachi_ja_stop"
 				]
 			},
 			"ja_search_raw": {
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",
-					"ja_normalize",
-					"kuromoji_iteration_mark"
+					"ja_normalize"
 				],
-				"tokenizer": "ja_kuromoji_tokenizer",
+				"tokenizer": "ja_sudachi_tokenizer",
 				"filter": [
 					"word_delimiter",
 					"lowercase",
 					"german_normalization",
 					"asciifolding",
 					"unique",
-					"kuromoji_baseform",
-					"kuromoji_part_of_speech",
+					"sudachi_baseform",
+					"sudachi_part_of_speech",
 					"cjk_width",
-					"ja_stop",
-					"kuromoji_number",
-					"kuromoji_stemmer",
+					"sudachi_ja_stop",
 					"ja_hiragana_2_katakana"
 				]
 			},
@@ -50,8 +44,7 @@
 				"char_filter": [
 					"punctuationgreedy",
 					"remove_ws_hnr_suffix",
-					"ja_normalize",
-					"kuromoji_iteration_mark"
+					"ja_normalize"
 				],
 				"tokenizer": "edge_ngram",
 				"filter": [
@@ -65,8 +58,7 @@
 			"search_ngram": {
 				"char_filter": [
 					"punctuationgreedy",
-					"ja_normalize",
-					"kuromoji_iteration_mark"
+					"ja_normalize"
 				],
 				"tokenizer": "standard",
 				"filter": [
@@ -123,12 +115,11 @@
 					"digit"
 				]
 			},
-			"ja_kuromoji_tokenizer": {
+			"ja_sudachi_tokenizer": {
 				"mode": "search",
-				"type": "kuromoji_tokenizer",
-				"discard_compound_token": true,
-				"user_dictionary_rules": [
-				]
+				"type": "sudachi_tokenizer",
+				"discard_punctuation": true,
+				"resources_path": "sudachi"
 			},
 			"ja_ngram_tokenizer": {
 				"type": "ngram",
