@@ -84,7 +84,7 @@
 								},
 								{
 									"bool": {
-										"should": [
+										"must": [
 											{
 												"match": {
 													"osm_key_text": {
