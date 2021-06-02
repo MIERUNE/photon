@@ -96,7 +96,7 @@
 														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
-														"boost": 300.0
+														"boost": 150.0
 													}
 												}
 											},
