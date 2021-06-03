@@ -4,7 +4,11 @@
     { "class" : "com.worksap.nlp.sudachi.DefaultInputTextPlugin" },
     { "class" : "com.worksap.nlp.sudachi.ProlongedSoundMarkInputTextPlugin",
       "prolongedSoundMarks": ["ー", "-", "⁓", "〜", "〰"],
-      "replacementSymbol": "ー"}
+      "replacementSymbol": "ー"},
+    { "class": "com.worksap.nlp.sudachi.IgnoreYomiganaPlugin",
+      "leftBrackets": ["(", "（"],
+      "rightBrackets": [")", "）"],
+      "maxYomiganaLength": 4}
   ],
   "oovProviderPlugin" : [
     { "class" : "com.worksap.nlp.sudachi.MeCabOovProviderPlugin" },
@@ -21,5 +25,8 @@
       "oovPOS" : [ "名詞", "普通名詞", "一般", "*", "*", "*" ],
       "minLength" : 3
     }
+  ],
+  "formatterPlugin" : [
+    { "class" : "com.worksap.nlp.sudachi.SimpleMorphemeFormatter" }
   ]
 }
