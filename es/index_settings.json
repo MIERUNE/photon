@@ -16,11 +16,14 @@
 					"asciifolding",
 					"unique",
 					"sudachi_baseform",
+					"sudachi_normalizedform",
 					"sudachi_part_of_speech",
 					"cjk_width",
 					"sudachi_ja_stop",
 					"kuromoji_number",
-					"kuromoji_stemmer"
+					"kuromoji_stemmer",
+					"ja_hiragana_2_katakana",
+					"ja_search"
 				]
 			},
 			"ja_search_raw": {
@@ -38,12 +41,14 @@
 					"asciifolding",
 					"unique",
 					"sudachi_baseform",
+					"sudachi_normalizedform",
 					"sudachi_part_of_speech",
 					"cjk_width",
 					"sudachi_ja_stop",
 					"kuromoji_number",
 					"kuromoji_stemmer",
-					"ja_hiragana_2_katakana"
+					"ja_hiragana_2_katakana",
+					"ja_search"
 				]
 			},
 			"index_ngram": {
@@ -59,7 +64,8 @@
 					"lowercase",
 					"german_normalization",
 					"asciifolding",
-					"unique"
+					"unique",
+					"ja_romaji_readingform"
 				]
 			},
 			"search_ngram": {
@@ -72,7 +78,8 @@
 				"filter": [
 					"lowercase",
 					"german_normalization",
-					"asciifolding"
+					"asciifolding",
+					"ja_romaji_readingform"
 				]
 			},
 			"index_raw": {
@@ -84,7 +91,8 @@
 					"lowercase",
 					"german_normalization",
 					"asciifolding",
-					"unique"
+					"unique",
+					"ja_romaji_readingform"
 				],
 				"tokenizer": "standard"
 			},
@@ -97,7 +105,8 @@
 					"lowercase",
 					"german_normalization",
 					"asciifolding",
-					"unique"
+					"unique",
+					"ja_romaji_readingform"
 				],
 				"tokenizer": "standard"
 			},
@@ -124,7 +133,7 @@
 				]
 			},
 			"ja_sudachi_tokenizer": {
-				"mode": "search",
+				"split_mode": "C",
 				"type": "sudachi_tokenizer",
 				"discard_punctuation": true,
 				"resources_path": "sudachi",
@@ -165,6 +174,18 @@
 			"preserving_word_delimiter": {
 				"type": "word_delimiter",
 				"preserve_original": "true"
+			},
+			"ja_search" : {
+				"type" : "sudachi_split",
+				"mode" : "search"
+			},
+			"ja_romaji_readingform" : {
+				"type" : "sudachi_readingform",
+				"use_romaji" : true
+			},
+			"ja_katakana_readingform" : {
+				"type" : "sudachi_readingform",
+				"use_romaji" : false
 			},
 			"ja_hiragana_2_katakana": {
 				"type": "icu_transform",
