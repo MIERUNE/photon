@@ -63,12 +63,12 @@
 				"tokenizer": "standard" 
 			},
 			"synonym_analyzer": {
-				"tokenizer": "whitespace",
+				"tokenizer": "standard",
 				"filter": [
 					"lowercase",
 					"synonym_filter"
 				],
-				"expand": false,
+				"expand": true,
 				"ignore_case":true
 			}
 		},
@@ -105,9 +105,10 @@
 				"preserve_original": "true"
 			},
 			"synonym_filter": {
-				"type": "synonym_graph",
+				"type": "synonym",
 				"synonyms_path": "synonyms.txt",
-				"tokenizer": "whitespace"
+				"tokenizer": "standard",
+				"expand": true
 						}
 		}
 	}
