@@ -10,75 +10,104 @@
 									"bool": {
 										"should": [
 											{
-												"match": {
-													"collector.default": {
-														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
+												"bool": {
+													"should": [
+														{
+															"match": {
+																"collector.default": {
+																	"query": "berlin",
+																	"operator": "OR",
+																	"analyzer": "search_ngram",
+																	"fuzziness": "1",
+																	"prefix_length": 2,
+																	"max_expansions": 50,
+																	"minimum_should_match": "-1",
+																	"fuzzy_transpositions": true,
+																	"lenient": false,
+																	"zero_terms_query": "NONE",
+																	"boost": 1.0
+																}
+															}
+														},
+														{
+															"match": {
+																"collector.ja.ngrams": {
+																	"query": "berlin",
+																	"operator": "OR",
+																	"analyzer": "search_ngram",
+																	"fuzziness": "1",
+																	"prefix_length": 2,
+																	"max_expansions": 50,
+																	"minimum_should_match": "-1",
+																	"fuzzy_transpositions": true,
+																	"lenient": false,
+																	"zero_terms_query": "NONE",
+																	"boost": 1.0
+																}
+															}
+														},
+														{
+															"match": {
+																"collector.default.raw_ja": {
+																	"query": "berlin",
+																	"operator": "OR",
+																	"fuzziness": "1",
+																	"prefix_length": 2,
+																	"max_expansions": 50,
+																	"minimum_should_match": "-1",
+																	"fuzzy_transpositions": false,
+																	"lenient": false,
+																	"zero_terms_query": "NONE",
+																	"boost": 1.0
+																}
+															}
+														},
+														{
+															"match": {
+																"collector.ja.raw": {
+																	"query": "berlin",
+																	"operator": "OR",
+																	"fuzziness": "1",
+																	"prefix_length": 2,
+																	"max_expansions": 50,
+																	"minimum_should_match": "-1",
+																	"fuzzy_transpositions": false,
+																	"lenient": false,
+																	"zero_terms_query": "NONE",
+																	"boost": 1.0
+																}
+															}
+														}
+													],
+													"disable_coord": false,
+													"adjust_pure_negative": true,
+													"minimum_should_match": "1",
+													"boost": 1.0
 												}
 											},
 											{
-												"match": {
-													"collector.ja.ngrams": {
-														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
-													"collector.default.raw_ja": {
-														"query": "berlin",
-														"operator": "OR",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
-													"collector.ja.raw": {
-														"query": "berlin",
-														"operator": "OR",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
+												"multi_match": {
+													"query": "berlin",
+													"fields": [
+														"collector.default.raw_ja^1.0",
+														"collector.en.raw^0.6",
+														"collector.ja.raw^1.0"
+													],
+													"type": "phrase",
+													"operator": "OR",
+													"analyzer": "ja_search_raw",
+													"slop": 0,
+													"prefix_length": 2,
+													"max_expansions": 50,
+													"minimum_should_match": "100%",
+													"lenient": false,
+													"zero_terms_query": "NONE",
+													"boost": 1.0
 												}
 											}
 										],
 										"disable_coord": false,
 										"adjust_pure_negative": true,
-										"minimum_should_match": "1",
 										"boost": 1.0
 									}
 								}
