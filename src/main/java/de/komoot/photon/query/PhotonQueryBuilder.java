@@ -100,20 +100,20 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         }
 
-        if (Arrays.asList(cjkLanguages).contains(language)) {
-            MultiMatchQueryBuilder builderCJK =
-                    QueryBuilders.multiMatchQuery(query)
-                            .field(String.format("collector.default.raw_%s",language), 1.0f)
-                            .type(MultiMatchQueryBuilder.Type.PHRASE)
-                            .prefixLength(2)
-                            .analyzer(String.format("%s_search_raw", language))
-                            .minimumShouldMatch("100%");
-
-            for (String lang : languages) {
-                builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
-            }
-            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
-        }
+//        if (Arrays.asList(cjkLanguages).contains(language)) {
+//            MultiMatchQueryBuilder builderCJK =
+//                    QueryBuilders.multiMatchQuery(query)
+//                            .field(String.format("collector.default.raw_%s",language), 1.0f)
+//                            .type(MultiMatchQueryBuilder.Type.PHRASE)
+//                            .prefixLength(2)
+//                            .analyzer(String.format("%s_search_raw", language))
+//                            .minimumShouldMatch("100%");
+//
+//            for (String lang : languages) {
+//                builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+//            }
+//            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
+//        }
 
         query4QueryBuilder.must(collectorQuery);
 
