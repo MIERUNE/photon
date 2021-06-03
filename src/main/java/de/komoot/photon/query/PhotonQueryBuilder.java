@@ -100,20 +100,20 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         }
 
-//        if (Arrays.asList(cjkLanguages).contains(language)) {
-//            MultiMatchQueryBuilder builderCJK =
-//                    QueryBuilders.multiMatchQuery(query)
-//                            .field(String.format("collector.default.raw_%s",language), 1.0f)
-//                            .type(MultiMatchQueryBuilder.Type.PHRASE)
-//                            .prefixLength(2)
-//                            .analyzer(String.format("%s_search_raw", language))
-//                            .minimumShouldMatch("100%");
-//
-//            for (String lang : languages) {
-//                builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
-//            }
-//            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
-//        }
+        if (Arrays.asList(cjkLanguages).contains(language)) {
+            MultiMatchQueryBuilder builderCJK =
+                    QueryBuilders.multiMatchQuery(query)
+                            .field(String.format("collector.default.raw_%s",language), 1.0f)
+                            .type(MultiMatchQueryBuilder.Type.PHRASE)
+                            .prefixLength(2)
+                            .analyzer(String.format("%s_search_raw", language))
+                            .minimumShouldMatch("100%");
+
+            for (String lang : languages) {
+                builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+            }
+            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
+        }
 
         query4QueryBuilder.must(collectorQuery);
 
@@ -121,7 +121,7 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
-                .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE: MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
                 .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
         for (String lang : languages) {
