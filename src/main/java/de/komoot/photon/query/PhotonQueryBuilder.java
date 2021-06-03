@@ -121,7 +121,7 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
-                .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE: MultiMatchQueryBuilder.Type.CROSS_FIELDS)
                 .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
         for (String lang : languages) {

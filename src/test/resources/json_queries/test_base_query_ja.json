@@ -94,7 +94,7 @@
 													"collector.en.raw^0.6",
 													"collector.ja.raw^1.0"
 												],
-												"type": "cross_fields",
+												"type": "phrase",
 												"operator": "OR",
 												"analyzer": "ja_search_raw",
 												"slop": 0,
