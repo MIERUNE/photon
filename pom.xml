@@ -264,6 +264,24 @@
                             <destFileName>lucene-analyzers-icu.jar</destFileName>
                         </artifactItem>
                         <artifactItem>
+                            <groupId>org.elasticsearch.plugin</groupId>
+                            <artifactId>analysis-kuromoji</artifactId>
+                            <version>${elasticsearch.version}</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-kuromoji</outputDirectory>
+                            <destFileName>analysis-kuromoji.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
+                            <groupId>org.apache.lucene</groupId>
+                            <artifactId>lucene-analyzers-kuromoji</artifactId>
+                            <version>6.6.1</version>
+                            <type>jar</type>
+                            <overWrite>false</overWrite>
+                            <outputDirectory>${project.build.directory}/es/modules/analysis-kuromoji</outputDirectory>
+                            <destFileName>lucene-analyzers-kuromoji.jar</destFileName>
+                        </artifactItem>
+                        <artifactItem>
                             <groupId>com.worksap.nlp.elasticsearch.sudachi.plugin</groupId>
                             <artifactId>analysis-sudachi</artifactId>
                             <version>1.3.2</version>

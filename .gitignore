@@ -16,4 +16,4 @@ nbactions.xml
 .project
 .settings/
 
-system_core.dic
+system_*.dic

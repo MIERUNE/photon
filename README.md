@@ -67,8 +67,9 @@ photon uses [maven](https://maven.apache.org/) for building. To build the packag
 
 ```
 mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-icu/analysis-icu-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-icu -Dversion=5.6.16 -Dpackaging=jar
+mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-kuromoji/analysis-kuromoji-5.6.16.jar -DgroupId=org.elasticsearch.plugin -DartifactId=analysis-kuromoji -Dversion=5.6.16 -Dpackaging=jar
 mvn install:install-file -Dfile=$(pwd)/es/modules/analysis-sudachi/analysis-sudachi-elasticsearch5.6-1.3.2.jar -DgroupId=com.worksap.nlp.elasticsearch.sudachi.plugin -DartifactId=analysis-sudachi -Dversion=1.3.2 -Dpackaging=jar
-curl "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.1-SNAPSHOT/sudachi-0.1.1-20181214.051916-48-dictionary-core.zip" -o "dictionary-core.zip" && unzip dictionary-core.zip -d $(pwd)/es/modules/analysis-sudachi && rm dictionary-core.zip
+curl "https://oss.sonatype.org/content/repositories/snapshots/com/worksap/nlp/sudachi/0.1.2-SNAPSHOT/sudachi-0.1.2-20190311.023630-17-dictionary.zip" -o "dictionary.zip" && unzip dictionary.zip -d $(pwd)/es/modules/analysis-sudachi && rm dictionary.zip
 mvn package
 ```
 

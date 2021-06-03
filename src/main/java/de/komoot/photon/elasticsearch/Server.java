@@ -158,11 +158,12 @@ public class Server {
         final File scriptsDirectory = new File(esDirectory, "config/scripts");
         final File painlessDirectory = new File(esDirectory, "modules/lang-painless");
         final File icuDirectory = new File(esDirectory, "modules/analysis-icu");
+        final File kuromojiDirectory = new File(esDirectory, "modules/analysis-kuromoji");
         final File sudachiModuleDirectory = new File(esDirectory, "modules/analysis-sudachi");
         final File sudachiDirectory = new File(esDirectory, "config/sudachi");
 
         for (File directory : new File[]{photonDirectory, esDirectory, pluginDirectory, scriptsDirectory,
-                painlessDirectory, icuDirectory, sudachiModuleDirectory, sudachiDirectory}) {
+                painlessDirectory, icuDirectory, kuromojiDirectory, sudachiModuleDirectory, sudachiDirectory}) {
             directory.mkdirs();
         }
 
@@ -193,6 +194,15 @@ public class Server {
         Files.copy(loader.getResourceAsStream("modules/analysis-icu/plugin-security.policy"),
                 new File(icuDirectory, "plugin-security.policy").toPath(), StandardCopyOption.REPLACE_EXISTING);
 
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji/lucene-analyzers-kuromoji.jar"),
+                new File(kuromojiDirectory, "lucene-analyzers-kuromoji.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji/analysis-kuromoji.jar"),
+                new File(kuromojiDirectory, "analysis-kuromoji.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji/plugin-descriptor.properties"),
+                new File(kuromojiDirectory, "plugin-descriptor.properties").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-kuromoji/plugin-security.policy"),
+                new File(kuromojiDirectory, "plugin-security.policy").toPath(), StandardCopyOption.REPLACE_EXISTING);
+
         Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/analysis-sudachi.jar"),
                 new File(sudachiModuleDirectory, "analysis-sudachi.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
         Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/javax.json.jar"),
@@ -203,9 +213,10 @@ public class Server {
                 new File(sudachiModuleDirectory, "sudachi.jar").toPath(), StandardCopyOption.REPLACE_EXISTING);
         Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/plugin-descriptor.properties"),
                 new File(sudachiModuleDirectory, "plugin-descriptor.properties").toPath(), StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/system_core.dic"),
-                new File(sudachiDirectory, "system_core.dic").toPath(), StandardCopyOption.REPLACE_EXISTING);
-
+        Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/system_full.dic"),
+                new File(sudachiDirectory, "system_full.dic").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loader.getResourceAsStream("modules/analysis-sudachi/sudachi.json"),
+                new File(sudachiDirectory, "sudachi.json").toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
     public void recreateIndex() throws IOException {

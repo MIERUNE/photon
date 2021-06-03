@@ -5,26 +5,8 @@
 				"type": "custom",
 				"char_filter": [
 					"punctuationgreedy",
-					"ja_normalize"
-				],
-				"tokenizer": "ja_sudachi_tokenizer",
-				"filter": [
-					"word_delimiter",
-					"lowercase",
-					"german_normalization",
-					"asciifolding",
-					"unique",
-					"sudachi_baseform",
-					"sudachi_part_of_speech",
-					"cjk_width",
-					"sudachi_ja_stop"
-				]
-			},
-			"ja_search_raw": {
-				"type": "custom",
-				"char_filter": [
-					"punctuationgreedy",
-					"ja_normalize"
+					"ja_normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "ja_sudachi_tokenizer",
 				"filter": [
@@ -37,6 +19,30 @@
 					"sudachi_part_of_speech",
 					"cjk_width",
 					"sudachi_ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer"
+				]
+			},
+			"ja_search_raw": {
+				"type": "custom",
+				"char_filter": [
+					"punctuationgreedy",
+					"ja_normalize",
+					"kuromoji_iteration_mark"
+				],
+				"tokenizer": "ja_sudachi_tokenizer",
+				"filter": [
+					"word_delimiter",
+					"lowercase",
+					"german_normalization",
+					"asciifolding",
+					"unique",
+					"sudachi_baseform",
+					"sudachi_part_of_speech",
+					"cjk_width",
+					"sudachi_ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana"
 				]
 			},
@@ -44,7 +50,8 @@
 				"char_filter": [
 					"punctuationgreedy",
 					"remove_ws_hnr_suffix",
-					"ja_normalize"
+					"ja_normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "edge_ngram",
 				"filter": [
@@ -58,7 +65,8 @@
 			"search_ngram": {
 				"char_filter": [
 					"punctuationgreedy",
-					"ja_normalize"
+					"ja_normalize",
+					"kuromoji_iteration_mark"
 				],
 				"tokenizer": "standard",
 				"filter": [
@@ -119,7 +127,8 @@
 				"mode": "search",
 				"type": "sudachi_tokenizer",
 				"discard_punctuation": true,
-				"resources_path": "sudachi"
+				"resources_path": "sudachi",
+				"settings_path": "sudachi/sudachi.json"
 			},
 			"ja_ngram_tokenizer": {
 				"type": "ngram",
