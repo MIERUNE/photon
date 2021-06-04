@@ -134,12 +134,20 @@
 									"match": {
 										"name.ja.raw": {
 											"query": "berlin",
-											"operator": "AND",
+											"operator": "OR",
 											"prefix_length": 0,
 											"max_expansions": 50,
 											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
+											"boost": 1.0
+										}
+									}
+								},
+								{
+									"term": {
+										"name.ja.raw": {
+											"value": "berlin",
 											"boost": 1.0
 										}
 									}

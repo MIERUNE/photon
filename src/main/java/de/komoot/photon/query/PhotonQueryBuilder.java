@@ -142,9 +142,12 @@ public class PhotonQueryBuilder {
 
         // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
-                .should(QueryBuilders
-                        .matchQuery(String.format("name.%s.raw", language), query)
-                        .operator(Arrays.asList(multibyteLanguages).contains(language) ? Operator.AND : Operator.OR));
+                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
+
+        if (Arrays.asList(multibyteLanguages).contains(language)) {
+            // Rerank results if the term exactly matches in the default language.
+            query4QueryBuilder.should(QueryBuilders.termQuery(String.format("name.%s.raw", language), query));
+        }
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
