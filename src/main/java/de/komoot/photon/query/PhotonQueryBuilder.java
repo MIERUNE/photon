@@ -79,11 +79,13 @@ public class PhotonQueryBuilder {
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .fuzzyTranspositions(false)
+                                .operator(Operator.AND)
                                 .minimumShouldMatch("-1"))
                         .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .fuzzyTranspositions(false)
+                                .operator(Operator.AND)
                                 .minimumShouldMatch("-1"));
             }
 
