@@ -98,7 +98,7 @@
 												"operator": "AND",
 												"analyzer": "ja_search_raw",
 												"slop": 0,
-												"prefix_length": 0,
+												"prefix_length": 2,
 												"max_expansions": 50,
 												"lenient": false,
 												"zero_terms_query": "NONE",
@@ -140,14 +140,6 @@
 											"fuzzy_transpositions": true,
 											"lenient": false,
 											"zero_terms_query": "NONE",
-											"boost": 1.0
-										}
-									}
-								},
-								{
-									"term": {
-										"name.ja.keyword": {
-											"value": "berlin",
 											"boost": 1.0
 										}
 									}

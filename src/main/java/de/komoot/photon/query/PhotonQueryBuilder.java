@@ -129,6 +129,7 @@ public class PhotonQueryBuilder {
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(multibyteLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                .prefixLength(Arrays.asList(multibyteLanguages).contains(language) ? 2 : 0)
                 .operator(Arrays.asList(multibyteLanguages).contains(language) ? Operator.AND : Operator.OR)
                 .analyzer(Arrays.asList(multibyteLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
@@ -143,11 +144,6 @@ public class PhotonQueryBuilder {
         // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
-
-        if (Arrays.asList(multibyteLanguages).contains(language)) {
-            // Rerank results if the term exactly matches in the default language.
-            query4QueryBuilder.should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query));
-        }
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
