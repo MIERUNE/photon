@@ -146,7 +146,7 @@ public class PhotonQueryBuilder {
 
         if (Arrays.asList(multibyteLanguages).contains(language)) {
             // Rerank results if the term exactly matches in the default language.
-            query4QueryBuilder.should(QueryBuilders.termQuery(String.format("name.%s.raw", language), query));
+            query4QueryBuilder.should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query));
         }
 
         // this is former general-score, now inline

@@ -146,7 +146,7 @@
 								},
 								{
 									"term": {
-										"name.ja.raw": {
+										"name.ja.keyword": {
 											"value": "berlin",
 											"boost": 1.0
 										}
