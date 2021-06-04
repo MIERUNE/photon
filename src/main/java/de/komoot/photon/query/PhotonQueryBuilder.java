@@ -83,8 +83,8 @@ public class PhotonQueryBuilder {
         }
 
         BoolQueryBuilder synonymsQuery = QueryBuilders.boolQuery()
-    .must(QueryBuilders.matchQuery("osm_key_text", query).analyzer("synonym_analyzer"))
-    .must(QueryBuilders.matchQuery("osm_value_text", query).analyzer("synonym_analyzer"));
+    .must(QueryBuilders.matchQuery("osm_key_text", query).boost(100).analyzer("synonym_analyzer"))
+    .must(QueryBuilders.matchQuery("osm_value_text", query).boost(200).analyzer("synonym_analyzer"));
 
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)

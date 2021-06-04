@@ -68,7 +68,7 @@
 					"lowercase",
 					"synonym_filter"
 				],
-				"expand": false,
+				"expand": true,
 				"ignore_case":true
 			}
 		},
@@ -107,7 +107,8 @@
 			"synonym_filter": {
 				"type": "synonym_graph",
 				"synonyms_path": "synonyms.txt",
-				"tokenizer": "whitespace"
+				"tokenizer": "whitespace",
+				"expand": true
 						}
 		}
 	}
