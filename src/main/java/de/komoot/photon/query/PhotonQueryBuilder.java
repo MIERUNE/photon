@@ -110,7 +110,6 @@ public class PhotonQueryBuilder {
                                 .field(String.format("collector.default.raw_%s",language), 1.0f)
                                 .type(MultiMatchQueryBuilder.Type.PHRASE)
                                 .prefixLength(2)
-                                .operator(Operator.AND)
                                 .analyzer(String.format("%s_search_raw", language))
                                 .minimumShouldMatch("100%");
 
@@ -129,7 +128,6 @@ public class PhotonQueryBuilder {
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(multibyteLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                .operator(Arrays.asList(multibyteLanguages).contains(language) ? Operator.AND : Operator.OR)
                 .analyzer(Arrays.asList(multibyteLanguages).contains(language) ? String.format("%s_search_raw", language): "search_raw");
 
         for (String lang : languages) {
