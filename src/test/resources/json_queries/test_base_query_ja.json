@@ -95,7 +95,7 @@
 													"collector.ja.raw^1.0"
 												],
 												"type": "cross_fields",
-												"operator": "OR",
+												"operator": "AND",
 												"analyzer": "ja_search_raw",
 												"slop": 0,
 												"prefix_length": 0,
