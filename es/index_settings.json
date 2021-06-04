@@ -22,8 +22,7 @@
 					"sudachi_ja_stop",
 					"kuromoji_number",
 					"kuromoji_stemmer",
-					"ja_hiragana_2_katakana",
-					"ja_search"
+					"ja_hiragana_2_katakana"
 				]
 			},
 			"ja_search_raw": {
