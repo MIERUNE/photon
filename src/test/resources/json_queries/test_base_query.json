@@ -96,7 +96,7 @@
 														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
-														"boost": 1.0
+														"boost": 200.0
 													}
 												}
 											},
@@ -111,7 +111,7 @@
 														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
-														"boost": 1.0
+														"boost": 300.0
 													}
 												}
 											}
@@ -124,7 +124,7 @@
 							],
 							"disable_coord": false,
 							"adjust_pure_negative": true,
-							"boost": 300.0
+							"boost": 100.0
 						}
 					},
 					"functions": [
