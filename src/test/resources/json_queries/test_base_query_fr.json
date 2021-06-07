@@ -136,7 +136,7 @@
 							},
 							"script_score": {
 								"script": {
-									"source": "double score = 1 * 100; score",
+									"source": "double score = 1 + doc['importance'].value * 100; score",
 									"lang": "painless"
 								}
 							}
