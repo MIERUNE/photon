@@ -46,6 +46,14 @@
 					}
 				}
 			},
+			"osm_key_text": {
+				"type": "text",
+				"analyzer": "synonym_analyzer"
+			},
+			"osm_value_text": {
+				"type": "text",
+				"analyzer": "synonym_analyzer"
+			},
 			"coordinate": {
 				"type": "geo_point"
 			},
@@ -174,7 +182,10 @@
 			},
 			"osm_key": {
 				"type": "keyword",
-				"index": true
+				"index": true,
+				"copy_to": [
+					"collector.osm_key_text"
+				]
 			},
 			"osm_type": {
 				"type": "text",
@@ -182,7 +193,10 @@
 			},
 			"osm_value": {
 				"type": "keyword",
-				"index": true
+				"index": true,
+				"copy_to": [
+					"collector.osm_value_text"
+				]
 			},
 			"object_type": {
 				"type": "text",
@@ -228,7 +242,7 @@
 					}
 				}
 			},
-	  		"locality": {
+			"locality": {
 				"properties": {
 					"default": {
 						"type": "text",

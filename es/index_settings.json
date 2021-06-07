@@ -61,6 +61,15 @@
 					"lowercase",
 					"preserving_word_delimiter"],
 				"tokenizer": "standard" 
+			},
+			"synonym_analyzer": {
+				"tokenizer": "standard",
+				"filter": [
+					"lowercase",
+					"synonym_filter"
+				],
+				"expand": true,
+				"ignore_case":true
 			}
 		},
 		"tokenizer": {
@@ -94,7 +103,13 @@
 			"preserving_word_delimiter": { 
 				"type": "word_delimiter",
 				"preserve_original": "true"
-			}
+			},
+			"synonym_filter": {
+				"type": "synonym",
+				"synonyms_path": "synonyms.txt",
+				"tokenizer": "standard",
+				"expand": true
+						}
 		}
 	}
 }

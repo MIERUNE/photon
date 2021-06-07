@@ -82,11 +82,16 @@ public class PhotonQueryBuilder {
             query4QueryBuilder.must(builder);
         }
 
+        BoolQueryBuilder synonymsQuery = QueryBuilders.boolQuery()
+    .must(QueryBuilders.matchQuery("osm_key_text", query).boost(200).analyzer("synonym_analyzer"))
+    .must(QueryBuilders.matchQuery("osm_value_text", query).boost(300).analyzer("synonym_analyzer"));
+
         query4QueryBuilder
                 .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).boost(200)
                         .analyzer("search_raw"))
                 .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query).boost(100)
-                        .analyzer("search_raw"));
+                        .analyzer("search_raw"))
+                .should(synonymsQuery).boost(100);
 
         // this is former general-score, now inline
         String strCode = "double score = 1 + doc['importance'].value * 100; score";
