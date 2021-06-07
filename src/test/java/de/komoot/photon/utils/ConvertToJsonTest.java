@@ -2,6 +2,7 @@ package de.komoot.photon.utils;
 
 import de.komoot.photon.ESBaseTester;
 import de.komoot.photon.PhotonDoc;
+import de.komoot.photon.elasticsearch.DatabaseProperties;
 import de.komoot.photon.elasticsearch.Importer;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -18,22 +19,17 @@ import java.util.Map;
 
 public class ConvertToJsonTest extends ESBaseTester {
 
-    @After
-    public void tearDown() {
-        deleteIndex();
-        shutdownES();
-    }
-
     private SearchResponse databaseFromDoc(PhotonDoc doc) throws IOException {
         setUpES();
-        Importer instance = new Importer(getClient(), "en", "maxspeed,website");
+        Importer instance = makeImporterWithExtra("maxspeed,website");
         instance.add(doc);
         instance.finish();
         refresh();
 
         return getClient().prepareSearch("photon")
                 .setSearchType(SearchType.QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.matchAllQuery())
+                .setQuery(QueryBuilders.boolQuery().must(QueryBuilders.matchAllQuery())
+                        .filter(QueryBuilders.boolQuery().mustNot(QueryBuilders.idsQuery().addIds(DatabaseProperties.PROPERTY_DOCUMENT_ID))))
                 .execute()
                 .actionGet();
     }
