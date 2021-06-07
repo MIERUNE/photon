@@ -42,44 +42,31 @@
 														"boost": 1.0
 													}
 												}
-											},
-											{
-												"match": {
-													"collector.default.raw_ja": {
-														"query": "berlin",
-														"operator": "OR",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
-													"collector.ja.raw": {
-														"query": "berlin",
-														"operator": "OR",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
 											}
 										],
 										"disable_coord": false,
 										"adjust_pure_negative": true,
 										"minimum_should_match": "1",
 										"boost": 1.0
+									}
+								},
+								{
+									"multi_match": {
+										"query": "berlin",
+										"fields": [
+											"name.en.ngrams^0.4",
+											"name.ja.ngrams^1.0"
+										],
+										"type": "best_fields",
+										"operator": "OR",
+										"analyzer": "search_ngram",
+										"slop": 0,
+										"fuzziness": "1",
+										"prefix_length": 0,
+										"max_expansions": 50,
+										"lenient": false,
+										"zero_terms_query": "NONE",
+										"boost": 2.0
 									}
 								}
 							],
@@ -90,13 +77,12 @@
 											"multi_match": {
 												"query": "berlin",
 												"fields": [
-													"collector.default.raw_ja^1.0",
+													"collector.default.raw^1.0",
 													"collector.en.raw^0.6",
 													"collector.ja.raw^1.0"
 												],
-												"type": "cross_fields",
+												"type": "best_fields",
 												"operator": "OR",
-												"analyzer": "ja_search_raw",
 												"slop": 0,
 												"prefix_length": 0,
 												"max_expansions": 50,
@@ -157,16 +143,17 @@
 									"boost": 1.0
 								}
 							},
-							"script_score": {
-								"script": {
-									"source": "double score = 1 + doc['importance'].value * 100; score",
-									"lang": "painless"
-								}
+							"linear": {
+								"importance": {
+									"origin": "1.0",
+									"scale": "0.6",
+									"decay": 0.5
+								},
+								"multi_value_mode": "MIN"
 							}
 						}
 					],
 					"score_mode": "multiply",
-					"boost_mode": "multiply",
 					"max_boost": 3.4028235E38,
 					"boost": 1.0
 				}
