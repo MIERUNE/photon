@@ -94,7 +94,7 @@ public class PhotonQueryBuilder {
                 .should(synonymsQuery).boost(100);
 
         // this is former general-score, now inline
-        String strCode = "double score = 1 * 100; score";
+        String strCode = "double score = 1 + doc['importance'].value * 100; score";
         ScriptScoreFunctionBuilder functionBuilder4QueryBuilder =
                 ScoreFunctionBuilders.scriptFunction(new Script(ScriptType.INLINE, "painless", strCode, new HashMap<String, Object>()));
 
