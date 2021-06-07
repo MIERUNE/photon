@@ -1,4 +1,5 @@
-international-airport,airport,aeroway,aerodrome
+airport=>airport,aerodrome,aeroway,international,aero
+university=>university,college,campus
 school,faculty,highschool,institute,university,polytechnic,campus,primarys-chool,education-board,college,academy,kindergarten,nursery,driving-school,driving_school
 sector-office,cell-office,province-office,office,district-office,town,townhall
 museum,memorial,art-museum,art,arts_center,monument,ruins,castle,planetarium,planetaria,mural
@@ -30,11 +31,13 @@ police,police-station,police_staion,prison,fire-hydrant,fire_hydrant,fire_statio
 car-rental,car_rental,car-sharing,car_sharing
 farm,farm_auxiliary,greenhouse,farmland,landuse
 bin,waste,waste_basket,wastebasket,recycling,recycling-station,recycling-point,toiletries
-laundry,coin-laundry,toilet,restroom,shower,dry-cleaner,dryclean,drycleaning,dry_cleaning
+laundry,coin-laundry,toilet,toilets,restroom,shower,dry-cleaner,dryclean,drycleaning,dry_cleaning
 bicycle_parking,bicycle_rental,cyclerental,bicycle-rental,bicycle-parking,cycle_way,cycleway
 bus_stop,bus_station,bus-stop,bus-station,bus,bus_guideway
 taxi,taxipark,taxiway
 platform,station,train_station,stop,subway,train,railway,house,building
+station=>train_station,subway,railway,station,bus_stop
+hotel=>hostel,hotel,tourism,yes
 motorcycle_parking,parking
 ferry_terminal,ferry-terminal,boat,yacht
 road,primary,secondary,highway,footway,line
