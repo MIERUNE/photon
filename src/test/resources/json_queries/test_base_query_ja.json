@@ -77,7 +77,7 @@
 											"multi_match": {
 												"query": "berlin",
 												"fields": [
-													"collector.default.raw^1.0",
+													"collector.default.raw_ja^1.0",
 													"collector.en.raw^0.6",
 													"collector.ja.raw^1.0"
 												],

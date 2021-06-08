@@ -30,6 +30,11 @@
 							"raw": {
 								"type": "text",
 								"analyzer": "index_raw"
+							},
+							"raw_ja": {
+								"type": "text",
+								"analyzer": "ja_index_raw",
+								"search_analyzer": "ja_search_raw"
 							}
 						}
 					},

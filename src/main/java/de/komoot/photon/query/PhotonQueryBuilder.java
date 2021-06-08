@@ -85,10 +85,12 @@ public class PhotonQueryBuilder {
 
         query4QueryBuilder.must(collectorQuery);
 
+        String[] cjkLanguages = { "ja" };
+
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
-                .field("collector.default.raw", 1.0f)
+                .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 
         for (String lang : languages) {
