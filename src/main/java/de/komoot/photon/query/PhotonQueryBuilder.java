@@ -100,8 +100,7 @@ public class PhotonQueryBuilder {
                 builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(builderDefault);
+            BoolQueryBuilder builder = QueryBuilders.boolQuery().should(builderDefault);
 
             if (Arrays.asList(cjkLanguages).contains(language)) {
                 MultiMatchQueryBuilder builderJapaneseField =
@@ -137,24 +136,26 @@ public class PhotonQueryBuilder {
                 new FilterFunctionBuilder(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"), new WeightBuilder().setWeight(10f))
         }));
 
-        // 3. Either the name or housenumber must be in the query terms.
-        String defLang = "default".equals(language) ? languages.get(0) : language;
-        MultiMatchQueryBuilder nameNgramQuery = QueryBuilders.multiMatchQuery(query)
-                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS)
-                .fuzziness(lenient ? Fuzziness.ONE : Fuzziness.ZERO)
-                .analyzer("search_ngram");
+        if (!Arrays.asList(cjkLanguages).contains(language)) {
+            // 3. Either the name or housenumber must be in the query terms.
+            String defLang = "default".equals(language) ? languages.get(0) : language;
+            MultiMatchQueryBuilder nameNgramQuery = QueryBuilders.multiMatchQuery(query)
+                    .type(MultiMatchQueryBuilder.Type.BEST_FIELDS)
+                    .fuzziness(lenient ? Fuzziness.ONE : Fuzziness.ZERO)
+                    .analyzer("search_ngram");
 
-        for (String lang: languages) {
-            nameNgramQuery.field(String.format("name.%s.ngrams", lang), lang.equals(defLang) ? 1.0f : 0.4f);
-        }
+            for (String lang: languages) {
+                nameNgramQuery.field(String.format("name.%s.ngrams", lang), lang.equals(defLang) ? 1.0f : 0.4f);
+            }
 
-        if (query.indexOf(',') < 0 && query.indexOf(' ') < 0) {
-            query4QueryBuilder.must(nameNgramQuery.boost(2f));
-        } else {
-            query4QueryBuilder.must(QueryBuilders.boolQuery()
-                    .should(nameNgramQuery)
-                    .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
-                    .minimumShouldMatch("1"));
+            if (query.indexOf(',') < 0 && query.indexOf(' ') < 0) {
+                query4QueryBuilder.must(nameNgramQuery.boost(2f));
+            } else {
+                query4QueryBuilder.must(QueryBuilders.boolQuery()
+                        .should(nameNgramQuery)
+                        .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
+                        .minimumShouldMatch("1"));
+            }
         }
 
         // 4. Rerank results for having the full name in the default language.
