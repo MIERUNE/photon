@@ -47,7 +47,7 @@
 												"match": {
 													"collector.default.raw_ja": {
 														"query": "berlin",
-														"operator": "AND",
+														"operator": "OR",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -63,7 +63,7 @@
 												"match": {
 													"collector.ja.raw": {
 														"query": "berlin",
-														"operator": "AND",
+														"operator": "OR",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -114,7 +114,7 @@
 													"collector.ja.raw^1.0"
 												],
 												"type": "best_fields",
-												"operator": "AND",
+												"operator": "OR",
 												"slop": 0,
 												"prefix_length": 0,
 												"max_expansions": 50,

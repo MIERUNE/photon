@@ -81,13 +81,11 @@ public class PhotonQueryBuilder {
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .fuzzyTranspositions(false)
-                                .operator(Operator.AND)
                                 .minimumShouldMatch("-1"))
                         .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .fuzzyTranspositions(false)
-                                .operator(Operator.AND)
                                 .minimumShouldMatch("-1"));
             }
 
@@ -110,7 +108,6 @@ public class PhotonQueryBuilder {
                                 .field(String.format("collector.default.raw_%s",language), 1.0f)
                                 .type(MultiMatchQueryBuilder.Type.PHRASE)
                                 .prefixLength(2)
-                                .operator(Operator.AND)
                                 .analyzer(String.format("%s_search_raw", language))
                                 .minimumShouldMatch("100%");
 
@@ -128,7 +125,6 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
-                .operator(Arrays.asList(cjkLanguages).contains(language)?Operator.AND:Operator.OR)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 
         for (String lang : languages) {
