@@ -113,7 +113,7 @@
 													"collector.en.raw^0.6",
 													"collector.ja.raw^1.0"
 												],
-												"type": "best_fields",
+												"type": "phrase",
 												"operator": "OR",
 												"slop": 0,
 												"prefix_length": 0,
