@@ -93,16 +93,22 @@ public class PhotonQueryBuilder {
 
             collectorQuery = builder;
         } else {
-            MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f)
-                            .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE : MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
-                            .prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+            MultiMatchQueryBuilder builder;
+            if (Arrays.asList(cjkLanguages).contains(language)) {
+                builder = QueryBuilders.multiMatchQuery(query).field(String.format("collector.default.raw_%s", language), 1.0f).type(MultiMatchQueryBuilder.Type.PHRASE).prefixLength(2).minimumShouldMatch("100%");
 
-            for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                for (String lang : languages) {
+                    builder.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+                }
+
+            } else {
+                builder = QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+
+                for (String lang : languages) {
+                    builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                }
+
             }
-
             collectorQuery = builder;
         }
 
