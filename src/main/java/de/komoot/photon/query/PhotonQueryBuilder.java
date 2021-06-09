@@ -94,7 +94,10 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.BEST_FIELDS).operator(Operator.AND).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f)
+                            .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE : MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
+                            .prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
