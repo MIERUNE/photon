@@ -114,7 +114,7 @@
 													"collector.ja.raw^1.0"
 												],
 												"type": "best_fields",
-												"operator": "OR",
+												"operator": "AND",
 												"slop": 0,
 												"prefix_length": 0,
 												"max_expansions": 50,

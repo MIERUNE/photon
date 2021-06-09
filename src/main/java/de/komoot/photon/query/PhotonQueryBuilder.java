@@ -105,7 +105,7 @@ public class PhotonQueryBuilder {
             BoolQueryBuilder builder = QueryBuilders.boolQuery().should(builderDefault);
 
             if (Arrays.asList(cjkLanguages).contains(language)) {
-                MultiMatchQueryBuilder builderJapaneseField =
+                MultiMatchQueryBuilder builderCJKField =
                         QueryBuilders.multiMatchQuery(query)
                                 .field(String.format("collector.default.raw_%s",language), 1.0f)
                                 .type(MultiMatchQueryBuilder.Type.PHRASE)
@@ -114,9 +114,9 @@ public class PhotonQueryBuilder {
                                 .analyzer(String.format("%s_search_raw", language))
                                 .minimumShouldMatch("100%");
 
-                builderJapaneseField.field(String.format("collector.%s.raw", language), 1.0f);
+                builderCJKField.field(String.format("collector.%s.raw", language), 1.0f);
 
-                builder = builder.should(builderJapaneseField);
+                builder = builder.should(builderCJKField);
             }
 
             collectorQuery = builder;
@@ -128,6 +128,7 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
+                .operator(Arrays.asList(cjkLanguages).contains(language)?Operator.AND:Operator.OR)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 
         for (String lang : languages) {
