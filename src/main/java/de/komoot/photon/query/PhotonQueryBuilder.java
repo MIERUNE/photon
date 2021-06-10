@@ -66,11 +66,13 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
+                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language))
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
+                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language))
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
@@ -78,7 +80,7 @@ public class PhotonQueryBuilder {
             MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query)
                             .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
-                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE: MultiMatchQueryBuilder.Type.CROSS_FIELDS)
                             .prefixLength(2)
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
