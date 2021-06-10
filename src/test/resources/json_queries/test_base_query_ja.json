@@ -14,7 +14,7 @@
 													"collector.default.raw_ja": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "search_ngram",
+														"analyzer": "ja_search_raw",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
@@ -31,7 +31,7 @@
 													"collector.ja.raw": {
 														"query": "berlin",
 														"operator": "OR",
-														"analyzer": "search_ngram",
+														"analyzer": "ja_search_raw",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,

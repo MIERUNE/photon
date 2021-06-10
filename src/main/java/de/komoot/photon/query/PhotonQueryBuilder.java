@@ -66,12 +66,12 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer("search_ngram")
+                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer("search_ngram")
+                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
         } else {
@@ -80,7 +80,7 @@ public class PhotonQueryBuilder {
                             .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
                             .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
                             .prefixLength(2)
-                            .analyzer("search_ngram")
+                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .minimumShouldMatch("100%");
 
