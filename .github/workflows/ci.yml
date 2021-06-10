@@ -77,28 +77,28 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo "::set-output name=date::$(/bin/date -u "+%Y%W")"
+            echo "::set-output name=date::$(/bin/date -u "+%Y%W")"
         shell: bash
 
       - uses: actions/cache@v2
         with:
-          path: |
-            Nominatim/data/country_grid.sql.gz
-            monaco-latest.osm.pbf
-          key: nominatim-test-data-${{ steps.get-date.outputs.date }}
+            path: |
+               Nominatim/data/country_grid.sql.gz
+               monaco-latest.osm.pbf
+            key: nominatim-test-data-${{ steps.get-date.outputs.date }}
 
       - name: Setup database
         run: |
-          echo 'fsync = off' | sudo tee /etc/postgresql/13/main/conf.d/local.conf
-          echo 'synchronous_commit = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-          echo 'full_page_writes = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-          echo 'shared_buffers = 512MB' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
-          sudo systemctl start postgresql
-          sudo -u postgres createuser -S www-data
-          sudo -u postgres createuser -s runner
-          psql -d postgres -c "ALTER USER runner PASSWORD 'foobar'"
-          psql --version
-          psql -d postgres -c "SELECT version()"
+            echo 'fsync = off' | sudo tee /etc/postgresql/13/main/conf.d/local.conf
+            echo 'synchronous_commit = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+            echo 'full_page_writes = off' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+            echo 'shared_buffers = 512MB' | sudo tee -a /etc/postgresql/13/main/conf.d/local.conf
+            sudo systemctl start postgresql
+            sudo -u postgres createuser -S www-data
+            sudo -u postgres createuser -s runner
+            psql -d postgres -c "ALTER USER runner PASSWORD 'foobar'"
+            psql --version
+            psql -d postgres -c "SELECT version()"
         shell: bash
 
       - name: Install prerequisits
@@ -110,9 +110,9 @@ jobs:
 
       - name: Download dependencies
         run: |
-          if [ ! -f Nominatim/data/country_osm_grid.sql.gz ]; then
-              wget --no-verbose -O Nominatim/data/country_osm_grid.sql.gz https://www.nominatim.org/data/country_grid.sql.gz
-          fi
+            if [ ! -f Nominatim/data/country_osm_grid.sql.gz ]; then
+                wget --no-verbose -O Nominatim/data/country_osm_grid.sql.gz https://www.nominatim.org/data/country_grid.sql.gz
+            fi
         shell: bash
 
       - name: Build Nominatim
@@ -121,11 +121,11 @@ jobs:
 
       - name: Prepare import environment
         run: |
-          if [ ! -f monaco.osm.pbf ]; then
-              wget --no-verbose https://download.geofabrik.de/europe/monaco-latest.osm.pbf
-          fi
-          mkdir data-env
-          cd data-env
+            if [ ! -f monaco.osm.pbf ]; then
+                wget --no-verbose https://download.geofabrik.de/europe/monaco-latest.osm.pbf
+            fi
+            mkdir data-env
+            cd data-env
         shell: bash
 
       - name: Import Nominatim
@@ -137,7 +137,7 @@ jobs:
 
       - name: Import Photon
         run: |
-          java -jar target/photon-*.jar -nominatim-import -database nominatim -user runner -password foobar
+            java -jar target/photon-*.jar -nominatim-import -database nominatim -user runner -password foobar
       - name: Update Nominatim
         run: |
           nominatim replication --init
