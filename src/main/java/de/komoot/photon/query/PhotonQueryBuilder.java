@@ -71,7 +71,6 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .operator(Operator.AND)
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
@@ -81,6 +80,7 @@ public class PhotonQueryBuilder {
                         .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
+                                .operator(Operator.AND)
                                 .fuzzyTranspositions(false)
                                 .minimumShouldMatch("-1"))
                         .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
