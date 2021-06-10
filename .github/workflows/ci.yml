@@ -138,6 +138,7 @@ jobs:
       - name: Import Photon
         run: |
             java -jar target/photon-*.jar -nominatim-import -database nominatim -user runner -password foobar
+
       - name: Update Nominatim
         run: |
           nominatim replication --init
