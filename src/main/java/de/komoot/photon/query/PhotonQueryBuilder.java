@@ -94,16 +94,10 @@ public class PhotonQueryBuilder {
             collectorQuery = builder;
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query)
-                            .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
-                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .prefixLength(2)
-                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) :"search_ngram")
-                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
-                            .minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(Arrays.asList(cjkLanguages).contains(lang) ? String.format("collector.%s.raw", lang) : String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             collectorQuery = builder;
@@ -115,7 +109,8 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
-                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+                .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE: MultiMatchQueryBuilder.Type.BEST_FIELDS)
+                .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR);
 
         for (String lang : languages) {
             hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
