@@ -62,61 +62,29 @@ public class PhotonQueryBuilder {
         // 1. All terms of the quey must be contained in the place record somehow. Be more lenient on second try.
         QueryBuilder collectorQuery;
         if (lenient) {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default", query)
+            collectorQuery = QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
-
-            if (Arrays.asList(cjkLanguages).contains(language)) {
-                builder = builder
-                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"))
-                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"));
-            }
-
-            builder = builder.minimumShouldMatch("1");
-
-            collectorQuery = builder;
         } else {
-            MultiMatchQueryBuilder builderDefault =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+            MultiMatchQueryBuilder builder =
+                    QueryBuilders.multiMatchQuery(query)
+                            .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
+                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .prefixLength(2).analyzer("search_ngram")
+                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
+                            .minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builderDefault.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
-            }
-
-            BoolQueryBuilder builder = QueryBuilders.boolQuery().should(builderDefault);
-
-            if (Arrays.asList(cjkLanguages).contains(language)) {
-                MultiMatchQueryBuilder builderJapaneseField =
-                        QueryBuilders.multiMatchQuery(query)
-                                .field(String.format("collector.default.raw_%s",language), 1.0f)
-                                .type(MultiMatchQueryBuilder.Type.PHRASE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .analyzer(String.format("%s_search_raw", language))
-                                .minimumShouldMatch("100%");
-
-                builderJapaneseField.field(String.format("collector.%s.raw", language), 1.0f);
-
-                builder = builder.should(builderJapaneseField);
+                builder.field(String.format(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             collectorQuery = builder;

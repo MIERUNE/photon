@@ -11,48 +11,15 @@
 										"should": [
 											{
 												"match": {
-													"collector.default": {
-														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
-													"collector.ja.ngrams": {
-														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
-														"fuzziness": "1",
-														"prefix_length": 2,
-														"max_expansions": 50,
-														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
-														"lenient": false,
-														"zero_terms_query": "NONE",
-														"boost": 1.0
-													}
-												}
-											},
-											{
-												"match": {
 													"collector.default.raw_ja": {
 														"query": "berlin",
-														"operator": "AND",
+														"operator": "OR",
+														"analyzer": "search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
+														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0
@@ -63,12 +30,13 @@
 												"match": {
 													"collector.ja.raw": {
 														"query": "berlin",
-														"operator": "AND",
+														"operator": "OR",
+														"analyzer": "search_ngram",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": false,
+														"fuzzy_transpositions": true,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0
