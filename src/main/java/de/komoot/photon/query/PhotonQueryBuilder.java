@@ -110,6 +110,7 @@ public class PhotonQueryBuilder {
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.PHRASE: MultiMatchQueryBuilder.Type.BEST_FIELDS)
+                .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 2: 0)
                 .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR);
 
         for (String lang : languages) {

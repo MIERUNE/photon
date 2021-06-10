@@ -116,7 +116,7 @@
 												"type": "phrase",
 												"operator": "AND",
 												"slop": 0,
-												"prefix_length": 0,
+												"prefix_length": 2,
 												"max_expansions": 50,
 												"lenient": false,
 												"zero_terms_query": "NONE",
