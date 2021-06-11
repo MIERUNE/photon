@@ -77,8 +77,16 @@ public class PhotonQueryBuilder {
 
             if (Arrays.asList(cjkLanguages).contains(language)) {
                 builder = builder
-                        .should(QueryBuilders.matchPhraseQuery(String.format("collector.default.raw_%s", language), query).slop(1))
-                        .should(QueryBuilders.matchPhraseQuery(String.format("collector.%s.raw", language), query).slop(1));
+                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"));
             }
 
             builder = builder.minimumShouldMatch("1");
@@ -101,7 +109,6 @@ public class PhotonQueryBuilder {
                                 .type(MultiMatchQueryBuilder.Type.PHRASE)
                                 .prefixLength(2)
                                 .slop(1)
-                                .operator(Operator.AND)
                                 .analyzer(String.format("%s_search_raw", language))
                                 .minimumShouldMatch("100%");
 
@@ -150,8 +157,13 @@ public class PhotonQueryBuilder {
         }
 
         // 4. Rerank results for having the full name in the default language.
-        query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
+        if (Arrays.asList(cjkLanguages).contains(language)) {
+            query4QueryBuilder
+                    .should(QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query).slop(1));
+        } else {
+            query4QueryBuilder
+                    .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
+        }
 
 
         // Weigh the resulting score by importance. Use a linear scale function that ensures that the weight
