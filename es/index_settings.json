@@ -23,6 +23,7 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana",
+					"sudachi_synonym",
 					"ja_search"
 				]
 			},
@@ -48,6 +49,7 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana",
+					"sudachi_synonym",
 					"ja_search"
 				]
 			},
@@ -177,6 +179,10 @@
 			"ja_hiragana_2_katakana": {
 				"type": "icu_transform",
 				"id": "Hiragana-Katakana"
+			},
+			"sudachi_synonym": {
+				"type": "synonym_graph",
+				"synonyms_path": "sudachi/synonyms.txt"
 			}
 		}
 	}

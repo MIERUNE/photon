@@ -1,0 +1,9 @@
+国際空港,空港
+学校,学園
+高等学校,高校
+中等学校,中学
+高等専門学校,高専
+ファミリーマート,ファミマ,family mart=>ファミリーマート,family mart,コンビニ,コンビニエンスストア,convenience store
+セブンイレブン,seven eleven=>セブンイレブン,seven eleven,コンビニ,コンビニエンスストア,convenience store
+ローソン,lawson=>ローソン,lawson,コンビニ,lawson,コンビニエンスストア,convenience store
+ミニストップ,mini stop=>ミニストップ,mini stop,コンビニ,コンビニエンスストア,convenience store
