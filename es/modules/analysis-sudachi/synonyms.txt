@@ -6,6 +6,16 @@
 幼稚園,保育園
 高等専門学校,高専
 ファミリーマート,ファミマ,family mart=>ファミリーマート,family mart,コンビニ,コンビニエンスストア,convenience store
-セブンイレブン,seven eleven=>セブンイレブン,seven eleven,コンビニ,コンビニエンスストア,convenience store
+セブンイレブン,セブン,seven eleven=>セブンイレブン,セブン,seven eleven,コンビニ,コンビニエンスストア,convenience store
 ローソン,lawson=>ローソン,lawson,コンビニ,コンビニエンスストア,convenience store
-ミニストップ,mini stop=>ミニストップ,mini stop,コンビニ,コンビニエンスストア,convenience store
+ミニストップ,ミニスト,mini stop=>ミニストップ,ミニスト,mini stop,コンビニ,コンビニエンスストア,convenience store
+サークルKサンクス,サークルK=>サークルKサンクス,サークルK,コンビニ,コンビニエンスストア,convenience store
+am/pm,エーピー=>am/pm,エーピー,コンビニ,コンビニエンスストア,convenience store
+マクドナルド,マック,マクド,mcdonald's
+ケンタッキー,ケンタ,ケンタッキーフライドチキン,KFC
+ミスタードーナツ,ミスド
+モスバーガー,モス
+スターバックス,スタバ,starbucks
+東京大学,東大
+京都大学,京大
+北海道大学,北大
