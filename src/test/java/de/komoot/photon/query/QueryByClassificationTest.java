@@ -19,7 +19,7 @@ import java.util.Collections;
 import static org.junit.Assert.*;
 
 
-public class QureyByClassificationTest extends ESBaseTester {
+public class QueryByClassificationTest extends ESBaseTester {
     private int testDocId = 10000;
 
     @Before
