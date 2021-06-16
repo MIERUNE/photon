@@ -11,15 +11,15 @@
 										"should": [
 											{
 												"match": {
-													"collector.default.ngrams_ja": {
+													"collector.default.raw_ja": {
 														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
+														"operator": "AND",
+														"analyzer": "ja_search_raw",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
+														"fuzzy_transpositions": false,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0
@@ -28,15 +28,15 @@
 											},
 											{
 												"match": {
-													"collector.ja.ngrams": {
+													"collector.ja.raw": {
 														"query": "berlin",
-														"operator": "OR",
-														"analyzer": "search_ngram",
+														"operator": "AND",
+														"analyzer": "ja_search_raw",
 														"fuzziness": "1",
 														"prefix_length": 2,
 														"max_expansions": 50,
 														"minimum_should_match": "-1",
-														"fuzzy_transpositions": true,
+														"fuzzy_transpositions": false,
 														"lenient": false,
 														"zero_terms_query": "NONE",
 														"boost": 1.0

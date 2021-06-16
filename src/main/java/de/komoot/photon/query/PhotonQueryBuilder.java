@@ -60,19 +60,19 @@ public class PhotonQueryBuilder {
         QueryBuilder collectorQuery;
         if (lenient) {
             collectorQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.ngrams", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer("search_ngram")
-//                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
-//                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
+                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
+                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
+                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
                             .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language): String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer("search_ngram")
-//                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
-//                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
+                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
+                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
+                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
         } else {
