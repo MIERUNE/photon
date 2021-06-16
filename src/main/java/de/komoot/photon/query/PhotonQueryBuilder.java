@@ -59,38 +59,22 @@ public class PhotonQueryBuilder {
         // 1. All terms of the quey must be contained in the place record somehow. Be more lenient on second try.
         QueryBuilder collectorQuery;
         if (lenient) {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+            collectorQuery = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
+//                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
+//                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
+//                            .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND: Operator.OR)
+//                            .fuzzyTranspositions(!Arrays.asList(cjkLanguages).contains(language) )
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
-
-            if (Arrays.asList(cjkLanguages).contains(language)) {
-                builder = builder
-                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"))
-                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"));
-            }
-
-            builder = builder.minimumShouldMatch("1");
-
-            collectorQuery = builder;
         } else {
             MultiMatchQueryBuilder builderDefault =
                     QueryBuilders.multiMatchQuery(query).field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
