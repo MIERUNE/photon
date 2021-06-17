@@ -112,7 +112,9 @@ public class PhotonQueryBuilder {
                                 .analyzer(String.format("%s_search_raw", language))
                                 .minimumShouldMatch("100%");
 
-                builderJapaneseField.field(String.format("collector.%s.raw", language), 1.0f);
+                for (String lang : languages) {
+                    builderJapaneseField.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+                }
 
                 builder = builder.should(builderJapaneseField);
             }
