@@ -112,6 +112,7 @@ public class PhotonQueryBuilder {
                                         .should(nameNgramQuery)
                                         .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
                                         .should(QueryBuilders.matchQuery("classification", query).boost(0.1f))
+                                        .should(QueryBuilders.termQuery("postcode.keyword", query).boost(300))
                                         .minimumShouldMatch("1"));
         }
 
