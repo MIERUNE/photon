@@ -81,7 +81,6 @@ public class PhotonQueryBuilder {
 
             collectorQuery = builder;
         }
-        query4QueryBuilder.must(collectorQuery);
 
         if (Arrays.asList(cjkLanguages).contains(language)) {
             MultiMatchQueryBuilder builderPhrase =
@@ -95,10 +94,9 @@ public class PhotonQueryBuilder {
                 builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
-            query4QueryBuilder.should(builderPhrase);
-
             if (lenient) {
-                query4QueryBuilder
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
                         .should(builderPhrase)
                         .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
                                 .fuzziness(Fuzziness.ONE)
@@ -110,8 +108,14 @@ public class PhotonQueryBuilder {
                                 .prefixLength(2)
                                 .operator(Operator.AND)
                                 .minimumShouldMatch("-1"));
+            } else {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPhrase);
             }
         }
+
+        query4QueryBuilder.must(collectorQuery);
 
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
