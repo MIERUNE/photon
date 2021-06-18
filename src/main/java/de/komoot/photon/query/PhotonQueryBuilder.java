@@ -89,7 +89,7 @@ public class PhotonQueryBuilder {
                             .type(MultiMatchQueryBuilder.Type.PHRASE)
                             .prefixLength(2)
                             .slop(1)
-                            .minimumShouldMatch("100%");
+                            .operator(Operator.AND);
 
             for (String lang : languages) {
                 builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
