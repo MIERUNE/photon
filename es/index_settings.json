@@ -40,7 +40,6 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana",
-					"sudachi_synonym",
 					"ja_search"
 				]
 			},
