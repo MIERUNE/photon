@@ -60,7 +60,7 @@ public class PhotonQueryBuilder {
         QueryBuilder collectorQuery;
         if (lenient) {
             collectorQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default.ngrams", query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
@@ -73,7 +73,7 @@ public class PhotonQueryBuilder {
                     .minimumShouldMatch("1");
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default.ngrams", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -81,6 +81,7 @@ public class PhotonQueryBuilder {
 
             collectorQuery = builder;
         }
+        query4QueryBuilder.must(collectorQuery);
 
         if (Arrays.asList(cjkLanguages).contains(language)) {
             MultiMatchQueryBuilder builderPhrase =
@@ -94,9 +95,10 @@ public class PhotonQueryBuilder {
                 builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
+            query4QueryBuilder.should(builderPhrase);
+
             if (lenient) {
-                collectorQuery = QueryBuilders.boolQuery()
-                        .should(collectorQuery)
+                query4QueryBuilder
                         .should(builderPhrase)
                         .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
                                 .fuzziness(Fuzziness.ONE)
@@ -108,14 +110,8 @@ public class PhotonQueryBuilder {
                                 .prefixLength(2)
                                 .operator(Operator.AND)
                                 .minimumShouldMatch("-1"));
-            } else {
-                collectorQuery = QueryBuilders.boolQuery()
-                        .should(collectorQuery)
-                        .should(builderPhrase);
             }
         }
-
-        query4QueryBuilder.must(collectorQuery);
 
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
