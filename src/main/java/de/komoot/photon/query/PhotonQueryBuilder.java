@@ -83,7 +83,7 @@ public class PhotonQueryBuilder {
         }
 
         if (Arrays.asList(cjkLanguages).contains(language)) {
-            MultiMatchQueryBuilder builderPharase =
+            MultiMatchQueryBuilder builderPhrase =
                     QueryBuilders.multiMatchQuery(query)
                             .field(String.format("collector.default.raw_%s",language), 1.0f)
                             .type(MultiMatchQueryBuilder.Type.PHRASE)
@@ -92,13 +92,13 @@ public class PhotonQueryBuilder {
                             .minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builderPharase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             if (lenient) {
                 collectorQuery = QueryBuilders.boolQuery()
                         .should(collectorQuery)
-                        .should(builderPharase)
+                        .should(builderPhrase)
                         .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
@@ -108,12 +108,11 @@ public class PhotonQueryBuilder {
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
                                 .operator(Operator.AND)
-                                .minimumShouldMatch("-1"))
-                        .minimumShouldMatch(("1"));
+                                .minimumShouldMatch("-1"));
             } else {
                 collectorQuery = QueryBuilders.boolQuery()
                         .should(collectorQuery)
-                        .should(builderPharase);
+                        .should(builderPhrase);
             }
         }
 
