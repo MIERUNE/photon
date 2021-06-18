@@ -94,13 +94,10 @@ public class PhotonQueryBuilder {
                 builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
-            collectorQuery = QueryBuilders.boolQuery()
-                    .should(collectorQuery)
-                    .should(builderPhrase);
-
             if (lenient) {
                 collectorQuery = QueryBuilders.boolQuery()
                         .should(collectorQuery)
+                        .should(builderPhrase)
                         .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
                                 .fuzziness(Fuzziness.ONE)
                                 .prefixLength(2)
@@ -111,6 +108,10 @@ public class PhotonQueryBuilder {
                                 .prefixLength(2)
                                 .operator(Operator.AND)
                                 .minimumShouldMatch("-1"));
+            } else {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPhrase);
             }
         }
 
