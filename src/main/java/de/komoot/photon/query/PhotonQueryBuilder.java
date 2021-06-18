@@ -59,7 +59,7 @@ public class PhotonQueryBuilder {
         // 1. All terms of the quey must be contained in the place record somehow. Be more lenient on second try.
         QueryBuilder collectorQuery;
         if (lenient) {
-            BoolQueryBuilder builder = QueryBuilders.boolQuery()
+            collectorQuery = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
@@ -71,26 +71,6 @@ public class PhotonQueryBuilder {
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
-
-            if (Arrays.asList(cjkLanguages).contains(language)) {
-                builder = builder
-                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"))
-                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                .fuzziness(Fuzziness.ONE)
-                                .prefixLength(2)
-                                .operator(Operator.AND)
-                                .fuzzyTranspositions(false)
-                                .minimumShouldMatch("-1"));
-            }
-
-            builder = builder.minimumShouldMatch("1");
-
-            collectorQuery = builder;
         } else {
             MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query).field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.ngrams_%s", language): "collector.default.ngrams", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
@@ -103,7 +83,7 @@ public class PhotonQueryBuilder {
         }
 
         if (Arrays.asList(cjkLanguages).contains(language)) {
-            MultiMatchQueryBuilder builderCJK =
+            MultiMatchQueryBuilder builderPharase =
                     QueryBuilders.multiMatchQuery(query)
                             .field(String.format("collector.default.raw_%s",language), 1.0f)
                             .type(MultiMatchQueryBuilder.Type.PHRASE)
@@ -112,9 +92,23 @@ public class PhotonQueryBuilder {
                             .minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builderCJK.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builderPharase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
-            collectorQuery = QueryBuilders.boolQuery().should(collectorQuery).should(builderCJK);
+            collectorQuery = QueryBuilders.boolQuery()
+                    .should(collectorQuery)
+                    .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .operator(Operator.AND)
+                            .fuzzyTranspositions(false)
+                            .minimumShouldMatch("-1"))
+                    .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                            .fuzziness(Fuzziness.ONE)
+                            .prefixLength(2)
+                            .operator(Operator.AND)
+                            .fuzzyTranspositions(false)
+                            .minimumShouldMatch("-1"))
+                    .should(builderPharase);
         }
 
         query4QueryBuilder.must(collectorQuery);
