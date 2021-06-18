@@ -96,19 +96,29 @@ public class PhotonQueryBuilder {
             }
             collectorQuery = QueryBuilders.boolQuery()
                     .should(collectorQuery)
-                    .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                            .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
-                            .operator(Operator.AND)
-                            .fuzzyTranspositions(false)
-                            .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                            .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
-                            .operator(Operator.AND)
-                            .fuzzyTranspositions(false)
-                            .minimumShouldMatch("-1"))
                     .should(builderPharase);
+
+            if (lenient) {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPharase)
+                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .operator(Operator.AND)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .operator(Operator.AND)
+                                .fuzzyTranspositions(false)
+                                .minimumShouldMatch("-1"));
+            } else {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPharase);
+            }
         }
 
         query4QueryBuilder.must(collectorQuery);
