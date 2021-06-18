@@ -94,9 +94,6 @@ public class PhotonQueryBuilder {
             for (String lang : languages) {
                 builderPharase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
-            collectorQuery = QueryBuilders.boolQuery()
-                    .should(collectorQuery)
-                    .should(builderPharase);
 
             if (lenient) {
                 collectorQuery = QueryBuilders.boolQuery()
