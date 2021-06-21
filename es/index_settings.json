@@ -1,20 +1,6 @@
 {
 	"analysis": {
 		"analyzer": {
-			"ja_search_ngram": {
-				"char_filter": [
-					"punctuationgreedy",
-					"ja_normalize",
-					"kuromoji_iteration_mark"
-				],
-				"tokenizer": "ja_edge_ngram",
-				"filter": [
-					"lowercase",
-					"german_normalization",
-					"asciifolding",
-					"ja_romaji_readingform"
-				]
-			},
 			"ja_index_raw": {
 				"type": "custom",
 				"char_filter": [
@@ -142,15 +128,6 @@
 			"edge_ngram": {
 				"type": "edge_ngram",
 				"min_gram": 1,
-				"max_gram": 100,
-				"token_chars": [
-					"letter",
-					"digit"
-				]
-			},
-			"ja_edge_ngram": {
-				"type": "edge_ngram",
-				"min_gram": 2,
 				"max_gram": 100,
 				"token_chars": [
 					"letter",

@@ -63,16 +63,17 @@ public class PhotonQueryBuilder {
                     .should(QueryBuilders.matchQuery("collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
-                            .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_ngram", language) : "search_ngram")
+                            .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
+                            .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
                     .minimumShouldMatch("1");
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_ngram", language) : "search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
                 builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -134,7 +135,8 @@ public class PhotonQueryBuilder {
         String defLang = "default".equals(language) ? languages.get(0) : language;
         MultiMatchQueryBuilder nameNgramQuery = QueryBuilders.multiMatchQuery(query)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS)
-                .fuzziness(lenient ? Fuzziness.ONE : Fuzziness.ZERO);
+                .fuzziness(lenient ? Fuzziness.ONE : Fuzziness.ZERO)
+                .analyzer("search_ngram");
 
         for (String lang: languages) {
             nameNgramQuery.field(String.format("name.%s.ngrams", lang), lang.equals(defLang) ? 1.0f : 0.4f);
