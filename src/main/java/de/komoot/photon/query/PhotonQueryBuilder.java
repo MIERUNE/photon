@@ -87,8 +87,7 @@ public class PhotonQueryBuilder {
                     QueryBuilders.multiMatchQuery(query)
                             .field(String.format("collector.default.raw_%s",language), 1.0f)
                             .type(MultiMatchQueryBuilder.Type.PHRASE)
-                            .prefixLength(2)
-                            .slop(1);
+                            .prefixLength(2);
 
             for (String lang : languages) {
                 builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -102,11 +101,13 @@ public class PhotonQueryBuilder {
                                     .fuzziness(Fuzziness.ONE)
                                     .prefixLength(2)
                                     .operator(Operator.AND)
+                                    .fuzzyTranspositions(false)
                                     .minimumShouldMatch("-1"))
                             .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
                                     .fuzziness(Fuzziness.ONE)
                                     .prefixLength(2)
                                     .operator(Operator.AND)
+                                    .fuzzyTranspositions(false)
                                     .minimumShouldMatch("-1"))
                     );
         }
