@@ -56,13 +56,13 @@ public class DatabasePropertiesTest extends ESBaseTester {
         setUpES();
 
         DatabaseProperties prop = new DatabaseProperties();
-        prop.setLanguages(new String[]{"en", "de", "fr"});
+        prop.setLanguages(new String[]{ "en", "de", "fr", "it", "ja" });
         prop.saveToDatabase(getClient());
 
         prop = new DatabaseProperties();
         prop.loadFromDatabase(getClient());
 
-        assertArrayEquals(new String[]{"en", "de", "fr"}, prop.getLanguages());
+        assertArrayEquals(new String[] { "en", "de", "fr", "it", "ja" }, prop.getLanguages());
 
 
     }

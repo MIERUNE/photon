@@ -65,4 +65,28 @@ public class QueryByLanguageTest extends ESBaseTester {
         assertTrue(fiScore > enScore);
     }
 
+    @Test
+    public void queryAltNames() throws IOException {
+        Importer instance = setup("de");
+        instance.add(createDoc("name", "simple", "alt_name", "ancient", "name:de", "einfach"));
+        instance.finish();
+        refresh();
+
+        assertEquals(1, search("simple", "de").getHits().getTotalHits());
+        assertEquals(1, search("einfach", "de").getHits().getTotalHits());
+        assertEquals(1, search("ancient", "de").getHits().getTotalHits());
+
+    }
+
+    @Test
+    public void queryJapaneseNames() throws IOException {
+        Importer instance = setup("en", "ja");
+        instance.add(createDoc("name", "東京", "name:en", "Tokyo", "name:ja", "東京"));
+        instance.finish();
+        refresh();
+
+        assertEquals(1, search("tokyo", "en").getHits().getTotalHits());
+        assertEquals(1, search("東京", "ja").getHits().getTotalHits());
+        assertEquals(0, search("東京", "en").getHits().getTotalHits());
+    }
 }

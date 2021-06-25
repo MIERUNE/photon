@@ -32,6 +32,8 @@ import static com.google.common.collect.Maps.newHashMap;
  * Created by Sachin Dole on 2/12/2015.
  */
 public class PhotonQueryBuilder {
+    private static final String[] ALT_NAMES = new String[]{"alt", "int", "loc", "old", "reg", "housename"};
+
     private FunctionScoreQueryBuilder finalQueryWithoutTagFilterBuilder;
 
     private BoolQueryBuilder queryBuilderForTopLevelFilter;
@@ -52,16 +54,18 @@ public class PhotonQueryBuilder {
     private PhotonQueryBuilder(String query, String language, List<String> languages, boolean lenient) {
         BoolQueryBuilder query4QueryBuilder = QueryBuilders.boolQuery();
 
+        String[] cjkLanguages = { "ja" };
+
         // 1. All terms of the quey must be contained in the place record somehow. Be more lenient on second try.
         QueryBuilder collectorQuery;
         if (lenient) {
             collectorQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("collector.default", query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
+                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
@@ -69,13 +73,46 @@ public class PhotonQueryBuilder {
                     .minimumShouldMatch("1");
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field("collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query).field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builder.field(Arrays.asList(cjkLanguages).contains(lang) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             collectorQuery = builder;
+        }
+
+        if (Arrays.asList(cjkLanguages).contains(language)) {
+            MultiMatchQueryBuilder builderPhrase =
+                    QueryBuilders.multiMatchQuery(query)
+                            .field(String.format("collector.default.raw_%s",language), 1.0f)
+                            .type(MultiMatchQueryBuilder.Type.PHRASE)
+                            .prefixLength(2)
+                            .slop(1);
+
+            for (String lang : languages) {
+                builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
+            }
+
+            if (lenient) {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPhrase)
+                        .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .operator(Operator.AND)
+                                .minimumShouldMatch("-1"))
+                        .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
+                                .fuzziness(Fuzziness.ONE)
+                                .prefixLength(2)
+                                .operator(Operator.AND)
+                                .minimumShouldMatch("-1"));
+            } else {
+                collectorQuery = QueryBuilders.boolQuery()
+                        .should(collectorQuery)
+                        .should(builderPhrase);
+            }
         }
 
         query4QueryBuilder.must(collectorQuery);
@@ -83,7 +120,7 @@ public class PhotonQueryBuilder {
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
-                .field("collector.default.raw", 1.0f)
+                .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 
         for (String lang : languages) {
@@ -103,6 +140,10 @@ public class PhotonQueryBuilder {
 
         for (String lang: languages) {
             nameNgramQuery.field(String.format("name.%s.ngrams", lang), lang.equals(defLang) ? 1.0f : 0.4f);
+        }
+
+        for (String alt: ALT_NAMES) {
+            nameNgramQuery.field(String.format("name.%s.raw", alt), 0.4f);
         }
 
         if (query.indexOf(',') < 0 && query.indexOf(' ') < 0) {
