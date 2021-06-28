@@ -170,7 +170,7 @@
 			},
 			"ja_search" : {
 				"type" : "sudachi_split",
-				"mode" : "search"
+				"mode" : "normal"
 			},
 			"ja_romaji_readingform" : {
 				"type" : "sudachi_readingform",
