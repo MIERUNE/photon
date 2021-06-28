@@ -23,7 +23,8 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana",
-					"sudachi_synonym"
+					"sudachi_synonym",
+					"ja_search"
 				]
 			},
 			"ja_search_raw": {
@@ -48,7 +49,8 @@
 					"kuromoji_number",
 					"kuromoji_stemmer",
 					"ja_hiragana_2_katakana",
-					"sudachi_synonym"
+					"sudachi_synonym",
+					"ja_search"
 				]
 			},
 			"index_ngram": {
