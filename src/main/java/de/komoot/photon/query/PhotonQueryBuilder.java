@@ -124,7 +124,7 @@ public class PhotonQueryBuilder {
                         : "collector.default.raw", 1.0f)
                 .analyzer(Arrays.asList(cjkLanguages).contains(language)
                         ? String.format("%s_search_raw", language)
-                        : "standard")
+                        : "search_raw")
                 .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
 
         for (String lang : languages) {
