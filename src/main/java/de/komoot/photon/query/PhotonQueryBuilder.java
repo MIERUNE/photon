@@ -154,8 +154,9 @@ public class PhotonQueryBuilder {
 
         // 4. Rerank results for having the full name in the default language.
         query4QueryBuilder
-                .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
-
+                .should(Arrays.asList(cjkLanguages).contains(language) ?
+                        QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query) :
+                        QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
 
         // Weigh the resulting score by importance. Use a linear scale function that ensures that the weight
         // never drops to 0 and cancels out the ES score.
