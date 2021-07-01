@@ -167,7 +167,7 @@ public class PhotonQueryBuilder {
                         .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
                         .should(QueryBuilders.matchQuery(String.format("%s_classification",
                                 language), query)
-                                .analyzer(String.format("%s_search_raw", language)).boost(0.1f))
+                                .analyzer(String.format("%s_search_classification", language)).boost(0.1f))
                         .minimumShouldMatch("1"));
             } else {
                 query4QueryBuilder.must(QueryBuilders.boolQuery().should(nameNgramQuery)
@@ -194,7 +194,7 @@ public class PhotonQueryBuilder {
                                     new FilterFunctionBuilder(QueryBuilders.matchQuery(String.format(
                                             "%s_classification",
                                             language), query)
-                                            .analyzer(String.format("%s_search_raw",
+                                            .analyzer(String.format("%s_search_classification",
                                                     language)),
                                             ScoreFunctionBuilders.weightFactorFunction(0.1f)) })
                     .scoreMode(ScoreMode.SUM);
