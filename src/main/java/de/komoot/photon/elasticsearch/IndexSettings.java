@@ -113,7 +113,7 @@ public class IndexSettings {
 
         insertSynonymFilter("classification_synonyms", synonyms);
         insertJsonArrayAfter("/analysis/analyzer/search_classification", "filter", "lowercase", "classification_synonyms");
-        insertJsonArrayAfter("/analysis/analyzer/ja_search_raw", "filter", "lowercase", "classification_synonyms");
+        insertJsonArrayAfter("/analysis/analyzer/ja_search_classification", "filter", "lowercase", "classification_synonyms");
         return this;
     }
 

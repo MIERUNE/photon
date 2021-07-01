@@ -128,6 +128,26 @@
 					"lowercase"
 				],
 				"tokenizer": "whitespace"
+			},
+			"ja_search_classification": {
+				"filter": [
+					"word_delimiter",
+					"lowercase",
+					"german_normalization",
+					"asciifolding",
+					"unique",
+					"sudachi_baseform",
+					"sudachi_normalizedform",
+					"sudachi_part_of_speech",
+					"cjk_width",
+					"sudachi_ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer",
+					"ja_hiragana_2_katakana",
+					"sudachi_synonym",
+					"ja_search"
+				],
+				"tokenizer": "ja_sudachi_tokenizer"
 			}
 		},
 		"tokenizer": {

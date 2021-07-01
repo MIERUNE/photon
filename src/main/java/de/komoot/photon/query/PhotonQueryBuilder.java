@@ -165,7 +165,8 @@ public class PhotonQueryBuilder {
             if (Arrays.asList(cjkLanguages).contains(language)) {
                 query4QueryBuilder.must(QueryBuilders.boolQuery().should(nameNgramQuery)
                         .should(QueryBuilders.matchQuery("housenumber", query).analyzer("standard"))
-                        .should(QueryBuilders.matchQuery("classification", query)
+                        .should(QueryBuilders.matchQuery(String.format("%s_classification",
+                                language), query)
                                 .analyzer(String.format("%s_search_raw", language)).boost(0.1f))
                         .minimumShouldMatch("1"));
             } else {
@@ -190,7 +191,9 @@ public class PhotonQueryBuilder {
                             new FilterFunctionBuilder[] {
                                     new FilterFunctionBuilder(
                                             ScoreFunctionBuilders.linearDecayFunction("importance", "1.0", "0.6")),
-                                    new FilterFunctionBuilder(QueryBuilders.matchQuery("classification", query)
+                                    new FilterFunctionBuilder(QueryBuilders.matchQuery(String.format(
+                                            "%s_classification",
+                                            language), query)
                                             .analyzer(String.format("%s_search_raw",
                                                     language)),
                                             ScoreFunctionBuilders.weightFactorFunction(0.1f)) })
