@@ -6,9 +6,18 @@
         "brewery,distillery,winery",
         "bar,pub",
         "store,shop,market,kiosk,marketplace",
-        "hotel,inn,hostel,guesthouse"
+        "hotel,inn,hostel,guesthouse",
+        "国際空港,空港,airport"
     ],
     "classification_terms": [
+        {
+            "key": "aeroway",
+            "value": "aerodrome",
+            "terms": [
+                "空港",
+                "国際空港"
+            ]
+        },
         {
             "key": "aeroway",
             "value": "aerodrome",
@@ -25,7 +34,8 @@
             "terms": [
                 "station",
                 "train",
-                "subway"
+                "subway",
+                "駅"
             ]
         },
         {
@@ -53,18 +63,18 @@
             "terms": [
                 "bus",
                 "stop",
-                "station",
-                "taxi"
+                "taxi",
+                "バス"
             ]
         },
         {
             "key": "railway",
             "value": "stop",
             "terms": [
-                "bus",
-                "stop",
                 "station",
-                "taxi"
+                "train",
+                "subway",
+                "駅"
             ]
         },
         {
@@ -73,7 +83,7 @@
             "terms": [
                 "bus",
                 "stop",
-                "station",
+                "バス",
                 "taxi"
             ]
         },
@@ -112,7 +122,8 @@
                 "pharmacy",
                 "drugstore"
             ]
-        },{
+        },
+        {
             "key": "amenity",
             "value": "police",
             "terms": [
@@ -124,7 +135,6 @@
             "value": "hotel",
             "terms": [
                 "hotel"
-
             ]
         },
         {
@@ -133,13 +143,13 @@
             "terms": [
                 "guesthouse"
             ]
-        },{
+        },
+        {
             "key": "tourism",
             "value": "hostel",
             "terms": [
                 "hostel"
             ]
         }
-
     ]
 }
