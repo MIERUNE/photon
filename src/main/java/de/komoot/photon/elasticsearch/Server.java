@@ -40,6 +40,7 @@ public class Server {
     private File esDirectory;
 
     private Integer shards = null;
+    private String[] languages = null;
 
     protected static class MyNode extends Node {
         public MyNode(Settings preparedSettings, Collection<Class<? extends Plugin>> classpathPlugins) {
@@ -231,7 +232,7 @@ public class Server {
     }
 
     private IndexSettings loadIndexSettings() {
-        return new IndexSettings().setShards(shards);
+        return new IndexSettings().setShards(shards, languages);
     }
 
     public void deleteIndex() {

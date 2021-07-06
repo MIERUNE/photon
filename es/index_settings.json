@@ -143,9 +143,7 @@
 					"sudachi_ja_stop",
 					"kuromoji_number",
 					"kuromoji_stemmer",
-					"ja_hiragana_2_katakana",
-					"sudachi_synonym",
-					"ja_search"
+					"ja_hiragana_2_katakana"
 				],
 				"tokenizer": "ja_sudachi_tokenizer"
 			}
