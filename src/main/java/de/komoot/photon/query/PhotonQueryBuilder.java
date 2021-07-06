@@ -60,12 +60,12 @@ public class PhotonQueryBuilder {
         QueryBuilder collectorQuery;
         if (lenient) {
             collectorQuery = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
+                    .should(QueryBuilders.matchQuery("collector.default", query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
                             .minimumShouldMatch("-1"))
-                    .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
+                    .should(QueryBuilders.matchQuery(String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
                             .prefixLength(2)
                             .analyzer("search_ngram")
@@ -73,38 +73,32 @@ public class PhotonQueryBuilder {
                     .minimumShouldMatch("1");
         } else {
             MultiMatchQueryBuilder builder =
-                    QueryBuilders.multiMatchQuery(query).field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f).type(MultiMatchQueryBuilder.Type.CROSS_FIELDS).prefixLength(2).analyzer("search_ngram").minimumShouldMatch("100%");
+                    QueryBuilders.multiMatchQuery(query)
+                            .field("collector.default", 1.0f)
+                            .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
+                            .prefixLength(2)
+                            .analyzer("search_ngram")
+                            .minimumShouldMatch("100%");
 
             for (String lang : languages) {
-                builder.field(Arrays.asList(cjkLanguages).contains(lang) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
+                builder.field(String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
 
             collectorQuery = builder;
         }
 
         if (Arrays.asList(cjkLanguages).contains(language)) {
-            MultiMatchQueryBuilder builderPhrase =
-                    QueryBuilders.multiMatchQuery(query)
-                            .field(String.format("collector.default.raw_%s",language), 1.0f)
-                            .type(MultiMatchQueryBuilder.Type.PHRASE)
-                            .prefixLength(2);
-
-            for (String lang : languages) {
-                builderPhrase.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
-            }
-
             collectorQuery = QueryBuilders.boolQuery()
                     .should(collectorQuery)
-                    .should(builderPhrase)
                     .should(QueryBuilders.boolQuery()
                             .should(QueryBuilders.matchQuery(String.format("collector.default.raw_%s", language), query)
-                                    .fuzziness(Fuzziness.ONE)
+                                    .fuzziness(Fuzziness.ZERO)
                                     .prefixLength(2)
                                     .operator(Operator.AND)
                                     .fuzzyTranspositions(false)
                                     .minimumShouldMatch("-1"))
                             .should(QueryBuilders.matchQuery(String.format("collector.%s.raw", language), query)
-                                    .fuzziness(Fuzziness.ONE)
+                                    .fuzziness(Fuzziness.ZERO)
                                     .prefixLength(2)
                                     .operator(Operator.AND)
                                     .fuzzyTranspositions(false)
@@ -118,7 +112,8 @@ public class PhotonQueryBuilder {
         //    filter creterion because they have no name. Therefore boost the score in this case.
         MultiMatchQueryBuilder hnrQuery = QueryBuilders.multiMatchQuery(query)
                 .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language): "collector.default.raw", 1.0f)
-                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS)
+                .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR);
 
         for (String lang : languages) {
             hnrQuery.field(String.format("collector.%s.raw", lang), lang.equals(language) ? 1.0f : 0.6f);
@@ -153,10 +148,15 @@ public class PhotonQueryBuilder {
         }
 
         // 4. Rerank results for having the full name in the default language.
-        query4QueryBuilder
-                .should(Arrays.asList(cjkLanguages).contains(language) ?
-                        QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query) :
-                        QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
+        if (Arrays.asList(cjkLanguages).contains(language)) {
+            query4QueryBuilder
+                    .should(QueryBuilders.termQuery(String.format("name.%s.keyword", language), query).boost(3f))
+                    .should(QueryBuilders.wildcardQuery(String.format("name.%s.keyword", language), String.format("*%s*", query)).boost(2f))
+                    .should(QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query));
+        } else {
+            query4QueryBuilder
+                    .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query));
+        }
 
         // Weigh the resulting score by importance. Use a linear scale function that ensures that the weight
         // never drops to 0 and cancels out the ES score.
