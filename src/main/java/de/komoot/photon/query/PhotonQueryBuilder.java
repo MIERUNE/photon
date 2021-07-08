@@ -62,13 +62,13 @@ public class PhotonQueryBuilder {
             collectorQuery = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
-                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
+                            .prefixLength(2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
                             .minimumShouldMatch("-1"))
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
-                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
+                            .prefixLength(2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
                             .minimumShouldMatch("-1"))
@@ -78,7 +78,7 @@ public class PhotonQueryBuilder {
                     QueryBuilders.multiMatchQuery(query)
                             .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
                             .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.BEST_FIELDS : MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
+                            .prefixLength(2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .minimumShouldMatch("100%");
             if (!Arrays.asList(cjkLanguages).contains(language)) {
@@ -87,10 +87,8 @@ public class PhotonQueryBuilder {
             for (String lang : languages) {
                 builder.field(Arrays.asList(cjkLanguages).contains(lang) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", lang), lang.equals(language) ? 1.0f : 0.6f);
             }
-
             collectorQuery = builder;
         }
-
         query4QueryBuilder.must(collectorQuery);
 
         // 2. Prefer records that have the full names in. For address records with housenumbers this is the main
@@ -134,9 +132,9 @@ public class PhotonQueryBuilder {
         // 4. Rerank results for having the full name in the default language.
         if (Arrays.asList(cjkLanguages).contains(language)) {
             query4QueryBuilder
-                    .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).operator(Operator.AND))
+                    .should(QueryBuilders.matchPhraseQuery(String.format("name.%s.raw", language), query))
                     .should(QueryBuilders.boolQuery()
-                            .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query))
+                            .should(QueryBuilders.matchQuery(String.format("name.%s.raw", language), query).fuzziness(Fuzziness.ZERO).fuzzyTranspositions(false).minimumShouldMatch("100%"))
                             .should(QueryBuilders.matchPhrasePrefixQuery(String.format("name.%s.raw", language), query)));
         } else {
             query4QueryBuilder
