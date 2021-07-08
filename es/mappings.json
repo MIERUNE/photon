@@ -257,7 +257,7 @@
 			},
 			"postcode": {
 				"type": "text",
-				"index": true,
+				"index": false,
 				"copy_to": [
 					"collector.default"
 				]
