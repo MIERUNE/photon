@@ -19,6 +19,7 @@ import java.util.*;
  */
 public class IndexSettings {
     private final JSONObject settings;
+    public String[] languages;
 
     /**
      * Create a new settings object and initialize it with the index settings
@@ -29,6 +30,7 @@ public class IndexSettings {
                 .getResourceAsStream("index_settings.json");
 
         settings = new JSONObject(new JSONTokener(indexSettings));
+        languages = null;
     }
 
     /**
@@ -38,11 +40,11 @@ public class IndexSettings {
      *
      * @return Return this object for chaining.
      */
-    public IndexSettings setShards(Integer numShards) {
+    public IndexSettings setShards(Integer numShards, String[] languagesList) {
         if (numShards != null) {
             settings.put("index", new JSONObject().put("number_of_shards", numShards));
         }
-
+        languages = languagesList;
         return this;
     }
 
@@ -112,7 +114,12 @@ public class IndexSettings {
             synonyms.put(term + " => " + term + "," + String.join(",", classificators)));
 
         insertSynonymFilter("classification_synonyms", synonyms);
-
+        insertJsonArrayAfter("/analysis/analyzer/search_classification", "filter", "lowercase",
+                "classification_synonyms");
+        if (languages != null && Arrays.asList(languages).contains("ja")) {
+            insertJsonArrayAfter("/analysis/analyzer/ja_search_classification", "filter", "lowercase",
+                    "classification_synonyms");
+        }
         return this;
     }
 
@@ -128,6 +135,9 @@ public class IndexSettings {
             // add synonym filter to the search analyzers
             insertJsonArrayAfter("/analysis/analyzer/search_ngram", "filter", "lowercase", filterName);
             insertJsonArrayAfter("/analysis/analyzer/search_raw", "filter", "lowercase", filterName);
+            if (languages != null && Arrays.asList(languages).contains("ja")) {
+                insertJsonArrayAfter("/analysis/analyzer/ja_search_raw", "filter", "lowercase", filterName);
+            }
         }
     }
 

@@ -26,7 +26,7 @@ public class DatabaseProperties {
      * changes in an incompatible way. If it is alredy at the next released
      * version, increase the dev version.
      */
-    private static final String DATABASE_VERSION = "0.3.6-0";
+    private static final String DATABASE_VERSION = "0.3.4-0";
     public static final String PROPERTY_DOCUMENT_ID = "DATABASE_PROPERTIES";
 
     private static final String BASE_FIELD = "document_properties";
@@ -41,7 +41,7 @@ public class DatabaseProperties {
      */
     public String[] getLanguages() {
         if (languages == null) {
-            return new String[]{"en", "de", "fr", "it"};
+            return new String[]{"en", "de", "fr", "it", "ja"};
         }
 
         return languages;
