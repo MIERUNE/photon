@@ -62,23 +62,26 @@ public class PhotonQueryBuilder {
             collectorQuery = QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", query)
                             .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
+                            .fuzzyRewrite(Arrays.asList(cjkLanguages).contains(language) ? "top_terms_boost_3" : "constant_score")
+                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
-                            .minimumShouldMatch("-1"))
+                            .minimumShouldMatch(Arrays.asList(cjkLanguages).contains(language) ? "3<-1" : "-1"))
                     .should(QueryBuilders.matchQuery(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.%s.raw", language) : String.format("collector.%s.ngrams", language), query)
                             .fuzziness(Fuzziness.ONE)
-                            .prefixLength(2)
+                            .fuzzyRewrite(Arrays.asList(cjkLanguages).contains(language) ? "top_terms_boost_3" : "constant_score")
+                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .analyzer(Arrays.asList(cjkLanguages).contains(language) ? String.format("%s_search_raw", language) : "search_ngram")
-                            .minimumShouldMatch("-1"))
+                            .minimumShouldMatch(Arrays.asList(cjkLanguages).contains(language) ? "3<-1" : "-1"))
                     .minimumShouldMatch("1");
         } else {
             MultiMatchQueryBuilder builder =
                     QueryBuilders.multiMatchQuery(query)
                             .field(Arrays.asList(cjkLanguages).contains(language) ? String.format("collector.default.raw_%s", language) : "collector.default", 1.0f)
                             .type(Arrays.asList(cjkLanguages).contains(language) ? MultiMatchQueryBuilder.Type.BEST_FIELDS : MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                            .prefixLength(2)
+                            .fuzzyRewrite(Arrays.asList(cjkLanguages).contains(language) ? "top_terms_boost_3" : "constant_score")
+                            .prefixLength(Arrays.asList(cjkLanguages).contains(language) ? 0 : 2)
                             .operator(Arrays.asList(cjkLanguages).contains(language) ? Operator.AND : Operator.OR)
                             .minimumShouldMatch("100%");
             if (!Arrays.asList(cjkLanguages).contains(language)) {
