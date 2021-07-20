@@ -122,6 +122,30 @@
 					"preserving_word_delimiter"
 				],
 				"tokenizer": "standard"
+			},
+			"search_classification": {
+				"filter": [
+					"lowercase"
+				],
+				"tokenizer": "whitespace"
+			},
+			"ja_search_classification": {
+				"filter": [
+					"word_delimiter",
+					"lowercase",
+					"german_normalization",
+					"asciifolding",
+					"unique",
+					"sudachi_baseform",
+					"sudachi_normalizedform",
+					"sudachi_part_of_speech",
+					"cjk_width",
+					"sudachi_ja_stop",
+					"kuromoji_number",
+					"kuromoji_stemmer",
+					"ja_hiragana_2_katakana"
+				],
+				"tokenizer": "ja_sudachi_tokenizer"
 			}
 		},
 		"tokenizer": {
@@ -168,13 +192,13 @@
 				"type": "word_delimiter",
 				"preserve_original": "true"
 			},
-			"ja_search" : {
-				"type" : "sudachi_split",
-				"mode" : "search"
+			"ja_search": {
+				"type": "sudachi_split",
+				"mode": "search"
 			},
-			"ja_romaji_readingform" : {
-				"type" : "sudachi_readingform",
-				"use_romaji" : true
+			"ja_romaji_readingform": {
+				"type": "sudachi_readingform",
+				"use_romaji": true
 			},
 			"ja_hiragana_2_katakana": {
 				"type": "icu_transform",
